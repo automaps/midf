@@ -2,9 +2,10 @@ from dataclasses import dataclass, field
 from enum import StrEnum
 from typing import Dict, List, Optional, Union
 
-from geojson import MultiPolygon, Point, Polygon
+from geojson import MultiPolygon, Polygon
 
 from model.base import IMDFFeature, NamedFeatureProperties
+from model.labeled_feature import LabeledFeatureProperties
 
 Polygonal = Union[Polygon, MultiPolygon]
 
@@ -33,12 +34,6 @@ UnitId = str
 VenueId = str
 
 Labels = Dict[str, str]
-
-
-@dataclass
-class LabeledFeatureProperties(NamedFeatureProperties):
-  level_id: LevelId
-  display_point: Optional[Point]
 
 
 class FeatureType(StrEnum):
