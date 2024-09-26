@@ -1,0 +1,6 @@
+apppath
+warg
+jord[shapely]
+shapely
+osmnx
+networkx
