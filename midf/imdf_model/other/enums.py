@@ -11,12 +11,6 @@ from typing import Union
 
 Polygonal = Union[shapely.Polygon, shapely.MultiPolygon]
 
-Hours = str
-Phone = str
-Website = str
-ISO3166 = str
-ISO3166_2 = str
-
 
 @dataclass
 class Temporality:
