@@ -3,14 +3,41 @@ import logging
 from itertools import count
 from pathlib import Path
 
+import osmnx
+import pyproj
 import shapely
 from jord.networkx_utilities import add_shapely_node, assertive_add_edge
 from networkx import MultiDiGraph
+from warg import recursive_flatten
 
 logger = logging.getLogger(__name__)
 
 
-def parse_styles(route_file_path: Path):
+def save_graph(new_graph: MultiDiGraph, save_path: Path) -> None:
+    new_graph.graph["crs"] = pyproj.CRS.from_user_input("EPSG:4326")
+
+    osmnx.settings.all_oneway = True
+
+    edge_tags = set(
+        recursive_flatten([edge.keys() for edge in new_graph.edges.values()])
+    )
+    node_tags = set(
+        recursive_flatten([node.keys() for node in new_graph.nodes.values()])
+    )
+
+    osmnx.save_graph_xml(
+        new_graph,
+        filepath=save_path,
+        edge_tags=list(edge_tags),
+        node_tags=list(node_tags),
+        # edge_tag_aggs=[("length", "sum")],
+        oneway=True,
+        merge_edges=False,
+        precision=11,
+    )
+
+
+def parse_route(route_file_path: Path):
     assert route_file_path.exists()
     assert route_file_path.is_file()
     assert route_file_path.suffix == ".json"
@@ -63,8 +90,8 @@ def parse_styles(route_file_path: Path):
                 else:
                     logger.error(f"Loop detected {i, to_link}")
 
-        ...  # save_graph(graph, Path('test.osm'))
+        save_graph(graph, Path("../test.osm"))
 
 
 if __name__ == "__main__":
-    parse_styles(Path(__file__).parent / "data" / "Routes.json")
+    parse_route(Path(__file__).parent / "data" / "Routes.json")

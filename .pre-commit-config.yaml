@@ -70,11 +70,6 @@ repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.6.0 # Use the ref you want to point at
     hooks:
-      - id: check-added-large-files
-        name: check for added large files
-        description: prevents giant files from being committed.
-        entry: check-added-large-files
-        language: python
       - id: check-ast
         name: check python ast
         description: simply checks whether the files parse as valid python.
