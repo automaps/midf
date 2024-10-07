@@ -1,15 +1,9 @@
 from dataclasses import dataclass
 
-import shapely
-
 try:
     from enum import StrEnum
 except ImportError:
     from strenum import StrEnum
-
-from typing import Union
-
-Polygonal = Union[shapely.Polygon, shapely.MultiPolygon]
 
 
 @dataclass
