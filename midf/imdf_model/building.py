@@ -1,4 +1,4 @@
-from typing import Any, Mapping, Optional
+from typing import Any, Mapping, Optional, Union
 
 from .other.base import IMDFFeature
 
@@ -9,7 +9,7 @@ from ..enums import BuildingCategory
 
 class IMDFBuilding(IMDFFeature):
     geometry: Any = None  # shapely.geometry.base.BaseGeometry
-    category: BuildingCategory
+    category: Union[BuildingCategory, str]
     restriction: Optional[str] = None
     name: Optional[Mapping[str, str]] = None
     alt_name: Optional[Mapping[str, str]] = None

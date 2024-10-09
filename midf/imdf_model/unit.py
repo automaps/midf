@@ -1,4 +1,4 @@
-from typing import Any, Mapping, Optional
+from typing import Any, Mapping, Optional, Union
 
 from .other import IMDFFeature
 
@@ -10,7 +10,7 @@ from ..enums import UnitCategory
 class IMDFUnit(IMDFFeature):
     geometry: Any  # Polygonal
     level_id: str
-    category: UnitCategory
+    category: Union[UnitCategory, str]
     restriction: Optional[str] = None
     accessibility: Optional[str] = None
     phone: Optional[str] = None
