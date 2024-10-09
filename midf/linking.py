@@ -2,13 +2,13 @@ from collections import defaultdict
 from datetime import datetime
 from typing import Collection, Mapping, Union
 
+from midf.enums import IMDFFeatureType
 from midf.imdf_model import (
     IMDFAddress,
     IMDFAnchor,
     IMDFBuilding,
     IMDFDetail,
     IMDFFeature,
-    IMDFFeatureType,
     IMDFFixture,
     IMDFFootprint,
     IMDFGeofence,

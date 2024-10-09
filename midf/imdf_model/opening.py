@@ -1,13 +1,15 @@
 from typing import Any, Mapping, Optional
 
 from .other import IMDFDoor, IMDFFeature
+from ..enums import OpeningCategory
 
 __all__ = ["IMDFOpening"]
 
 
 class IMDFOpening(IMDFFeature):
     geometry: Any  # shapely.LineString
-    category: str = ""
+
+    category: OpeningCategory
     accessibility: Any = None
     access_control: Any = None
     door: Optional[IMDFDoor] = None

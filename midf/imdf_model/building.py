@@ -4,10 +4,12 @@ from .other.base import IMDFFeature
 
 __all__ = ["IMDFBuilding"]
 
+from ..enums import BuildingCategory
+
 
 class IMDFBuilding(IMDFFeature):
     geometry: Any = None  # shapely.geometry.base.BaseGeometry
-    category: str = ""
+    category: BuildingCategory
     restriction: Optional[str] = None
     name: Optional[Mapping[str, str]] = None
     alt_name: Optional[Mapping[str, str]] = None

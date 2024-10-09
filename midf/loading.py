@@ -6,6 +6,7 @@ from typing import Collection, Mapping, Union
 
 import shapely
 
+from midf.enums import IMDFFeatureType
 from midf.imdf_model import (
     IMDFAddress,
     IMDFAmenity,
@@ -13,7 +14,6 @@ from midf.imdf_model import (
     IMDFBuilding,
     IMDFDetail,
     IMDFFeature,
-    IMDFFeatureType,
     IMDFFixture,
     IMDFFootprint,
     IMDFKiosk,

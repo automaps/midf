@@ -4,6 +4,8 @@ from .other import IMDFFeature
 
 __all__ = ["IMDFVenue"]
 
+from ..enums import VenueCategory
+
 
 class IMDFVenue(IMDFFeature):
     geometry: Any  # shapely.Polygon
@@ -12,7 +14,7 @@ class IMDFVenue(IMDFFeature):
     ]  # Language:Value # "{ ""en"": ""Kansas City International Airport"" }"
     address_id: str  # 984eb70b-da05-4ed7-809b-4d0e169f5d29
     display_point: Any  # shapely.Point
-    category: str  # airport.intl
+    category: VenueCategory  # airport.intl
     hours: str  # 24/7
     website: str  # https://www.flykci.com/
     phone: str  # +1-816-243-5237

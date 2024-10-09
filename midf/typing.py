@@ -8,17 +8,20 @@ from attr import dataclass
 Polygonal = Union[shapely.Polygon, shapely.MultiPolygon]
 Lineal = Union[shapely.LineString, shapely.MultiLineString]
 
+
 @dataclass
 class MIDFFeature:
-  id: str
+    id: str
+
 
 MIDFLabels = Mapping[str, str]
 
 try:
-  from enum import StrEnum
+    from enum import StrEnum
 except ImportError:
-  from strenum import StrEnum
+    from strenum import StrEnum
+
 
 class Direction(StrEnum):
-  directed = "directed"
-  undirected = "undirected"
+    directed = "directed"
+    undirected = "undirected"

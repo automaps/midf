@@ -1,6 +1,7 @@
 from typing import Any, Mapping, Optional
 
 from .other import IMDFFeature
+from ..enums import SectionCategory
 
 __all__ = ["IMDFSection"]
 
@@ -8,7 +9,7 @@ __all__ = ["IMDFSection"]
 class IMDFSection(IMDFFeature):
     geometry: Any  # Polygonal
 
-    category: str = ""
+    category: SectionCategory
     restriction: Any = None
     accessibility: Any = None
     address_id: Any = None
