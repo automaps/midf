@@ -2,7 +2,7 @@ from typing import Collection, List, Optional
 
 from attr import dataclass
 
-from midf.typing import MIDFFeature, MIDFLabels, Polygonal
+from midf.typing import Labels, MIDFFeature, Polygonal
 from .unit_level import MIDFAnchor
 
 __all__ = ["MIDFUnit"]
@@ -15,5 +15,5 @@ class MIDFUnit(MIDFFeature):
     anchors: Optional[Collection[MIDFAnchor]] = None
     restriction: Optional[str] = None
     accessibility: Optional[List[str]] = None
-    name: Optional[MIDFLabels] = None
-    alt_name: Optional[MIDFLabels] = None
+    name: Optional[Labels] = None
+    alt_name: Optional[Labels] = None

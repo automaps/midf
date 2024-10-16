@@ -1,6 +1,6 @@
 from typing import Any
 
-from .other import IMDFFeature
+from .base import IMDFFeature
 
 __all__ = ["IMDFAddress"]
 

@@ -1,12 +1,9 @@
-from dataclasses import dataclass
-
 try:
     from enum import StrEnum
 except ImportError:
     from strenum import StrEnum
 
 __all__ = [
-    "Temporality",
     "VenueCategory",
     "AmenityCategory",
     "AccessibilityCategory",
@@ -27,116 +24,109 @@ __all__ = [
 ]
 
 
-@dataclass
-class Temporality:
-    start: str
-    end: str
-    modified: str
-
-
 # Enums
 class AccessControlCategory(StrEnum):
-    BADGEREADER = "badgereader"
-    FINGERPRINTREADER = "fingerprintreader"
+    badge_reader = "badgereader"
+    fingerprint_reader = "fingerprintreader"
     GUARD = "guard"
-    KEYACCESS = "keyaccess"
-    OUTOFSERVICE = "outofservice"
-    PASSWORDACCESS = "passwordaccess"
-    RETINASCANNER = "retinascanner"
-    VOICERECOGNITION = "voicerecognition"
+    key_access = "keyaccess"
+    out_of_service = "outofservice"
+    password_access = "passwordaccess"
+    retina_scanner = "retinascanner"
+    voice_recognition = "voicerecognition"
 
 
 class AccessibilityCategory(StrEnum):
-    ASSISTED_LISTENING = "assisted.listening"
-    BRAILLE = "braille"
-    HEARING = "hearing"
-    HEARINGLOOP = "hearingloop"
-    SIGNLANGINTERPRETER = "signlanginterpreter"
-    TACTILEPAVING = "tactilepaving"
-    TDD = "tdd"
-    TRS = "trs"
-    VOLUME = "volume"
-    WHEELCHAIR = "wheelchair"
+    assisted_listening = "assisted.listening"
+    braille = "braille"
+    hearing = "hearing"
+    hearingloop = "hearingloop"
+    signlanginterpreter = "signlanginterpreter"
+    tactilepaving = "tactilepaving"
+    tdd = "tdd"
+    trs = "trs"
+    volume = "volume"
+    wheelchair = "wheelchair"
 
 
 class BuildingCategory(StrEnum):
-    PARKING = "parking"
-    TRANSIT = "transit"
-    TRANSIT_BUS = "transit.bus"
-    TRANSIT_TRAIN = "transit.train"
-    UNSPECIFIED = "unspecified"
+    parking = "parking"
+    transit = "transit"
+    transit_bus = "transit.bus"
+    transit_train = "transit.train"
+    unspecified = "unspecified"
 
 
 class DoorCategory(StrEnum):
-    DOOR = "door"
-    MOVABLEPARTITION = "movablepartition"
-    OPEN = "open"
-    REVOLVING = "revolving"
-    SHUTTER = "shutter"
-    SLIDING = "sliding"
-    SWINGING = "swinging"
-    TURNSTILE = "turnstile"
-    TURNSTILE_FULLHEIGHT = "turnstile.fullheight"
-    TURNSTILE_WAISTHEIGHT = "turnstile.waistheight"
-    UNSPECIFIED = "unspecified"
+    door = "door"
+    movablepartition = "movablepartition"
+    open = "open"
+    revolving = "revolving"
+    shutter = "shutter"
+    sliding = "sliding"
+    swinging = "swinging"
+    turnstile = "turnstile"
+    turnstile_fullheight = "turnstile.fullheight"
+    turnstile_waistheight = "turnstile.waistheight"
+    unspecified = "unspecified"
 
 
 class DoorType(StrEnum):
-    MOVABLEPARTITION = "movablepartition"
-    OPEN = "open"
-    REVOLVING = "revolving"
-    SHUTTER = "shutter"
-    SLIDING = "sliding"
-    SWINGING = "swinging"
-    TURNSTILE = "turnstile"
-    TURNSTILE_FULLHEIGHT = "turnstile.fullheight"
-    TURNSTILE_WAISTHEIGHT = "turnstile.waistheight"
+    movablepartition = "movablepartition"
+    open = "open"
+    revolving = "revolving"
+    shutter = "shutter"
+    sliding = "sliding"
+    swinging = "swinging"
+    turnstile = "turnstile"
+    turnstile_fullheight = "turnstile.fullheight"
+    turnstile_waistheight = "turnstile.waistheight"
 
 
 class FixtureCategory(StrEnum):
-    BAGGAGECAROUSEL = "baggagecarousel"
-    BOARDINGGATE_DESK = "boardinggate.desk"
-    CHECKIN_DESK = "checkin.desk"
-    CHECKIN_KIOSK = "checkin.kiosk"
-    DESK = "desk"
-    EQUIPMENT = "equipment"
-    FURNITURE = "furniture"
-    IMMIGRATION_DESK = "immigration.desk"
-    INSPECTION_DESK = "inspection.desk"
-    OBSTRUCTION = "obstruction"
-    SECURITYEQUIPMENT = "securityequipment"
-    STAGE = "stage"
-    VEGETATION = "vegetation"
-    WALL = "wall"
+    baggagecarousel = "baggagecarousel"
+    boardinggate_desk = "boardinggate.desk"
+    checkin_desk = "checkin.desk"
+    checkin_kiosk = "checkin.kiosk"
+    desk = "desk"
+    equipment = "equipment"
+    furniture = "furniture"
+    immigration_desk = "immigration.desk"
+    inspection_desk = "inspection.desk"
+    obstruction = "obstruction"
+    securityequipment = "securityequipment"
+    stage = "stage"
+    vegetation = "vegetation"
+    wall = "wall"
 
 
 class FootprintCategory(StrEnum):
-    AERIAL = "aerial"
-    GROUND = "ground"
-    SUBTERRANEAN = "subterranean"
+    aerial = "aerial"
+    ground = "ground"
+    subterranean = "subterranean"
 
 
 class GeofenceCategory(StrEnum):
-    CONCOURSE = "concourse"
-    GEOFENCE = "geofence"
-    PAIDAREA = "paidarea"
-    PLATFORM = "platform"
-    POSTSECURITY = "postsecurity"
-    PRESECURITY = "presecurity"
-    TERMINAL = "terminal"
-    UNDERCONSTRUCTION = "underconstruction"
+    concourse = "concourse"
+    geofence = "geofence"
+    paidarea = "paidarea"
+    platform = "platform"
+    postsecurity = "postsecurity"
+    presecurity = "presecurity"
+    terminal = "terminal"
+    underconstruction = "underconstruction"
 
 
 class LevelCategory(StrEnum):
-    ARRIVALS = "arrivals"
-    ARRIVALS_DOMESTIC = "arrivals.domestic"
-    ARRIVALS_INTL = "arrivals.intl"
-    DEPARTURES = "departures"
-    DEPARTURES_DOMESTIC = "departures.domestic"
-    DEPARTURES_INTL = "departures.intl"
-    PARKING = "parking"
-    TRANSIT = "transit"
-    UNSPECIFIED = "unspecified"
+    arrivals = "arrivals"
+    arrivals_domestic = "arrivals.domestic"
+    arrivals_intl = "arrivals.intl"
+    departures = "departures"
+    departures_domestic = "departures.domestic"
+    departures_intl = "departures.intl"
+    parking = "parking"
+    transit = "transit"
+    unspecified = "unspecified"
 
 
 class OccupantCategory(StrEnum):
@@ -1260,53 +1250,53 @@ class OccupantCategory(StrEnum):
 
 
 class OpeningCategory(StrEnum):
-    AUTOMOBILE = "automobile"
-    BICYCLE = "bicycle"
-    EMERGENCYEXIT = "emergencyexit"
-    PEDESTRIAN = "pedestrian"
-    PEDESTRIAN_PRINCIPAL = "pedestrian.principal"
-    PEDESTRIAN_TRANSIT = "pedestrian.transit"
-    SERVICE = "service"
+    automobile = "automobile"
+    bicycle = "bicycle"
+    emergency_exit = "emergencyexit"
+    pedestrian = "pedestrian"
+    pedestrian_principal = "pedestrian.principal"
+    pedestrian_transit = "pedestrian.transit"
+    service = "service"
 
 
 class RelationshipCategory(StrEnum):
-    ELEVATOR = "elevator"
-    ESCALATOR = "escalator"
-    MOVINGWALKWAY = "movingwalkway"
-    RAMP = "ramp"
-    STAIRS = "stairs"
-    TRAVERSAL = "traversal"
-    TRAVERSAL_PATH = "traversal.path"
+    elevator = "elevator"
+    escalator = "escalator"
+    moving_walkway = "movingwalkway"
+    ramp = "ramp"
+    stairs = "stairs"
+    traversal = "traversal"
+    traversal_path = "traversal.path"
 
 
 class RestrictionCategory(StrEnum):
-    EMPLOYEESONLY = "employeesonly"
-    RESTRICTED = "restricted"
+    employeesonly = "employeesonly"
+    restricted = "restricted"
 
 
 class VenueCategory(StrEnum):
-    AIRPORT = "airport"
-    AIRPORT_INTL = "airport.intl"
-    AQUARIUM = "aquarium"
-    BUSINESSCAMPUS = "businesscampus"
-    CASINO = "casino"
-    COMMUNITYCENTER = "communitycenter"
-    CONVENTIONCENTER = "conventioncenter"
-    GOVERNMENTFACILITY = "governmentfacility"
-    HEALTHCAREFACILITY = "healthcarefacility"
-    HOTEL = "hotel"
-    MUSEUM = "museum"
-    PARKINGFACILITY = "parkingfacility"
-    RESORT = "resort"
-    RETAILSTORE = "retailstore"
-    SHOPPINGCENTER = "shoppingcenter"
-    STADIUM = "stadium"
-    STRIPMALL = "stripmall"
-    THEATER = "theater"
-    THEMEPARK = "themepark"
-    TRAINSTATION = "trainstation"
-    TRANSITSTATION = "transitstation"
-    UNIVERSITY = "university"
+    airport = "airport"
+    airport_intl = "airport.intl"
+    aquarium = "aquarium"
+    businesscampus = "businesscampus"
+    casino = "casino"
+    communitycenter = "communitycenter"
+    conventioncenter = "conventioncenter"
+    governmentfacility = "governmentfacility"
+    healthcarefacility = "healthcarefacility"
+    hotel = "hotel"
+    museum = "museum"
+    parkingfacility = "parkingfacility"
+    resort = "resort"
+    retailstore = "retailstore"
+    shoppingcenter = "shoppingcenter"
+    stadium = "stadium"
+    stripmall = "stripmall"
+    theater = "theater"
+    themepark = "themepark"
+    trainstation = "trainstation"
+    transitstation = "transitstation"
+    university = "university"
 
 
 class SectionCategory(StrEnum):

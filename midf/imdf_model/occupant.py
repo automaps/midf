@@ -1,10 +1,11 @@
 from typing import Any, Dict, Optional
 
-from .other import IMDFFeature
+from .base import IMDFFeature
 
 __all__ = ["IMDFOccupant"]
 
 from ..enums import OccupantCategory
+from ..typing import Temporality
 
 
 class IMDFOccupant(IMDFFeature):
@@ -17,5 +18,5 @@ class IMDFOccupant(IMDFFeature):
     hours: Any = None
     phone: Any = None
     website: Any = None
-    validity: Any = None
+    validity: Optional[Temporality] = None
     correlation_id: Any = None

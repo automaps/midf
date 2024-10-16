@@ -3,7 +3,7 @@ from typing import Optional
 import shapely
 from attr import dataclass
 
-from midf.typing import MIDFFeature, MIDFLabels, Polygonal
+from midf.typing import Labels, MIDFFeature, Polygonal
 
 __all__ = ["MIDFVenue"]
 
@@ -13,12 +13,12 @@ class MIDFVenue(MIDFFeature):
     geometry: Polygonal
     category: str
 
-    name: MIDFLabels
+    name: Labels
 
     display_point: shapely.Point
 
     restriction: Optional[str] = None
-    alt_name: Optional[MIDFLabels] = None
+    alt_name: Optional[Labels] = None
     hours: Optional[str] = None
     phone: Optional[str] = None
     website: Optional[str] = None

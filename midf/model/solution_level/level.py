@@ -2,7 +2,7 @@ from typing import Collection, Optional
 
 from attr import dataclass
 
-from midf.typing import MIDFFeature, MIDFLabels, Polygonal
+from midf.typing import Labels, MIDFFeature, Polygonal
 from .address import MIDFAddress
 from .building import MIDFBuilding
 from .level_level import (
@@ -24,8 +24,8 @@ class MIDFLevel(MIDFFeature):
     outdoor: bool
     ordinal: int
 
-    name: MIDFLabels
-    short_name: MIDFLabels
+    name: Labels
+    short_name: Labels
 
     restriction: Optional[str] = None
     address: Optional[MIDFAddress] = None

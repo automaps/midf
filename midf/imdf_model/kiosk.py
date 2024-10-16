@@ -1,6 +1,6 @@
 from typing import Any, Optional
 
-from .other import IMDFFeature
+from .base import IMDFFeature
 
 __all__ = ["IMDFKiosk"]
 

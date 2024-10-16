@@ -3,7 +3,7 @@ from typing import List, Optional
 import shapely
 from attr import dataclass
 
-from midf.typing import MIDFFeature, MIDFLabels, Polygonal
+from midf.typing import Labels, MIDFFeature, Polygonal
 from .building import MIDFBuilding
 from .level import MIDFLevel
 
@@ -18,8 +18,8 @@ class MIDFGeofence(MIDFFeature):
     restriction: Optional[str] = None
     accessibility: Optional[List[str]] = None
 
-    name: Optional[MIDFLabels] = None
-    alt_name: Optional[MIDFLabels] = None
+    name: Optional[Labels] = None
+    alt_name: Optional[Labels] = None
 
     correlation_id: Optional[str] = None
     display_point: Optional[shapely.Point] = None

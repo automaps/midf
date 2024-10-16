@@ -3,7 +3,7 @@ from typing import Any, List, Optional
 import shapely
 from attr import dataclass
 
-from midf.typing import MIDFFeature, MIDFLabels
+from midf.typing import Labels, MIDFFeature
 
 __all__ = ["MIDFOpening"]
 
@@ -19,7 +19,7 @@ class MIDFOpening(MIDFFeature):
 
     door: Optional[Any] = None
 
-    name: Optional[MIDFLabels] = None
-    alt_name: Optional[MIDFLabels] = None
+    name: Optional[Labels] = None
+    alt_name: Optional[Labels] = None
 
     display_point: Optional[shapely.Point] = None

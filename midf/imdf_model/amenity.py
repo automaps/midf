@@ -1,6 +1,8 @@
 from typing import Any, List, Optional
 
-from .other import IMDFFeature
+import shapely
+
+from .base import IMDFFeature
 
 __all__ = ["IMDFAmenity"]
 
@@ -8,7 +10,7 @@ from ..enums import AmenityCategory
 
 
 class IMDFAmenity(IMDFFeature):
-    geometry: Any  # shapely.Point
+    geometry: shapely.Point
     unit_ids: Optional[List[str]] = None  # TODO: SHOULD NOT BE NULLABLE!
     category: AmenityCategory
     accessibility: Any = None

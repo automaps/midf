@@ -1,14 +1,15 @@
 from typing import Any, Mapping, Optional
 
-from .other import IMDFFeature
+from .base import IMDFFeature
 
 __all__ = ["IMDFFixture"]
 
 from ..enums import FixtureCategory
+from ..typing import Polygonal
 
 
 class IMDFFixture(IMDFFeature):
-    geometry: Any  # shapely.geometry.base.BaseGeometry
+    geometry: Polygonal
     level_id: str
 
     category: FixtureCategory

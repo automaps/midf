@@ -1,10 +1,11 @@
 from typing import Any, Mapping, Optional, Union
 
-from .other import IMDFFeature
+import shapely
+
+from .base import IMDFFeature
+from ..enums import UnitCategory
 
 __all__ = ["IMDFUnit"]
-
-from ..enums import UnitCategory
 
 
 class IMDFUnit(IMDFFeature):
@@ -16,7 +17,7 @@ class IMDFUnit(IMDFFeature):
     phone: Optional[str] = None
     website: Optional[str] = None
     hours: Optional[str] = None
-    display_point: Optional[Any] = None  # shapely.Point
+    display_point: Optional[shapely.Point] = None
     address_od: Optional[str] = None
     name: Optional[Mapping[str, str]] = None
     alt_name: Optional[Mapping[str, str]] = None

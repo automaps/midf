@@ -26,6 +26,7 @@ from midf.imdf_model import (
     IMDFUnit,
     IMDFVenue,
 )
+from .typing import Door, Temporality
 
 logger = logging.getLogger(__name__)
 
@@ -246,7 +247,11 @@ def load_imdf(
             if name is not None:
                 name = json.loads(name)
 
-        occupant = IMDFOccupant(**occupant_dict, name=name)
+        validity = occupant_dict.pop("validity")
+        if validity is not None:
+            validity = Temporality(**json.loads(validity))
+
+        occupant = IMDFOccupant(**occupant_dict, name=name, validity=validity)
         out[IMDFFeatureType.occupant].append(occupant)
 
     for ith_row, opening_row in dataframes[IMDFFeatureType.opening.value].iterrows():
@@ -269,11 +274,16 @@ def load_imdf(
             else:
                 display_point = shapely.from_geojson(display_point)
 
+        door = opening_dict.pop("door")
+        if door is not None:
+            door = Door(**json.loads(door))
+
         opening = IMDFOpening(
             **opening_dict,
             name=name,
             alt_name=alt_name,
             display_point=display_point,
+            door=door,
         )
         out[IMDFFeatureType.opening].append(opening)
 
