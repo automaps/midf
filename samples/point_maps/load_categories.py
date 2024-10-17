@@ -46,40 +46,43 @@ IGNORE_THIS = """
   "titleMinZoom": 19
   """
 
+
 class PointMapCategory(BaseModel):
-  clickable: bool
-  color: str
-  dotMaxZoom: int
-  dotMinZoom: int
-  icon: str
-  iconMaxZoom: int
-  iconMinZoom: int
-  iconScale: float
-  id: str
-  keywords: Optional[List[str]] = None
-  name: str
-  poiType: str
-  priority: int
-  showInCategoriesList: bool
-  showInSearchResult: bool
-  subCategories: Optional[List["PointMapCategory"]] = None
-  titleMaxZoom: int
-  titleMinZoom: int
+    clickable: bool
+    color: str
+    dotMaxZoom: int
+    dotMinZoom: int
+    icon: str
+    iconMaxZoom: int
+    iconMinZoom: int
+    iconScale: float
+    id: str
+    keywords: Optional[List[str]] = None
+    name: str
+    poiType: str
+    priority: int
+    showInCategoriesList: bool
+    showInSearchResult: bool
+    subCategories: Optional[List["PointMapCategory"]] = None
+    titleMaxZoom: int
+    titleMinZoom: int
+
 
 def parse_categories(categories_file_path: Path):
-  assert categories_file_path.exists()
-  assert categories_file_path.is_file()
-  assert categories_file_path.suffix == ".json"
-  categories = {}
-  with open(categories_file_path) as category_file:
-    category_dicts = json.load(category_file)
+    assert categories_file_path.exists()
+    assert categories_file_path.is_file()
+    assert categories_file_path.suffix == ".json"
+    categories = {}
+    with open(categories_file_path) as category_file:
+        category_dicts = json.load(category_file)
 
-    for cat_dict in category_dicts:
-      cat = PointMapCategory(**cat_dict)
+        for cat_dict in category_dicts:
+            cat = PointMapCategory(**cat_dict)
 
-      categories[cat.id] = cat
+            categories[cat.id] = cat
 
-  print(categories)
+    print(categories)
+
 
 if __name__ == "__main__":
-  parse_categories(Path(__file__).parent / "data" / "Categories.json")
+    parse_categories(Path(__file__).parent / "data" / "Categories.json")

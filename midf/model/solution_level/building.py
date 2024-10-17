@@ -8,14 +8,15 @@ from .address import MIDFAddress
 
 __all__ = ["MIDFBuilding"]
 
+
 @dataclass
 class MIDFBuilding(MIDFFeature):
-  category: str
+    category: str
 
-  name: Optional[Labels] = None
-  alt_name: Optional[Labels] = None
+    name: Optional[Labels] = None
+    alt_name: Optional[Labels] = None
 
-  restriction: Optional[str] = None
-  display_point: Optional[shapely.Point] = None
+    restriction: Optional[str] = None
+    display_point: Optional[shapely.Point] = None
 
-  address: Optional[MIDFAddress] = None
+    address: Optional[MIDFAddress] = None

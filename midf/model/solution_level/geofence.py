@@ -9,20 +9,21 @@ from .level import MIDFLevel
 
 __all__ = ["MIDFGeofence"]
 
+
 @dataclass
 class MIDFGeofence(MIDFFeature):
-  geometry: Polygonal
+    geometry: Polygonal
 
-  category: str
-  restriction: Optional[str] = None
-  accessibility: Optional[List[str]] = None
+    category: str
+    restriction: Optional[str] = None
+    accessibility: Optional[List[str]] = None
 
-  name: Optional[Labels] = None
-  alt_name: Optional[Labels] = None
+    name: Optional[Labels] = None
+    alt_name: Optional[Labels] = None
 
-  correlation_id: Optional[str] = None
-  display_point: Optional[shapely.Point] = None
+    correlation_id: Optional[str] = None
+    display_point: Optional[shapely.Point] = None
 
-  buildings: Optional[List[MIDFBuilding]] = None
-  levels: Optional[List[MIDFLevel]] = None
-  parents: Optional[List["MIDFGeofence"]] = None
+    buildings: Optional[List[MIDFBuilding]] = None
+    levels: Optional[List[MIDFLevel]] = None
+    parents: Optional[List["MIDFGeofence"]] = None

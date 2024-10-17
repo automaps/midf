@@ -6,8 +6,9 @@ __all__ = ["IMDFFootprint"]
 
 from ..enums import IMDFFootprintCategory
 
+
 class IMDFFootprint(IMDFFeature):
-  geometry: Any  # Polygonal
-  category: IMDFFootprintCategory
-  name: Optional[Mapping[str, str]] = None
-  building_ids: Optional[List[str]] = None  # TODO: SHOULD NOT BE NULLABLE!
+    geometry: Any  # Polygonal
+    category: IMDFFootprintCategory
+    name: Optional[Mapping[str, str]] = None
+    building_ids: Optional[List[str]] = None  # TODO: SHOULD NOT BE NULLABLE!

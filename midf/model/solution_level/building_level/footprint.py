@@ -7,9 +7,10 @@ from ..building import MIDFBuilding
 
 __all__ = ["MIDFFootprint"]
 
+
 @dataclass
 class MIDFFootprint(MIDFFeature):
-  geometry: Polygonal
-  category: str
-  name: Labels
-  buildings: Collection[MIDFBuilding]
+    geometry: Polygonal
+    category: str
+    name: Labels
+    buildings: Collection[MIDFBuilding]
