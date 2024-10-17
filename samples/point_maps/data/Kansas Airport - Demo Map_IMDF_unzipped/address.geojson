@@ -1,0 +1,21 @@
+{
+	"type": "FeatureCollection",
+	"features": [
+		{
+			"type": "Feature",
+			"id": "984eb70b-da05-4ed7-809b-4d0e169f5d29",
+			"feature_type": "address",
+			"geometry": null,
+			"properties": {
+				"address": "La Guardia Airport",
+				"unit": null,
+				"locality": "New York",
+				"province": "US-NY",
+				"country": "US",
+				"postal_code": "11370",
+				"postal_code_ext": null,
+				"postal_code_vanity": null
+			}
+		}
+	]
+}

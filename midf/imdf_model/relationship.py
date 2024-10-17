@@ -1,15 +1,19 @@
-from typing import Any, Optional
+from typing import Any, List, Optional
 
-from .other import IMDFFeature
+import shapely
+
+from .base import IMDFFeature
+from ..enums import IMDFRelationshipCategory
 
 __all__ = ["IMDFRelationship"]
 
+from ..typing import Direction
 
 class IMDFRelationship(IMDFFeature):
-    category: str = ""
-    direction: str = ""
-    origin: Any = None
-    intermediary: Any = None
-    destination: Any = None
-    hours: Any = None
-    geometry: Optional[Any] = None  # shapely.geometry.base.BaseGeometry
+  category: IMDFRelationshipCategory
+  direction: Direction
+  origin: Optional[IMDFFeature] = None
+  intermediary: Optional[List[IMDFFeature]] = None
+  destination: Optional[IMDFFeature] = None
+  hours: Any = None
+  geometry: Optional[shapely.geometry.base.BaseGeometry] = None

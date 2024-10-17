@@ -1,10 +1,11 @@
 from typing import Any
 
-from .other import IMDFFeature
+from .base import IMDFFeature
 
-__all__ = ["IMDFAmenity"]
+__all__ = ["IMDFGeofence"]
 
+from ..enums import IMDFGeofenceCategory
 
-class IMDFAmenity(IMDFFeature):
-    geometry: Any  # Polygonal
-    category: str = ""
+class IMDFGeofence(IMDFFeature):
+  geometry: Any  # Polygonal
+  category: IMDFGeofenceCategory
