@@ -37,40 +37,37 @@ IGNORE_THIS = """
 }
 """
 
-
 class PointMapStyle(BaseModel):
-    floor: bool
-    walls: bool
+  floor: bool
+  walls: bool
 
-    priority: int
+  priority: int
 
-    floorColor: str
-    wallsColor: str
+  floorColor: str
+  wallsColor: str
 
-    wallsHeight: float
+  wallsHeight: float
 
-    solid: Optional[bool] = None
-    roof: Optional[bool] = None
-    roofColor: Optional[str] = None
-    roofHeight: Optional[float] = None
-    wallsWidth: Optional[float] = None
-
+  solid: Optional[bool] = None
+  roof: Optional[bool] = None
+  roofColor: Optional[str] = None
+  roofHeight: Optional[float] = None
+  wallsWidth: Optional[float] = None
 
 def parse_styles(style_file_path: Path):
-    assert style_file_path.exists()
-    assert style_file_path.is_file()
-    assert style_file_path.suffix == ".json"
-    styles = {}
-    with open(style_file_path) as style_file:
-        style_dict = json.load(style_file)
+  assert style_file_path.exists()
+  assert style_file_path.is_file()
+  assert style_file_path.suffix == ".json"
+  styles = {}
+  with open(style_file_path) as style_file:
+    style_dict = json.load(style_file)
 
-        for k, v in style_dict.items():
-            style = PointMapStyle(**v)
+    for k, v in style_dict.items():
+      style = PointMapStyle(**v)
 
-            styles[k] = style
+      styles[k] = style
 
-    print(styles)
-
+  print(styles)
 
 if __name__ == "__main__":
-    parse_styles(Path(__file__).parent / "data" / "Styles.json")
+  parse_styles(Path(__file__).parent / "data" / "Styles.json")

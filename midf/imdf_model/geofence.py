@@ -4,9 +4,8 @@ from .base import IMDFFeature
 
 __all__ = ["IMDFGeofence"]
 
-from ..enums import GeofenceCategory
-
+from ..enums import IMDFGeofenceCategory
 
 class IMDFGeofence(IMDFFeature):
-    geometry: Any  # Polygonal
-    category: GeofenceCategory
+  geometry: Any  # Polygonal
+  category: IMDFGeofenceCategory

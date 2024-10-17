@@ -8,13 +8,12 @@ from .unit_level import MIDFAnchor
 
 __all__ = ["MIDFFixture"]
 
-
 @dataclass
 class MIDFFixture(MIDFFeature):
-    geometry: Polygonal
-    category: str
-    name: Optional[Labels] = None
-    alt_name: Optional[Labels] = None
-    display_point: Optional[shapely.Point] = None
+  geometry: Polygonal
+  category: str
+  name: Optional[Labels] = None
+  alt_name: Optional[Labels] = None
+  display_point: Optional[shapely.Point] = None
 
-    anchor: Optional[MIDFAnchor] = None
+  anchor: Optional[MIDFAnchor] = None

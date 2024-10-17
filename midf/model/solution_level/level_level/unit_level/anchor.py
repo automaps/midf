@@ -9,9 +9,8 @@ from ...address import MIDFAddress
 
 __all__ = ["MIDFAnchor"]
 
-
 @dataclass
 class MIDFAnchor(MIDFFeature):
-    geometry: shapely.Point
-    address: Optional[MIDFAddress] = None
-    occupants: Optional[Collection[MIDFOccupant]] = None
+  geometry: shapely.Point
+  address: Optional[MIDFAddress] = None
+  occupants: Optional[Collection[MIDFOccupant]] = None
