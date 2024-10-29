@@ -6,8 +6,8 @@ features_list = [Feature(a.id, a.__dict__, a.geometry if hasattr(a, 'geometry') 
 # Run validation on example features
 validate_all_features(features_list)"""
 
+from midf.loading import MANIFEST_KEY, load_imdf
 from midf.validation.validator import IMDFValidator
-from midf.loading import load_imdf, MANIFEST_KEY
 
 # Load your IMDF data
 imdf_dict = load_imdf("path/to/your/imdf/data")

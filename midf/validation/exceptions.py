@@ -1,445 +1,589 @@
 class IMDFValidationError(Exception):
 
-  def __init__(self, message: str, feature_id: str = None):
-    self.message = message
-    self.feature_id = feature_id
-    super().__init__(self.message)
+    def __init__(self, message: str, feature_id: str = None):
+        self.message = message
+        self.feature_id = feature_id
+        super().__init__(self.message)
+
 
 class ViolationError(IMDFValidationError):
-  pass
+    pass
+
 
 class InfoError(IMDFValidationError):
-  pass
+    pass
+
 
 class WarningError(IMDFValidationError):
-  pass
+    pass
+
 
 # Info errors
 class ZeroCountOfUnitQualifiedAddressesError(InfoError):
-  pass
+    pass
+
 
 # Violation errors
 class FeatureIdMustBeStringError(ViolationError):
-  pass
+    pass
+
 
 class FeatureIdMustBeUniqueError(ViolationError):
-  pass
+    pass
+
 
 class FeatureIdMustNotBeEmptyError(ViolationError):
-  pass
+    pass
+
 
 class FeatureMustHaveFeatureTypeError(ViolationError):
-  pass
+    pass
+
 
 class FeatureMustHaveIdError(ViolationError):
-  pass
+    pass
+
 
 class FeatureTypeMustBeStringError(ViolationError):
-  pass
+    pass
+
 
 class FeatureTypeMustNotBeEmptyError(ViolationError):
-  pass
+    pass
+
 
 class FileMustBeValidGeoJSONError(ViolationError):
-  pass
+    pass
+
 
 class FileMustContainFeatureCollectionError(ViolationError):
-  pass
+    pass
+
 
 class ManifestFileMustBePresentError(ViolationError):
-  pass
+    pass
+
 
 class NameMustBeStringError(ViolationError):
-  pass
+    pass
+
 
 class ReferencedFeatureIDMustBeResolvableError(ViolationError):
-  pass
+    pass
+
 
 class VenueCountMustBeExactlyOneError(ViolationError):
-  pass
+    pass
+
 
 class AddressMustHaveAddressError(ViolationError):
-  pass
+    pass
+
 
 class AddressMustHaveCountryError(ViolationError):
-  pass
+    pass
+
 
 class AddressMustHaveLocalityError(ViolationError):
-  pass
+    pass
+
 
 class AmenityMustHaveCategoryError(ViolationError):
-  pass
+    pass
+
 
 class AmenityMustHaveUnitIdsError(ViolationError):
-  pass
+    pass
+
 
 class AnchorMustHaveGeoreferenceError(ViolationError):  # TODO: NOT a rule!
-  pass
+    pass
+
 
 class FootprintMustHaveBuildingIdsError(Exception):
-  pass
+    pass
+
 
 class RelationshipMustHaveDirectionError(Exception):
-  pass
+    pass
+
 
 class SectionMustHaveNameError(Exception):  # TODO: NOT a rule!
-  pass
+    pass
+
 
 class ManifestMustHaveGeneratedByError(Exception):
-  pass
+    pass
+
 
 class ManifestMustHaveVersionError(Exception):
-  pass
+    pass
+
 
 class ManifestMustHaveCreatedDateError(Exception):
-  pass
+    pass
+
 
 class ManifestMustHaveLanguageError(Exception):
-  pass
+    pass
+
 
 class BuildingMustHaveNameError(ViolationError):
-  pass
+    pass
+
 
 class DetailMustHaveCategoryError(ViolationError):
-  pass
+    pass
+
 
 class FixtureMustHaveCategoryError(ViolationError):
-  pass
+    pass
+
 
 class FixtureMustHaveLevelIdError(ViolationError):
-  pass
+    pass
 
-class FeatureGeometryTypeInvalidError(Exception):
-  ...
+
+class FeatureGeometryTypeInvalidError(Exception): ...
+
 
 class FootprintMustHaveBuildingIdError(ViolationError):
-  pass
+    pass
+
 
 class GeofenceMustHaveCategoryError(ViolationError):
-  pass
+    pass
+
 
 class KioskMustHaveCategoryError(ViolationError):
-  pass
+    pass
+
 
 class KioskMustHaveLevelIdError(ViolationError):
-  pass
+    pass
+
 
 class LevelMustHaveOrdinalError(ViolationError):
-  pass
+    pass
+
 
 class LevelMustHaveShortNameError(ViolationError):
-  pass
+    pass
+
 
 class OccupantMustHaveCategoryError(ViolationError):
-  pass
+    pass
+
 
 class OccupantMustHaveNameError(ViolationError):
-  pass
+    pass
+
 
 class OpeningMustHaveCategoryError(ViolationError):
-  pass
+    pass
+
 
 class RelationshipMustHaveCategoryError(ViolationError):
-  pass
+    pass
+
 
 class RelationshipMustHaveDestinationError(ViolationError):
-  pass
+    pass
+
 
 class RelationshipMustHaveOriginError(ViolationError):
-  pass
+    pass
+
 
 class SectionMustHaveCategoryError(ViolationError):
-  pass
+    pass
+
 
 class SectionMustHaveLevelIdError(ViolationError):
-  pass
+    pass
+
 
 class UnitMustHaveCategoryError(ViolationError):
-  pass
+    pass
+
 
 class UnitMustHaveLevelIdError(ViolationError):
-  pass
+    pass
+
 
 class VenueMustHaveAddressIdError(ViolationError):
-  pass
+    pass
+
 
 class VenueMustHaveCategoryError(ViolationError):
-  pass
+    pass
+
 
 class VenueMustHaveNameError(ViolationError):
-  pass
+    pass
+
 
 # Warning errors
 class AddressHasDissimilarProvinceCodeError(WarningError):
-  pass
+    pass
+
 
 class AddressMustBeDistinctError(WarningError):
-  pass
+    pass
+
 
 class AddressShouldHavePostalCodeError(WarningError):
-  pass
+    pass
+
 
 class AmenityNameShouldBeProvidedError(WarningError):
-  pass
+    pass
+
 
 class AnchorShouldHaveAddressIdError(WarningError):
-  pass
+    pass
+
 
 class AnchorShouldHaveUnitIdError(WarningError):
-  pass
+    pass
+
 
 class BuildingAddressIdShouldBeProvidedError(WarningError):
-  pass
+    pass
+
 
 class BuildingShouldHaveDisplayPointError(WarningError):
-  pass
+    pass
+
 
 class DetailShouldHaveLevelIdError(WarningError):
-  pass
+    pass
+
 
 class FixtureShouldHaveAnchorIdError(WarningError):
-  pass
+    pass
+
 
 class GeofenceShouldHaveDisplayPointError(WarningError):
-  pass
+    pass
+
 
 class KioskShouldHaveDisplayPointError(WarningError):
-  pass
+    pass
+
 
 class LevelShouldHaveAddressIdError(WarningError):
-  pass
+    pass
+
 
 class LevelShouldHaveBuildingIdsError(WarningError):
-  pass
+    pass
+
 
 class LevelShouldHaveDisplayPointError(WarningError):
-  pass
+    pass
+
 
 class OccupantShouldHaveAddressIdError(WarningError):
-  pass
+    pass
+
 
 class OccupantShouldHaveDisplayPointError(WarningError):
-  pass
+    pass
+
 
 class OccupantShouldHaveUnitIdsError(WarningError):
-  pass
+    pass
+
 
 class OpeningShouldHaveDisplayPointError(WarningError):
-  pass
+    pass
+
 
 class OpeningShouldHaveLevelIdError(WarningError):
-  pass
+    pass
+
 
 class RelationshipShouldHaveDisplayPointError(WarningError):
-  pass
+    pass
+
 
 class SectionShouldHaveDisplayPointError(WarningError):
-  pass
+    pass
+
 
 class UnitShouldHaveDisplayPointError(WarningError):
-  pass
+    pass
+
 
 class VenueShouldHaveDisplayPointError(WarningError):
-  pass
+    pass
+
 
 # Additional Violation errors
 class GeometryMustBeValidError(ViolationError):
-  pass
+    pass
+
 
 class GeometryTypeMustBeValidError(ViolationError):
-  pass
+    pass
+
 
 class PropertiesMustBeValidJSONError(ViolationError):
-  pass
+    pass
+
 
 class RequiredPropertiesMustBePresentError(ViolationError):
-  pass
+    pass
+
 
 class PropertyValuesMustBeValidError(ViolationError):
-  pass
+    pass
+
 
 class CoordinateReferenceSystemMustBeWGS84Error(ViolationError):
-  pass
+    pass
+
 
 class FeatureCollectionMustContainFeaturesError(ViolationError):
-  pass
+    pass
+
 
 class FeatureMustHaveGeometryError(ViolationError):
-  pass
+    pass
+
 
 class FeatureMustHavePropertiesError(ViolationError):
-  pass
+    pass
+
 
 class AltitudeMustBeValidNumberError(ViolationError):
-  pass
+    pass
+
 
 class CategoryMustBeValidError(ViolationError):
-  pass
+    pass
+
 
 class DisplayPointMustBeValidPointError(ViolationError):
-  pass
+    pass
+
 
 class RestrictionMustBeValidError(ViolationError):
-  pass
+    pass
+
 
 class AccessibilityMustBeValidError(ViolationError):
-  pass
+    pass
+
 
 class HoursMustBeValidError(ViolationError):
-  pass
+    pass
+
 
 class PhoneMustBeValidError(ViolationError):
-  pass
+    pass
+
 
 class WebsiteMustBeValidURLError(ViolationError):
-  pass
+    pass
+
 
 class CorrelationIdMustBeValidError(ViolationError):
-  pass
+    pass
+
 
 class AddressUnitMustBeValidError(ViolationError):
-  pass
+    pass
+
 
 class PostalCodeMustBeValidError(ViolationError):
-  pass
+    pass
+
 
 class ProvinceMustBeValidError(ViolationError):
-  pass
+    pass
+
 
 class RegionMustBeValidError(ViolationError):
-  pass
+    pass
+
 
 class SubregionMustBeValidError(ViolationError):
-  pass
+    pass
+
 
 class TimeZoneMustBeValidError(ViolationError):
-  pass
+    pass
+
 
 class AnchorLatitudeMustBeValidError(ViolationError):
-  pass
+    pass
+
 
 class AnchorLongitudeMustBeValidError(ViolationError):
-  pass
+    pass
+
 
 class BuildingHeightMustBeValidError(ViolationError):
-  pass
+    pass
+
 
 class LevelOrdinalMustBeUniqueError(ViolationError):
-  pass
+    pass
+
 
 class OutdoorMustBeBooleanError(ViolationError):
-  pass
+    pass
+
 
 class RelationshipFromMustBeValidError(ViolationError):
-  pass
+    pass
+
 
 class RelationshipToMustBeValidError(ViolationError):
-  pass
+    pass
+
 
 class LevelOrdinalMustBeIntegerError(ViolationError):
-  pass
+    pass
+
 
 class LevelShortNameMustNotBeEmptyError(ViolationError):
-  pass
+    pass
+
 
 class RelationshipDirectionMustBeValidError(ViolationError):
-  pass
+    pass
+
 
 class ManifestVersionMustBeValidError(ViolationError):
-  pass
+    pass
+
 
 class ManifestCreatedDateMustBeValidError(ViolationError):
-  pass
+    pass
+
 
 class ManifestGeneratedByMustNotBeEmptyError(ViolationError):
-  pass
+    pass
+
 
 class ManifestLanguageMustBeValidError(ViolationError):
-  pass
+    pass
+
 
 # Additional Warning errors
 class AltitudeReferenceMustBeValidError(WarningError):
-  pass
+    pass
+
 
 class AnchorPositionMustBeWithinVenueError(WarningError):
-  pass
+    pass
+
 
 class BuildingHeightShouldBeProvidedError(WarningError):
-  pass
+    pass
+
 
 class DisplayPointShouldBeProvidedError(WarningError):
-  pass
+    pass
+
 
 class FeatureShouldHaveNameError(WarningError):
-  pass
+    pass
+
 
 class LevelOrdinalShouldBeSequentialError(WarningError):
-  pass
+    pass
+
 
 class OpeningHeightShouldBeProvidedError(WarningError):
-  pass
+    pass
+
 
 class OpeningWidthShouldBeProvidedError(WarningError):
-  pass
+    pass
+
 
 class RelationshipShouldHaveOrderError(WarningError):
-  pass
+    pass
+
 
 class UnitShouldHaveAddressIdError(WarningError):
-  pass
+    pass
+
 
 class FeatureShouldHaveCorrelationIdError(WarningError):
-  pass
+    pass
+
 
 class FeatureShouldHaveExternalReferenceError(WarningError):
-  pass
+    pass
+
 
 # Additional Info errors
 class DuplicateFeatureIdWarningError(InfoError):
-  pass
+    pass
+
 
 class FeatureIdFormatRecommendationError(InfoError):
-  pass
+    pass
+
 
 class GeometryPrecisionRecommendationError(InfoError):
-  pass
+    pass
+
 
 class LanguageCodeRecommendationError(InfoError):
-  pass
+    pass
+
 
 class NameTranslationRecommendationError(InfoError):
-  pass
+    pass
+
 
 class PropertyNameRecommendationError(InfoError):
-  pass
+    pass
+
 
 class ReferencedFeatureTypeMismatchWarningError(InfoError):
-  pass
+    pass
+
 
 class UnusedAddressWarningError(InfoError):
-  pass
+    pass
+
 
 class UnusedAnchorWarningError(InfoError):
-  pass
+    pass
+
 
 class UnusedBuildingWarningError(InfoError):
-  pass
+    pass
+
 
 class UnusedLevelWarningError(InfoError):
-  pass
+    pass
+
 
 class UnusedUnitWarningError(InfoError):
-  pass
+    pass
+
 
 class FeatureNameShouldBeTranslatedError(InfoError):
-  pass
+    pass
+
 
 class FeaturePropertiesShouldUseRecommendedNamesError(InfoError):
-  pass
+    pass
+
 
 # Add any additional rules that might be in the CSV but not listed here
 
+
 class BuildingMustHaveCategoryError(ViolationError):
-  pass
+    pass
+
 
 # ... (add any other new exception classes here)
