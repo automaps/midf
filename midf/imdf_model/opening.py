@@ -8,14 +8,15 @@ from ..typing import Door
 
 __all__ = ["IMDFOpening"]
 
-class IMDFOpening(IMDFFeature):
-  geometry: shapely.LineString
-  category: IMDFOpeningCategory
-  level_id: str
 
-  accessibility: Any = None
-  access_control: Any = None
-  door: Optional[Door] = None
-  name: Optional[Mapping[str, str]] = None
-  alt_name: Optional[Mapping[str, str]] = None
-  display_point: Optional[shapely.Point] = None
+class IMDFOpening(IMDFFeature):
+    geometry: shapely.LineString
+    category: IMDFOpeningCategory
+    level_id: str
+
+    accessibility: Any = None
+    access_control: Any = None
+    door: Optional[Door] = None
+    name: Optional[Mapping[str, str]] = None
+    alt_name: Optional[Mapping[str, str]] = None
+    display_point: Optional[shapely.Point] = None

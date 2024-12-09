@@ -9,11 +9,12 @@ __all__ = ["IMDFRelationship"]
 
 from ..typing import Direction
 
+
 class IMDFRelationship(IMDFFeature):
-  category: IMDFRelationshipCategory
-  direction: Direction
-  origin: Optional[IMDFFeature] = None
-  intermediary: Optional[List[IMDFFeature]] = None
-  destination: Optional[IMDFFeature] = None
-  hours: Any = None
-  geometry: Optional[shapely.geometry.base.BaseGeometry] = None
+    category: IMDFRelationshipCategory
+    direction: Direction
+    origin: Optional[IMDFFeature] = None
+    intermediary: Optional[List[IMDFFeature]] = None
+    destination: Optional[IMDFFeature] = None
+    hours: Any = None
+    geometry: Optional[shapely.geometry.base.BaseGeometry] = None
