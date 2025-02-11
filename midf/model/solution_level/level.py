@@ -2,7 +2,7 @@ from typing import Collection, Optional
 
 from attr import dataclass
 
-from midf.typing import Labels, MIDFFeature, Polygonal
+from midf.midf_typing import Labels, MIDFFeature, Polygonal
 from .address import MIDFAddress
 from .building import MIDFBuilding
 from .level_level import (

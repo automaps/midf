@@ -2,7 +2,7 @@ from typing import Collection
 
 from attr import dataclass
 
-from midf.typing import Labels, MIDFFeature, Polygonal
+from midf.midf_typing import Labels, MIDFFeature, Polygonal
 from ..building import MIDFBuilding
 
 __all__ = ["MIDFFootprint"]

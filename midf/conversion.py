@@ -6,14 +6,18 @@ from jord.shapely_utilities import clean_shape, dilate
 
 from integration_system.model import (
     Building,
+    DoorType,
+    FALLBACK_OSM_GRAPH,
     LocationType,
+    Occupant,
+    OccupantTemplate,
     OccupantType,
     PostalAddress,
     Solution,
     VenueType,
 )
 from midf.enums import IMDFOccupantCategory, IMDFVenueCategory
-from midf.model import MIDFSolution
+from midf.model import MIDFGeofence, MIDFOccupant, MIDFSolution
 
 IMDF_VENUE_CATEGORY_TO_MI_VENUE_TYPE = {
     IMDFVenueCategory.airport: VenueType.airport,
@@ -43,6 +47,14 @@ IMDF_VENUE_CATEGORY_TO_MI_VENUE_TYPE = {
 logger = logging.getLogger(__name__)
 
 ASSUME_OUTDOOR_IF_MISSING_BUILDING = True
+DETAIL_LOCATION_TYPE_NAME = "Detail"
+KIOSK_LOCATION_TYPE_NAME = "Kiosk"
+OUTDOOR_BUILDING_NAME = "General Area"
+anchor_name = "Anchor"
+
+
+def make_mi_building_admin_id2(building_id: str, venue_key: str) -> str:
+    return f"{building_id.lower().replace(' ', '_')}_{venue_key}"
 
 
 def to_mi_solution(midf_solution: MIDFSolution) -> Solution:
@@ -55,30 +67,37 @@ def to_mi_solution(midf_solution: MIDFSolution) -> Solution:
 
     address_venue_mapping = defaultdict(list)
 
+    venue_key = None
     for address in midf_solution.addresses:
-        for venue in address.venues:
-            venue_name = next(iter(venue.name.values()))
+        if address.venues:
+            for venue in address.venues:
+                venue_name = next(iter(venue.name.values()))
 
-            venue_key = mi_solution.add_venue(
-                admin_id=venue.id,
-                name=venue_name,
-                venue_type=IMDF_VENUE_CATEGORY_TO_MI_VENUE_TYPE[venue.category],
-                address=PostalAddress(
-                    postal_code=address.postal_code,
-                    street1=address.address,
-                    country=address.country,
-                    city=address.locality,
-                    region=address.province,
-                ),
-                polygon=dilate(venue.display_point),
-            )
-            address_venue_mapping[address.id].append(venue_key)
+                venue_key = mi_solution.add_venue(
+                    admin_id=venue.id,
+                    name=venue_name,
+                    venue_type=IMDF_VENUE_CATEGORY_TO_MI_VENUE_TYPE[venue.category],
+                    address=PostalAddress(
+                        postal_code=address.postal_code,
+                        street1=address.address,
+                        country=address.country,
+                        city=address.locality,
+                        region=address.province,
+                    ),
+                    polygon=dilate(venue.display_point),
+                )
+                address_venue_mapping[address.id].append(venue_key)
+
+    assert venue_key is not None, "No venue was found in the data"
+
+    venue_graph_key = mi_solution.add_graph(
+        graph_id=venue_key,
+        osm_xml=FALLBACK_OSM_GRAPH,
+        boundary=dilate(shapely.Point(0, 0)),
+    )
 
     building_footprint_mapping = defaultdict(list)
 
-    outdoor_building_admin_id = "general_area"
-
-    anchor_name = "Anchor"
     anchor_location_type = mi_solution.add_location_type(name=anchor_name)
 
     occupant_category_mapping = {}
@@ -102,16 +121,32 @@ def to_mi_solution(midf_solution: MIDFSolution) -> Solution:
         for fp in building_footprint_mapping[building.id]:
             if isinstance(fp.geometry, shapely.Polygon):
                 building_footprint |= fp.geometry
+            elif isinstance(fp.geometry, shapely.MultiPolygon):
+                for p in fp.geometry.geoms:
+                    building_footprint |= p
             else:
                 logger.error(f"Ignoring {fp}")
+
+        if building_footprint.is_empty:
+            if building.display_point:
+                building_footprint |= dilate(building.display_point)
+
+        if building_footprint.is_empty:
+            if venue.display_point:
+                building_footprint |= dilate(venue.display_point)
+
+        if isinstance(building_footprint, shapely.MultiPolygon):
+            building_footprint = shapely.convex_hull(building_footprint)
 
         if building.name:
             building_name = next(iter(building.name.values()))
         else:
             building_name = "Building"
 
+        b = make_mi_building_admin_id2(building.id, found_venue_key)
+
         mi_solution.add_building(
-            building.id,
+            b,
             name=building_name,
             polygon=building_footprint,
             venue_key=found_venue_key,
@@ -122,13 +157,15 @@ def to_mi_solution(midf_solution: MIDFSolution) -> Solution:
 
         if level.buildings is None:
             if level.outdoor or ASSUME_OUTDOOR_IF_MISSING_BUILDING:
+                assert found_venue_key, "Venue key not found"
+                c = make_mi_building_admin_id2(OUTDOOR_BUILDING_NAME, found_venue_key)
                 found_building = mi_solution.buildings.get(
-                    Building.compute_key(admin_id=outdoor_building_admin_id)
+                    Building.compute_key(admin_id=c)
                 )
                 if found_building is None:
                     outdoor_building_key = mi_solution.add_building(
-                        outdoor_building_admin_id,
-                        "General Area",
+                        c,
+                        OUTDOOR_BUILDING_NAME,
                         mi_solution.venues.get(venue_key).polygon,
                         venue_key=found_venue_key,
                     )
@@ -137,11 +174,14 @@ def to_mi_solution(midf_solution: MIDFSolution) -> Solution:
                 logger.error(f"Skipping {level}")
                 continue
         else:
-            found_building = mi_solution.buildings.get(
-                Building.compute_key(admin_id=next(iter(level.buildings)).id)
+            a = make_mi_building_admin_id2(
+                next(iter(level.buildings)).id, found_venue_key
             )
+            found_building = mi_solution.buildings.get(Building.compute_key(admin_id=a))
 
         floor_name = next(iter(level.name.values()))
+        if floor_name is None:
+            floor_name = "Floor No Name Found"
 
         floor_key = mi_solution.add_floor(
             building_key=found_building.key,
@@ -160,51 +200,85 @@ def to_mi_solution(midf_solution: MIDFSolution) -> Solution:
                     mi_solution.add_location_type(name=unit.category)
 
                 if isinstance(unit_geom, shapely.Polygon):
-                    mi_solution.add_area(
-                        admin_id=unit.id,
-                        name=unit_name,
-                        polygon=unit_geom,
-                        floor_key=floor_key,
-                        location_type_key=location_type_key,
-                    )
+                    if False:
+                        unit_location_key = mi_solution.add_area(
+                            admin_id=unit.id,
+                            name=unit_name,
+                            polygon=unit_geom,
+                            floor_key=floor_key,
+                            location_type_key=location_type_key,
+                        )
+                    else:
+                        unit_location_key = mi_solution.add_room(
+                            admin_id=unit.id,
+                            name=unit_name,
+                            polygon=unit_geom,
+                            floor_key=floor_key,
+                            location_type_key=location_type_key,
+                        )
                 else:
                     logger.error(f"Ignoring {unit}")
+                    continue
 
                 if unit.anchors:
                     for anchor in unit.anchors:
-                        anchor_key = mi_solution.add_point_of_interest(
-                            admin_id=anchor.id,
-                            name=anchor_name,
-                            point=anchor.geometry,
-                            floor_key=floor_key,
-                            location_type_key=anchor_location_type,
-                        )
-
-                        for occupant in anchor.occupants:
-                            occupant_name = next(iter(occupant.name.values()))
-
-                            occupant_template_key = mi_solution.add_occupant_template(
-                                name=occupant_name,
-                                occupant_type=OccupantType.OCCUPANT,
-                                occupant_category_key=occupant_category_mapping[
-                                    occupant.category
-                                ],
-                                # business_hours=occupant.hours,
-                                # contact=occupant.phone + occupant.website,
+                        if (
+                            mi_solution.occupants.get(
+                                Occupant.compute_key(location_key=unit_location_key)
                             )
-                            mi_solution.add_occupant(
-                                location_key=anchor_key,
-                                occupant_template_key=occupant_template_key,
+                            is not None
+                        ):
+                            anchor_key = unit_location_key
+                        else:  # Location already has an occupant, add anchor as a point of interest for the occupant to
+                            # occupy
+                            anchor_key = mi_solution.add_point_of_interest(
+                                admin_id=anchor.id,
+                                name=anchor_name,
+                                point=anchor.geometry,
+                                floor_key=floor_key,
+                                location_type_key=anchor_location_type,
                             )
+
+                        if anchor.occupants:
+                            for occupant in anchor.occupants:
+                                occupant: MIDFOccupant
+                                occupant_name = next(iter(occupant.name.values()))
+
+                                a = OccupantTemplate.compute_key(
+                                    name=occupant_name,
+                                    occupant_category_key=occupant_category_mapping[
+                                        occupant.category
+                                    ],
+                                )
+                                if mi_solution.occupant_templates.get(a) is None:
+                                    occupant_template_key = mi_solution.add_occupant_template(
+                                        name=occupant_name,
+                                        occupant_type=OccupantType.occupant,
+                                        occupant_category_key=occupant_category_mapping[
+                                            occupant.category
+                                        ],
+                                        description=f"{occupant.hours} {occupant.phone} {occupant.website}",
+                                        # business_hours=occupant.hours, # TODO: CONVERT?
+                                        # contact=occupant.phone + occupant.website,
+                                    )
+                                else:
+                                    occupant_template_key = a
+
+                                mi_solution.add_occupant(
+                                    location_key=anchor_key,
+                                    occupant_template_key=occupant_template_key,
+                                )
 
         if level.details:
             for detail in level.details:
                 detail_name = next(iter(level.name.values()))
                 detail_geom = dilate(clean_shape(detail.geometry))
 
-                location_type_key = LocationType.compute_key(name=detail.category)
+                location_type_key = LocationType.compute_key(
+                    name=DETAIL_LOCATION_TYPE_NAME
+                )
                 if mi_solution.location_types.get(location_type_key) is None:
-                    mi_solution.add_location_type(name=detail.category)
+                    mi_solution.add_location_type(name=DETAIL_LOCATION_TYPE_NAME)
 
                 if isinstance(detail_geom, shapely.Polygon):
                     mi_solution.add_area(
@@ -222,9 +296,11 @@ def to_mi_solution(midf_solution: MIDFSolution) -> Solution:
                 kiosk_name = next(iter(level.name.values()))
                 kiosk_geom = clean_shape(kiosk.geometry)
 
-                location_type_key = LocationType.compute_key(name=kiosk.category)
+                location_type_key = LocationType.compute_key(
+                    name=KIOSK_LOCATION_TYPE_NAME
+                )
                 if mi_solution.location_types.get(location_type_key) is None:
-                    mi_solution.add_location_type(name=kiosk.category)
+                    mi_solution.add_location_type(name=KIOSK_LOCATION_TYPE_NAME)
 
                 if isinstance(kiosk_geom, shapely.Polygon):
                     mi_solution.add_area(
@@ -280,45 +356,106 @@ def to_mi_solution(midf_solution: MIDFSolution) -> Solution:
         if level.openings:
             for opening in level.openings:
                 opening_name = next(iter(level.name.values()))
-                opening_geom = dilate(clean_shape(opening.geometry))
+                if False:
+                    opening_geom = dilate(clean_shape(opening.geometry))
 
-                location_type_key = LocationType.compute_key(name=opening.category)
-                if mi_solution.location_types.get(location_type_key) is None:
-                    mi_solution.add_location_type(name=opening.category)
+                    location_type_key = LocationType.compute_key(name=opening.category)
+                    if mi_solution.location_types.get(location_type_key) is None:
+                        mi_solution.add_location_type(name=opening.category)
 
-                if isinstance(opening_geom, shapely.Polygon):
-                    mi_solution.add_area(
-                        admin_id=opening.id,
-                        name=opening_name,
-                        polygon=opening_geom,
-                        floor_key=floor_key,
-                        location_type_key=location_type_key,
-                    )
+                    if isinstance(opening_geom, shapely.Polygon):
+                        mi_solution.add_area(
+                            admin_id=opening.id,
+                            name=opening_name,
+                            polygon=opening_geom,
+                            floor_key=floor_key,
+                            location_type_key=location_type_key,
+                        )
+                    else:
+                        logger.error(f"Ignoring {opening}")
                 else:
-                    logger.error(f"Ignoring {opening}")
+                    mi_solution.add_door(
+                        admin_id=opening.id,
+                        floor_index=level.ordinal,
+                        graph_key=venue_graph_key,
+                        linestring=opening.geometry,
+                        door_type=DoorType.door,
+                    )
 
                     # opening.door
 
+    if midf_solution.geofences:
         for geofence in midf_solution.geofences:
-            for building in geofence.buildings:
-                ...
+            geofence: MIDFGeofence
 
-            for level in geofence.levels:
-                ...
+            ltk = LocationType.compute_key(name=geofence.category)
+            if mi_solution.location_types.get(ltk) is None:
+                ltk = mi_solution.add_location_type(name=geofence.category)
 
-            geofence_name = next(iter(geofence.name.values()))
+            if geofence.buildings:
+                for building in geofence.buildings:
+                    ...
+            if geofence.levels:
+                for level in geofence.levels:
+                    ...
+            if geofence.parents:
+                for parent in geofence.parents:
+                    ...
 
-            # mi_solution.add_area(admin_id=geofence.id, name=geofence_name, polygon=geofence.geometry,
-            # floor_key=floor_key)
+            geofence_name = None
+            if geofence.name:
+                geofence_name = next(iter(geofence.name.values()))
+            else:
+                if geofence.alt_name:
+                    geofence_name = next(iter(geofence.alt_name.values()))
+                if geofence_name is None:
+                    geofence_name = geofence.category
 
+            blk = Building.compute_key(
+                admin_id=make_mi_building_admin_id2(
+                    OUTDOOR_BUILDING_NAME, found_venue_key
+                )
+            )
+
+            floor_key = None
+            for floor in mi_solution.floors:
+                if floor.building.key == blk:
+                    floor_key = floor.key
+                    break
+
+            if floor_key is None:  # TODO: FIX, bad assumption
+                logger.error(f"Floor not found for {geofence}")
+                floor_key = next(iter(mi_solution.floors)).key
+
+            gid = geofence.id  # + found_venue_key
+            mi_solution.add_area(
+                admin_id=gid,
+                name=geofence_name,
+                polygon=geofence.geometry,
+                floor_key=floor_key,
+                location_type_key=ltk,
+            )
+
+    if midf_solution.relationships:
         for relationship in midf_solution.relationships:
-            ...
+            ...  # TODO: IMPLEMENT
 
-    area_union = shapely.convex_hull(
-        shapely.unary_union([a.polygon for a in mi_solution.areas])
+    solution_locations_union = shapely.convex_hull(
+        shapely.unary_union(
+            [a.polygon for a in mi_solution.areas]
+            + [r.polygon for r in mi_solution.rooms]
+            + [r.point for r in mi_solution.points_of_interest]
+        )
     )
 
-    mi_solution.update_building(outdoor_building_admin_id, polygon=area_union)
-    mi_solution.update_venue(found_venue_key, polygon=area_union)
+    blk = make_mi_building_admin_id2(OUTDOOR_BUILDING_NAME, found_venue_key)
+    if mi_solution.buildings.get(Building.compute_key(admin_id=blk)) is not None:
+        mi_solution.update_building(blk, polygon=solution_locations_union)
+
+    mi_solution.update_graph(venue_graph_key, boundary=solution_locations_union)
+
+    mi_solution.update_venue(
+        found_venue_key, polygon=solution_locations_union, graph_key=venue_graph_key
+    )
 
     return mi_solution

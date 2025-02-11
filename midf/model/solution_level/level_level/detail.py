@@ -1,6 +1,6 @@
 from attr import dataclass
 
-from midf.typing import Lineal, MIDFFeature
+from midf.midf_typing import Lineal, MIDFFeature
 
 __all__ = ["MIDFDetail"]
 

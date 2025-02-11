@@ -3,7 +3,7 @@ from typing import Collection, Optional
 import shapely
 from attr import dataclass
 
-from midf.typing import Labels, MIDFFeature
+from midf.midf_typing import Labels, MIDFFeature
 from .address import MIDFAddress
 from .level_level import MIDFUnit
 
