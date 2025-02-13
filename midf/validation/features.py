@@ -1,6 +1,6 @@
 import re
 from datetime import datetime
-from typing import Dict, List
+from typing import Any, List
 
 from midf.enums import IMDFFeatureType
 from midf.imdf_model import (
@@ -217,7 +217,7 @@ class RelationshipValidator(BaseValidator):
             )
 
     def validate_relationships(
-        self, imdf_dict: Dict[str, List[IMDFFeature]]
+        self, imdf_dict: Any  #: Dict[str, List[IMDFFeature]]
     ) -> List[IMDFValidationError]:
         errors = []
         relationships = imdf_dict.get(IMDFFeatureType.relationship, [])

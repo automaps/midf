@@ -1,0 +1,29 @@
+from collections import defaultdict
+from typing import Collection, Dict, List, Mapping
+
+from warg.data_structures.mappings import to_dict
+
+from midf.enums import IMDFFeatureType
+from midf.imdf_model import IMDFFeature, IMDFKiosk
+from midf.model import MIDFKiosk
+
+__all__ = ["link_kiosks"]
+
+
+def link_kiosks(
+    anchor_id_mapping, imdf_dict: Mapping[IMDFFeatureType, Collection[IMDFFeature]]
+) -> Dict[str, List[MIDFKiosk]]:
+    kiosks = defaultdict(list)
+    for kiosk in imdf_dict[IMDFFeatureType.kiosk]:
+        kiosk: IMDFKiosk
+        kiosks[kiosk.level_id].append(
+            MIDFKiosk(
+                id=kiosk.id,
+                geometry=kiosk.geometry,
+                name=kiosk.name,
+                alt_name=kiosk.alt_name,
+                display_point=kiosk.display_point,
+                anchor=anchor_id_mapping[kiosk.anchor_id] if kiosk.anchor_id else None,
+            )
+        )
+    return to_dict(kiosks)
