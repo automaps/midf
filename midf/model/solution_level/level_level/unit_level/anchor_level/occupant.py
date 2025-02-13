@@ -1,7 +1,9 @@
+from typing import Optional
+
 from attr import dataclass
 
 from midf.enums import IMDFOccupantCategory
-from midf.typing import Labels, MIDFFeature, Temporality
+from midf.midf_typing import Labels, MIDFFeature, Temporality
 
 __all__ = ["MIDFOccupant"]
 
@@ -10,8 +12,9 @@ __all__ = ["MIDFOccupant"]
 class MIDFOccupant(MIDFFeature):
     name: Labels
     category: IMDFOccupantCategory
-    hours: str
-    phone: str
-    website: str
-    validity: Temporality
-    correlation_id: str
+
+    hours: Optional[str] = None
+    phone: Optional[str] = None
+    website: Optional[str] = None
+    validity: Optional[Temporality] = None
+    correlation_id: Optional[str] = None

@@ -37,7 +37,7 @@ def get_expected_geometry_types(feature: IMDFFeature) -> tuple:
         IMDFFixture: (shapely.geometry.Polygon, shapely.geometry.MultiPolygon),
         IMDFFootprint: (shapely.geometry.Polygon, shapely.geometry.MultiPolygon),
         IMDFGeofence: (shapely.geometry.Polygon, shapely.geometry.MultiPolygon),
-        IMDFKiosk: (shapely.geometry.Point,),
+        IMDFKiosk: (shapely.geometry.Polygon,),
         IMDFLevel: (shapely.geometry.Polygon, shapely.geometry.MultiPolygon),
         IMDFOpening: (shapely.geometry.LineString, shapely.geometry.Point),
         IMDFSection: (shapely.geometry.Polygon, shapely.geometry.MultiPolygon),

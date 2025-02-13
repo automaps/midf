@@ -4,29 +4,28 @@ from collections import defaultdict
 from pathlib import Path
 from typing import Collection, Union
 
-import shapely
-
-from midf.enums import IMDFFeatureType
 from midf.imdf_model import (
-    IMDFAddress,
-    IMDFAmenity,
-    IMDFAnchor,
-    IMDFBuilding,
-    IMDFDetail,
     IMDFFeature,
-    IMDFFixture,
-    IMDFFootprint,
-    IMDFKiosk,
-    IMDFLevel,
     IMDFManifest,
-    IMDFOccupant,
-    IMDFOpening,
-    IMDFRelationship,
-    IMDFSection,
-    IMDFUnit,
-    IMDFVenue,
 )
-from .typing import Door, Temporality
+from .dataframe_loading import (
+    load_imdf_addresses,
+    load_imdf_amenities,
+    load_imdf_anchors,
+    load_imdf_buildings,
+    load_imdf_details,
+    load_imdf_fixtures,
+    load_imdf_footprints,
+    load_imdf_geofences,
+    load_imdf_kiosks,
+    load_imdf_levels,
+    load_imdf_occupants,
+    load_imdf_openings,
+    load_imdf_relationships,
+    load_imdf_sections,
+    load_imdf_units,
+    load_imdf_venues,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -69,260 +68,36 @@ def load_imdf(
     if manifest is not None:
         out[MANIFEST_KEY].append(manifest)
 
-    for ith_row, venue_row in dataframes[IMDFFeatureType.venue.value].iterrows():
-        venue_dict = venue_row.to_dict()
+    load_imdf_venues(dataframes, out)
 
-        name = venue_dict.pop("name")
-        if False:
-            if name is not None:
-                name = json.loads(name)
+    load_imdf_buildings(dataframes, out)
 
-        display_point = venue_dict.pop("display_point")
-        if display_point is not None:
-            if isinstance(display_point, dict):
-                display_point = shapely.from_geojson(json.dumps(display_point))
-            else:
-                display_point = shapely.from_geojson(display_point)
+    load_imdf_footprints(dataframes, out)
 
-        venue = IMDFVenue(**venue_dict, name=name, display_point=display_point)
-        out[IMDFFeatureType.venue].append(venue)
+    load_imdf_fixtures(dataframes, out)
 
-    for ith_row, building_row in dataframes[IMDFFeatureType.building.value].iterrows():
-        building_dict = building_row.to_dict()
+    load_imdf_units(dataframes, out)
 
-        name = building_dict.pop("name")
-        if False:
-            if name is not None:
-                name = json.loads(name)
+    load_imdf_levels(dataframes, out)
 
-        alt_name = building_dict.pop("alt_name")
-        if False:
-            if alt_name is not None:
-                alt_name = json.loads(alt_name)
+    load_imdf_sections(dataframes, out)
 
-        display_point = building_dict.pop("display_point")
-        if display_point is not None:
-            if isinstance(display_point, dict):
-                display_point = shapely.from_geojson(json.dumps(display_point))
-            else:
-                display_point = shapely.from_geojson(display_point)
+    load_imdf_occupants(dataframes, out)
 
-        building = IMDFBuilding(
-            **building_dict,
-            name=name,
-            alt_name=alt_name,
-            display_point=display_point,
-        )
+    load_imdf_openings(dataframes, out)
 
-        out[IMDFFeatureType.building].append(building)
+    load_imdf_relationships(dataframes, out)
 
-    for ith_row, footprint_row in dataframes[
-        IMDFFeatureType.footprint.value
-    ].iterrows():
-        footprint_dict = footprint_row.to_dict()
+    load_imdf_kiosks(dataframes, out)
 
-        name = footprint_dict.pop("name")
-        if False:
-            if name is not None:
-                name = json.loads(name)
+    load_imdf_details(dataframes, out)
 
-        footprint = IMDFFootprint(**footprint_dict, name=name)
-        out[IMDFFeatureType.footprint].append(footprint)
+    load_imdf_anchors(dataframes, out)
 
-    for ith_row, fixture_row in dataframes[IMDFFeatureType.fixture.value].iterrows():
-        fixture_dict = fixture_row.to_dict()
+    load_imdf_geofences(dataframes, out)
 
-        name = fixture_dict.pop("name")
-        if False:
-            if name is not None:
-                name = json.loads(name)
+    load_imdf_addresses(dataframes, out)
 
-        alt_name = fixture_dict.pop("alt_name")
-        if False:
-            if alt_name is not None:
-                alt_name = json.loads(alt_name)
-
-        display_point = fixture_dict.pop("display_point")
-        if display_point is not None:
-            if isinstance(display_point, dict):
-                display_point = shapely.from_geojson(json.dumps(display_point))
-            else:
-                display_point = shapely.from_geojson(display_point)
-
-        fixture = IMDFFixture(
-            **fixture_dict,
-            name=name,
-            alt_name=alt_name,
-            display_point=display_point,
-        )
-
-        out[IMDFFeatureType.fixture].append(fixture)
-
-    for ith_row, unit_row in dataframes[IMDFFeatureType.unit.value].iterrows():
-        unit_dict = unit_row.to_dict()
-
-        name = unit_dict.pop("name")
-        if False:
-            if name is not None:
-                name = json.loads(name)
-
-        alt_name = unit_dict.pop("alt_name")
-        if False:
-            if alt_name is not None:
-                alt_name = json.loads(alt_name)
-
-        display_point = unit_dict.pop("display_point")
-        if display_point is not None:
-            if isinstance(display_point, dict):
-                display_point = shapely.from_geojson(json.dumps(display_point))
-            else:
-                display_point = shapely.from_geojson(display_point)
-
-        unit = IMDFUnit(
-            **unit_dict, name=name, alt_name=alt_name, display_point=display_point
-        )
-        out[IMDFFeatureType.unit].append(unit)
-
-    for ith_row, level_row in dataframes[IMDFFeatureType.level.value].iterrows():
-        level_dict = level_row.to_dict()
-
-        name = level_dict.pop("name")
-        if False:
-            if name is not None:
-                name = json.loads(name)
-
-        short_name = level_dict.pop("short_name")
-        if False:
-            if short_name is not None:
-                short_name = json.loads(short_name)
-
-        display_point = level_dict.pop("display_point")
-        if display_point is not None:
-            if isinstance(display_point, dict):
-                display_point = shapely.from_geojson(json.dumps(display_point))
-            else:
-                display_point = shapely.from_geojson(display_point)
-
-        level = IMDFLevel(
-            **level_dict,
-            name=name,
-            short_name=short_name,
-            display_point=display_point,
-        )
-        out[IMDFFeatureType.level].append(level)
-
-    for ith_row, section_row in dataframes[IMDFFeatureType.section.value].iterrows():
-        section_dict = section_row.to_dict()
-
-        name = section_dict.pop("name")
-        if False:
-            if name is not None:
-                name = json.loads(name)
-
-        alt_name = section_dict.pop("alt_name")
-        if False:
-            if alt_name is not None:
-                alt_name = json.loads(alt_name)
-
-        display_point = section_dict.pop("display_point")
-        if display_point is not None:
-            if isinstance(display_point, dict):
-                display_point = shapely.from_geojson(json.dumps(display_point))
-            else:
-                display_point = shapely.from_geojson(display_point)
-
-        section = IMDFSection(
-            **section_dict,
-            name=name,
-            alt_name=alt_name,
-            display_point=display_point,
-        )
-        out[IMDFFeatureType.section].append(section)
-
-    for ith_row, occupant_row in dataframes[IMDFFeatureType.occupant.value].iterrows():
-        occupant_dict = occupant_row.to_dict()
-
-        name = occupant_dict.pop("name")
-        if False:
-            if name is not None:
-                name = json.loads(name)
-
-        validity = occupant_dict.pop("validity")
-        if validity is not None:
-            validity = Temporality(**json.loads(validity))
-
-        occupant = IMDFOccupant(**occupant_dict, name=name, validity=validity)
-        out[IMDFFeatureType.occupant].append(occupant)
-
-    for ith_row, opening_row in dataframes[IMDFFeatureType.opening.value].iterrows():
-        opening_dict = opening_row.to_dict()
-
-        name = opening_dict.pop("name")
-        if False:
-            if name is not None:
-                name = json.loads(name)
-
-        alt_name = opening_dict.pop("alt_name")
-        if False:
-            if alt_name is not None:
-                alt_name = json.loads(alt_name)
-
-        display_point = opening_dict.pop("display_point")
-        if display_point is not None:
-            if isinstance(display_point, dict):
-                display_point = shapely.from_geojson(json.dumps(display_point))
-            else:
-                display_point = shapely.from_geojson(display_point)
-
-        door = opening_dict.pop("door")
-        if door is not None:
-            door = Door(**json.loads(door))
-
-        opening = IMDFOpening(
-            **opening_dict,
-            name=name,
-            alt_name=alt_name,
-            display_point=display_point,
-            door=door,
-        )
-        out[IMDFFeatureType.opening].append(opening)
-
-    for ith_row, relationship_row in dataframes[
-        IMDFFeatureType.relationship.value
-    ].iterrows():
-        relationship_dict = relationship_row.to_dict()
-
-        relationship = IMDFRelationship(**relationship_dict)
-        out[IMDFFeatureType.relationship].append(relationship)
-
-    for ith_row, kiosk_row in dataframes[IMDFFeatureType.kiosk.value].iterrows():
-        kiosk_dict = kiosk_row.to_dict()
-
-        kiosk = IMDFKiosk(**kiosk_dict)
-        out[IMDFFeatureType.kiosk].append(kiosk)
-
-    for ith_row, detail_row in dataframes[IMDFFeatureType.detail.value].iterrows():
-        detail_dict = detail_row.to_dict()
-
-        detail = IMDFDetail(**detail_dict)
-        out[IMDFFeatureType.detail].append(detail)
-
-    for ith_row, anchor_row in dataframes[IMDFFeatureType.anchor.value].iterrows():
-        anchor_dict = anchor_row.to_dict()
-
-        anchor = IMDFAnchor(**anchor_dict)
-        out[IMDFFeatureType.anchor].append(anchor)
-
-    for ith_row, address_row in dataframes[IMDFFeatureType.address.value].iterrows():
-        address_dict = address_row.to_dict()
-
-        address = IMDFAddress(**address_dict)
-        out[IMDFFeatureType.address].append(address)
-
-    for ith_row, amenity_row in dataframes[IMDFFeatureType.amenity.value].iterrows():
-        amenity_dict = amenity_row.to_dict()
-
-        amenity = IMDFAmenity(**amenity_dict)
-        out[IMDFFeatureType.amenity].append(amenity)
+    load_imdf_amenities(dataframes, out)
 
     return out

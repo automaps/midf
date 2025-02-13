@@ -1,6 +1,6 @@
 import re
 from datetime import datetime
-from typing import Dict, List
+from typing import Any, List
 
 from midf.enums import IMDFFeatureType
 from midf.imdf_model import (
@@ -28,12 +28,10 @@ from .exceptions import (
     AnchorMustHaveGeoreferenceError,
     BuildingMustHaveCategoryError,
     BuildingMustHaveNameError,
-    DetailMustHaveCategoryError,
     FixtureMustHaveCategoryError,
     FootprintMustHaveBuildingIdsError,
     GeofenceMustHaveCategoryError,
     IMDFValidationError,
-    KioskMustHaveCategoryError,
     LevelMustHaveOrdinalError,
     LevelMustHaveShortNameError,
     ManifestCreatedDateMustBeValidError,
@@ -76,12 +74,13 @@ class AddressValidator(BaseValidator):
 
 class AmenityValidator(BaseValidator):
 
-    def validate(self, feature: IMDFFeature) -> List[str]:
+    def validate(self, feature: IMDFAmenity) -> List[str]:
         errors = []
         if not isinstance(feature, IMDFAmenity):
             raise ValidationError(f"Expected IMDFAmenity, got {type(feature)}")
 
-        errors.extend(validate_geometry(feature))
+        validate_geometry(feature)
+        # errors.extend()
 
         if not feature.category:
             errors.append(f"Amenity {feature.id} is missing required field 'category'")
@@ -109,16 +108,11 @@ class AnchorValidator(BaseValidator):
 
 class DetailValidator(BaseValidator):
 
-    def validate(self, feature: IMDFFeature) -> None:
+    def validate(self, feature: IMDFDetail) -> None:
         if not isinstance(feature, IMDFDetail):
             raise ValidationError(f"Expected IMDFDetail, got {type(feature)}")
 
         validate_geometry(feature)
-
-        if not feature.category:
-            raise DetailMustHaveCategoryError(
-                f"Detail {feature.id} is missing required field 'category'", feature.id
-            )
 
 
 class FixtureValidator(BaseValidator):
@@ -137,7 +131,7 @@ class FixtureValidator(BaseValidator):
 
 class FootprintValidator(BaseValidator):
 
-    def validate(self, feature: IMDFFeature) -> None:
+    def validate(self, feature: IMDFFootprint) -> None:
         if not isinstance(feature, IMDFFootprint):
             raise ValidationError(f"Expected IMDFFootprint, got {type(feature)}")
 
@@ -152,7 +146,7 @@ class FootprintValidator(BaseValidator):
 
 class GeofenceValidator(BaseValidator):
 
-    def validate(self, feature: IMDFFeature) -> None:
+    def validate(self, feature: IMDFGeofence) -> None:
         if not isinstance(feature, IMDFGeofence):
             raise ValidationError(f"Expected IMDFGeofence, got {type(feature)}")
 
@@ -167,21 +161,16 @@ class GeofenceValidator(BaseValidator):
 
 class KioskValidator(BaseValidator):
 
-    def validate(self, feature: IMDFFeature) -> None:
+    def validate(self, feature: IMDFKiosk) -> None:
         if not isinstance(feature, IMDFKiosk):
             raise ValidationError(f"Expected IMDFKiosk, got {type(feature)}")
 
         validate_geometry(feature)
 
-        if not feature.category:
-            raise KioskMustHaveCategoryError(
-                f"Kiosk {feature.id} is missing required field 'category'", feature.id
-            )
-
 
 class OccupantValidator(BaseValidator):
 
-    def validate(self, feature: IMDFFeature) -> None:
+    def validate(self, feature: IMDFOccupant) -> None:
         if not isinstance(feature, IMDFOccupant):
             raise ValidationError(f"Expected IMDFOccupant, got {type(feature)}")
 
@@ -228,7 +217,7 @@ class RelationshipValidator(BaseValidator):
             )
 
     def validate_relationships(
-        self, imdf_dict: Dict[str, List[IMDFFeature]]
+        self, imdf_dict: Any  #: Dict[str, List[IMDFFeature]]
     ) -> List[IMDFValidationError]:
         errors = []
         relationships = imdf_dict.get(IMDFFeatureType.relationship, [])

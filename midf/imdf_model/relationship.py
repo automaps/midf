@@ -7,7 +7,7 @@ from ..enums import IMDFRelationshipCategory
 
 __all__ = ["IMDFRelationship"]
 
-from ..typing import Direction
+from ..midf_typing import Direction
 
 
 class IMDFRelationship(IMDFFeature):

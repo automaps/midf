@@ -1,17 +1,20 @@
-from typing import Any, Mapping, Optional
+from typing import Any, Mapping, Optional, Union
 
 import shapely
 
 from .base import IMDFFeature
 from ..enums import IMDFOpeningCategory
-from ..typing import Door
+from ..midf_typing import Door
 
 __all__ = ["IMDFOpening"]
 
 
 class IMDFOpening(IMDFFeature):
     geometry: shapely.LineString
-    category: IMDFOpeningCategory
+    category: Union[
+        IMDFOpeningCategory, str
+    ]  # TODO: Some openings have a category that is not in the enum, so we allow a
+    # string here, but we should validate it, it is not valid, we should raise an error.
     level_id: str
 
     accessibility: Any = None

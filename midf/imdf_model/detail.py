@@ -2,7 +2,7 @@ from .base import IMDFFeature
 
 __all__ = ["IMDFDetail"]
 
-from ..typing import Lineal
+from ..midf_typing import Lineal
 
 
 class IMDFDetail(IMDFFeature):

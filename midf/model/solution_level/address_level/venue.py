@@ -3,7 +3,7 @@ from typing import Optional
 import shapely
 from attr import dataclass
 
-from midf.typing import Labels, MIDFFeature, Polygonal
+from midf.midf_typing import Labels, MIDFFeature, Polygonal
 
 __all__ = ["MIDFVenue"]
 

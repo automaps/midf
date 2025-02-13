@@ -1,4 +1,4 @@
-from typing import Any, Mapping, Optional
+from typing import Any, Mapping, Optional, Union
 
 import shapely
 
@@ -11,7 +11,10 @@ __all__ = ["IMDFSection"]
 class IMDFSection(IMDFFeature):
     geometry: Any  # Polygonal
 
-    category: IMDFSectionCategory
+    category: Union[
+        IMDFSectionCategory, str
+    ]  # TODO: Some sections have a category that is not in the enum, so we allow a
+    # string here, but we should validate it, it is not valid, we should raise an error.
     restriction: Any = None
     accessibility: Any = None
     address_id: Any = None

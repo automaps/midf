@@ -3,7 +3,7 @@ from typing import Any, List, Optional
 import shapely
 from attr import dataclass
 
-from midf.typing import Labels, MIDFFeature
+from midf.midf_typing import Labels, MIDFFeature
 
 __all__ = ["MIDFOpening"]
 

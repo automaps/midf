@@ -2,7 +2,7 @@ from typing import Collection, List, Optional
 
 from attr import dataclass
 
-from midf.typing import Labels, MIDFFeature, Polygonal
+from midf.midf_typing import Labels, MIDFFeature, Polygonal
 from .unit_level import MIDFAnchor
 
 __all__ = ["MIDFUnit"]

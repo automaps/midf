@@ -1,0 +1,25 @@
+from typing import Collection, Dict, Mapping
+
+from midf.enums import IMDFFeatureType
+from midf.imdf_model import IMDFBuilding, IMDFFeature
+from midf.model import MIDFBuilding
+
+__all__ = ["link_buildings"]
+
+
+def link_buildings(
+    imdf_dict: Mapping[IMDFFeatureType, Collection[IMDFFeature]]
+) -> Dict[str, MIDFBuilding]:
+    buildings = {}
+    for building in imdf_dict[IMDFFeatureType.building]:
+        building: IMDFBuilding
+        buildings[building.id] = MIDFBuilding(
+            id=building.id,
+            category=building.category,
+            name=building.name,
+            alt_name=building.alt_name,
+            restriction=building.restriction,
+            display_point=building.display_point,
+            # address=addresses[building.address_id], # TODO: INVALID IMDF!
+        )
+    return buildings
