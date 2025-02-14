@@ -7,12 +7,17 @@ from midf.imdf_model import IMDFKiosk
 
 __all__ = ["load_imdf_kiosks"]
 
+import logging
+
+logger = logging.getLogger(__name__)
+
 
 def load_imdf_kiosks(
-    dataframes: Mapping[IMDFFeatureType, DataFrame],
+    dataframes: Mapping[str, DataFrame],
     out: Mapping[IMDFFeatureType, List[IMDFKiosk]],
 ) -> None:
     if IMDFFeatureType.kiosk.value in dataframes:
+        logger.error(f"Loading {IMDFFeatureType.kiosk} features")
         for ith_row, kiosk_row in dataframes[IMDFFeatureType.kiosk.value].iterrows():
             kiosk_dict = kiosk_row.to_dict()
 

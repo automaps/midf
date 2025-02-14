@@ -8,21 +8,22 @@ __all__ = ["link_relationships"]
 
 
 def link_relationships(
-    imdf_dict: Mapping[IMDFFeatureType, Collection[IMDFFeature]]
+    imdf_dict: Mapping[IMDFFeatureType, Collection[IMDFFeature]],
 ) -> Mapping[str, List[MIDFRelationship]]:
     relationships = {}
     for relationship in imdf_dict[IMDFFeatureType.relationship]:
         relationship: IMDFRelationship
-        relationships[relationship.level_id].append(
-            MIDFRelationship(
-                id=relationship.id,
-                category=relationship.category,
-                direction=relationship.direction,
-                geometry=relationship.geometry,
-                origin=relationship.origin,  # TODO: PARSE
-                intermediary=relationship.intermediary,  # TODO: PARSE
-                destination=relationship.destination,  # TODO: PARSE
-                hours=relationship.hours,  # TODO: PARSE
+        if False:
+            relationships[relationship.id].append(
+                MIDFRelationship(
+                    id=relationship.id,
+                    category=relationship.category,
+                    direction=relationship.direction,
+                    geometry=relationship.geometry,
+                    origin=relationship.origin,  # TODO: PARSE
+                    intermediary=relationship.intermediary,  # TODO: PARSE
+                    destination=relationship.destination,  # TODO: PARSE
+                    hours=relationship.hours,  # TODO: PARSE
+                )
             )
-        )
     return relationships

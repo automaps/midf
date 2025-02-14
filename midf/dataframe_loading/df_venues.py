@@ -9,12 +9,17 @@ from midf.imdf_model import IMDFVenue
 
 __all__ = ["load_imdf_venues"]
 
+import logging
+
+logger = logging.getLogger(__name__)
+
 
 def load_imdf_venues(
-    dataframes: Mapping[IMDFFeatureType, DataFrame],
+    dataframes: Mapping[str, DataFrame],
     out: Mapping[IMDFFeatureType, List[IMDFVenue]],
 ) -> None:
     if IMDFFeatureType.venue.value in dataframes:
+        logger.error(f"Loading {IMDFFeatureType.venue} features")
         for ith_row, venue_row in dataframes[IMDFFeatureType.venue.value].iterrows():
             venue_dict = venue_row.to_dict()
 

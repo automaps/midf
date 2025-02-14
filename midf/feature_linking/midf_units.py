@@ -12,10 +12,10 @@ __all__ = ["link_units"]
 
 def link_units(
     anchors,
-    found_anchor_unit_ids,
     imdf_dict: Mapping[IMDFFeatureType, Collection[IMDFFeature]],
 ) -> Dict[str, List[MIDFUnit]]:
     units = defaultdict(list)
+    found_anchor_unit_ids = anchors.keys()
     for unit in imdf_dict[IMDFFeatureType.unit]:
         unit: IMDFUnit
         units[unit.level_id].append(

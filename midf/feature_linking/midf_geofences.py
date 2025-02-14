@@ -8,7 +8,7 @@ __all__ = ["link_geofences"]
 
 
 def link_geofences(
-    imdf_dict: Mapping[IMDFFeatureType, Collection[IMDFFeature]]
+    imdf_dict: Mapping[IMDFFeatureType, Collection[IMDFFeature]],
 ) -> Dict[str, MIDFGeofence]:
     geofences = {}
     for geofence in imdf_dict[IMDFFeatureType.geofence]:

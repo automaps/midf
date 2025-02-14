@@ -11,7 +11,7 @@ __all__ = ["link_openings"]
 
 
 def link_openings(
-    imdf_dict: Mapping[IMDFFeatureType, Collection[IMDFFeature]]
+    imdf_dict: Mapping[IMDFFeatureType, Collection[IMDFFeature]],
 ) -> Dict[str, List[MIDFOpening]]:
     openings = defaultdict(list)
     for opening in imdf_dict[IMDFFeatureType.opening]:

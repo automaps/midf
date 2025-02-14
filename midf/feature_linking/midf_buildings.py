@@ -8,7 +8,7 @@ __all__ = ["link_buildings"]
 
 
 def link_buildings(
-    imdf_dict: Mapping[IMDFFeatureType, Collection[IMDFFeature]]
+    imdf_dict: Mapping[IMDFFeatureType, Collection[IMDFFeature]],
 ) -> Dict[str, MIDFBuilding]:
     buildings = {}
     for building in imdf_dict[IMDFFeatureType.building]:

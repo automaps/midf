@@ -1,4 +1,5 @@
 import json
+import logging
 import uuid
 from typing import List, Mapping
 
@@ -7,16 +8,19 @@ from pandas import DataFrame
 
 from midf.enums import IMDFFeatureType
 from midf.imdf_model import IMDFUnit
-from midf.loading import logger
+
+logger = logging.getLogger(__name__)
 
 __all__ = ["load_imdf_units"]
 
 
 def load_imdf_units(
-    dataframes: Mapping[IMDFFeatureType, DataFrame],
+    dataframes: Mapping[str, DataFrame],
     out: Mapping[IMDFFeatureType, List[IMDFUnit]],
 ) -> None:
     if IMDFFeatureType.unit.value in dataframes:
+        logger.error(f"Loading {IMDFFeatureType.unit} features")
+
         for ith_row, unit_row in dataframes[IMDFFeatureType.unit.value].iterrows():
             unit_dict = unit_row.to_dict()
 

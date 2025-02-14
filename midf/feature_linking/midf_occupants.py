@@ -11,7 +11,7 @@ __all__ = ["link_occupants"]
 
 
 def link_occupants(
-    imdf_dict: Mapping[IMDFFeatureType, Collection[IMDFFeature]]
+    imdf_dict: Mapping[IMDFFeatureType, Collection[IMDFFeature]],
 ) -> Dict[str, List[MIDFOccupant]]:
     occupants = defaultdict(list)
     for occupant in imdf_dict[IMDFFeatureType.occupant]:

@@ -7,12 +7,17 @@ from midf.imdf_model import IMDFAddress
 
 __all__ = ["load_imdf_addresses"]
 
+import logging
+
+logger = logging.getLogger(__name__)
+
 
 def load_imdf_addresses(
-    dataframes: Mapping[IMDFFeatureType, DataFrame],
+    dataframes: Mapping[str, DataFrame],
     out: Mapping[IMDFFeatureType, List[IMDFAddress]],
 ) -> None:
     if IMDFFeatureType.address.value in dataframes:
+        logger.error(f"Loading {IMDFFeatureType.address} features")
         for ith_row, address_row in dataframes[
             IMDFFeatureType.address.value
         ].iterrows():

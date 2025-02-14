@@ -11,7 +11,7 @@ __all__ = ["link_venues"]
 
 
 def link_venues(
-    imdf_dict: Mapping[IMDFFeatureType, Collection[IMDFFeature]]
+    imdf_dict: Mapping[IMDFFeatureType, Collection[IMDFFeature]],
 ) -> Dict[str, List[MIDFVenue]]:
     venue_mapping = defaultdict(list)
     for venue in imdf_dict[IMDFFeatureType.venue]:

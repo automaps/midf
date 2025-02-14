@@ -4,6 +4,7 @@ from attr import dataclass
 
 from .solution_level import (
     MIDFAddress,
+    MIDFAmenity,
     MIDFBuilding,
     MIDFFootprint,
     MIDFGeofence,
@@ -25,3 +26,4 @@ class MIDFSolution:
     relationships: Optional[Collection[MIDFRelationship]] = None
     geofences: Optional[Collection[MIDFGeofence]] = None
     footprints: Optional[Collection[MIDFFootprint]] = None
+    amenities: Optional[Collection[MIDFAmenity]] = None

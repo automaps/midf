@@ -11,7 +11,7 @@ __all__ = ["link_sections"]
 
 
 def link_sections(
-    imdf_dict: Mapping[IMDFFeatureType, Collection[IMDFFeature]]
+    imdf_dict: Mapping[IMDFFeatureType, Collection[IMDFFeature]],
 ) -> Dict[str, List[MIDFSection]]:
     sections = defaultdict(list)
     for section in imdf_dict[IMDFFeatureType.section]:

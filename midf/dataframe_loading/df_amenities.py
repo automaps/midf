@@ -7,12 +7,17 @@ from midf.imdf_model import IMDFAmenity
 
 __all__ = ["load_imdf_amenities"]
 
+import logging
+
+logger = logging.getLogger(__name__)
+
 
 def load_imdf_amenities(
-    dataframes: Mapping[IMDFFeatureType, DataFrame],
+    dataframes: Mapping[str, DataFrame],
     out: Mapping[IMDFFeatureType, List[IMDFAmenity]],
 ) -> None:
     if IMDFFeatureType.amenity.value in dataframes:
+        logger.error(f"Loading {IMDFFeatureType.amenity} features")
         for ith_row, amenity_row in dataframes[
             IMDFFeatureType.amenity.value
         ].iterrows():

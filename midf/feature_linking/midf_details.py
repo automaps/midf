@@ -11,7 +11,7 @@ __all__ = ["link_details"]
 
 
 def link_details(
-    imdf_dict: Mapping[IMDFFeatureType, Collection[IMDFFeature]]
+    imdf_dict: Mapping[IMDFFeatureType, Collection[IMDFFeature]],
 ) -> Dict[str, List[MIDFDetail]]:
     details = defaultdict(list)
     for detail in imdf_dict[IMDFFeatureType.detail]:

@@ -1,4 +1,5 @@
 import json
+import logging
 import uuid
 from typing import List, Mapping
 
@@ -7,16 +8,19 @@ from pandas import DataFrame
 
 from midf.enums import IMDFFeatureType
 from midf.imdf_model import IMDFFixture
-from midf.loading import logger
 
 __all__ = ["load_imdf_fixtures"]
 
+logger = logging.getLogger(__name__)
+
 
 def load_imdf_fixtures(
-    dataframes: Mapping[IMDFFeatureType, DataFrame],
+    dataframes: Mapping[str, DataFrame],
     out: Mapping[IMDFFeatureType, List[IMDFFixture]],
 ) -> None:
     if IMDFFeatureType.fixture.value in dataframes:
+        logger.error(f"Loading {IMDFFeatureType.fixture} features")
+
         for ith_row, fixture_row in dataframes[
             IMDFFeatureType.fixture.value
         ].iterrows():

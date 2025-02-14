@@ -10,12 +10,17 @@ from midf.midf_typing import Door
 
 __all__ = ["load_imdf_openings"]
 
+import logging
+
+logger = logging.getLogger(__name__)
+
 
 def load_imdf_openings(
-    dataframes: Mapping[IMDFFeatureType, DataFrame],
+    dataframes: Mapping[str, DataFrame],
     out: Mapping[IMDFFeatureType, List[IMDFOpening]],
 ) -> None:
     if IMDFFeatureType.opening.value in dataframes:
+        logger.error(f"Loading {IMDFFeatureType.opening} features")
         for ith_row, opening_row in dataframes[
             IMDFFeatureType.opening.value
         ].iterrows():
@@ -33,14 +38,20 @@ def load_imdf_openings(
 
             display_point = opening_dict.pop("display_point")
             if display_point is not None:
+                a = json.dumps(display_point)
+
                 if isinstance(display_point, dict):
-                    display_point = shapely.from_geojson(json.dumps(display_point))
+                    display_point = shapely.from_geojson(a)
                 else:
                     display_point = shapely.from_geojson(display_point)
 
             door = opening_dict.pop("door")
             if door is not None:
-                door = Door(**json.loads(door))
+                if isinstance(door, str):
+                    door = json.loads(door)
+                else:
+                    ...
+                door = Door(**door)
 
             opening = IMDFOpening(
                 **opening_dict,

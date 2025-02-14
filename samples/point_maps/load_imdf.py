@@ -11,11 +11,13 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
 if __name__ == "__main__":
-    data_base = Path(__file__).parent / "data" / "zips"
+    data_base = (
+        Path(__file__).parent / "data" / "zip2" / "GoodMaps IMDF-20250214T074841Z-001"
+    )
 
     for f in data_base.iterdir():
         if f.is_file() and f.suffix == ".zip":
-            if True:
+            if False:
                 if "DUB" not in f.stem:
                     continue
 

@@ -9,12 +9,17 @@ from midf.imdf_model import IMDFBuilding
 
 __all__ = ["load_imdf_buildings"]
 
+import logging
+
+logger = logging.getLogger(__name__)
+
 
 def load_imdf_buildings(
-    dataframes: Mapping[IMDFFeatureType, DataFrame],
+    dataframes: Mapping[str, DataFrame],
     out: Mapping[IMDFFeatureType, List[IMDFBuilding]],
 ) -> None:
     if IMDFFeatureType.building.value in dataframes:
+        logger.error(f"Loading {IMDFFeatureType.building} features")
         for ith_row, building_row in dataframes[
             IMDFFeatureType.building.value
         ].iterrows():

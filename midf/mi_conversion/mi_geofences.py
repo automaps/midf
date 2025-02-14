@@ -1,0 +1,68 @@
+import logging
+
+from jord.shapely_utilities import clean_shape, dilate
+
+from integration_system.model import Building, LocationType
+from midf.conversion import (
+    OUTDOOR_BUILDING_NAME,
+    make_mi_building_admin_id_midf,
+)
+from midf.model import MIDFGeofence
+
+logger = logging.getLogger(__name__)
+
+__all__ = ["convert_geofences"]
+
+
+def convert_geofences(found_venue_key, mi_solution, midf_solution):
+    if midf_solution.geofences:
+        for geofence in midf_solution.geofences:
+            geofence: MIDFGeofence
+
+            ltk = LocationType.compute_key(name=geofence.category)
+            if mi_solution.location_types.get(ltk) is None:
+                ltk = mi_solution.add_location_type(name=geofence.category)
+
+            if geofence.buildings:
+                for building in geofence.buildings:
+                    ...
+            if geofence.levels:
+                for level in geofence.levels:
+                    ...
+            if geofence.parents:
+                for parent in geofence.parents:
+                    ...
+
+            geofence_name = None
+            if geofence.name:
+                geofence_name = next(iter(geofence.name.values()))
+            else:
+                if geofence.alt_name:
+                    geofence_name = next(iter(geofence.alt_name.values()))
+                if geofence_name is None:
+                    geofence_name = geofence.category
+
+            blk = Building.compute_key(
+                admin_id=make_mi_building_admin_id_midf(
+                    OUTDOOR_BUILDING_NAME, found_venue_key
+                )
+            )
+
+            floor_key = None
+            for floor in mi_solution.floors:
+                if floor.building.key == blk:
+                    floor_key = floor.key
+                    break
+
+            if floor_key is None:  # TODO: FIX, bad assumption
+                logger.error(f"Floor not found for {geofence}")
+                floor_key = next(iter(mi_solution.floors)).key
+
+            gid = geofence.id  # + found_venue_key
+            mi_solution.add_area(
+                admin_id=gid,
+                name=geofence_name,
+                polygon=geofence.geometry,
+                floor_key=floor_key,
+                location_type_key=ltk,
+            )

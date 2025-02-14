@@ -9,12 +9,18 @@ from midf.midf_typing import Temporality
 
 __all__ = ["load_imdf_occupants"]
 
+import logging
+
+logger = logging.getLogger(__name__)
+
 
 def load_imdf_occupants(
-    dataframes: Mapping[IMDFFeatureType, DataFrame],
+    dataframes: Mapping[str, DataFrame],
     out: Mapping[IMDFFeatureType, List[IMDFOccupant]],
 ) -> None:
     if IMDFFeatureType.occupant.value in dataframes:
+        logger.error(f"Loading {IMDFFeatureType.occupant} features")
+
         for ith_row, occupant_row in dataframes[
             IMDFFeatureType.occupant.value
         ].iterrows():
