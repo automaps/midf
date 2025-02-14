@@ -6,6 +6,7 @@ try:
     from enum import StrEnum
 except ImportError:
     from strenum import StrEnum
+
 import shapely
 from attr import dataclass
 
