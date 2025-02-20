@@ -3,6 +3,7 @@ from typing import List, Optional
 import shapely
 from attr import dataclass
 
+from midf.enums import IMDFSectionCategory
 from midf.midf_typing import Labels, MIDFFeature, Polygonal
 from ..address import MIDFAddress
 
@@ -12,7 +13,7 @@ __all__ = ["MIDFSection"]
 @dataclass
 class MIDFSection(MIDFFeature):
     geometry: Polygonal
-    category: str
+    category: IMDFSectionCategory
 
     restriction: Optional[str] = None
     accessibility: Optional[List[str]] = None

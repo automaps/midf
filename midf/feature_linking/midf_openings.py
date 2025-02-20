@@ -1,3 +1,4 @@
+import logging
 from collections import defaultdict
 from typing import Collection, Dict, List, Mapping
 
@@ -9,11 +10,16 @@ from midf.model import MIDFOpening
 
 __all__ = ["link_openings"]
 
+logger = logging.getLogger(__name__)
+
 
 def link_openings(
     imdf_dict: Mapping[IMDFFeatureType, Collection[IMDFFeature]],
 ) -> Dict[str, List[MIDFOpening]]:
     openings = defaultdict(list)
+    logger.error(
+        f"Linking openings from {len(imdf_dict[IMDFFeatureType.opening])} openings"
+    )
     for opening in imdf_dict[IMDFFeatureType.opening]:
         opening: IMDFOpening
         openings[opening.level_id].append(

@@ -9,11 +9,16 @@ from midf.model import MIDFFixture
 
 __all__ = ["link_fixtures"]
 
+import logging
+
+logger = logging.getLogger(__name__)
+
 
 def link_fixtures(
     anchor_id_mapping, imdf_dict: Mapping[IMDFFeatureType, Collection[IMDFFeature]]
 ) -> Dict[str, List[MIDFFixture]]:
     fixtures = defaultdict(list)
+    logger.error(f"Linking Fixtures {len(imdf_dict[IMDFFeatureType.fixture])}")
     for fixture in imdf_dict[IMDFFeatureType.fixture]:
         fixture: IMDFFixture
         fixtures[fixture.level_id].append(

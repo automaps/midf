@@ -4,6 +4,8 @@ import shapely
 from jord.shapely_utilities import clean_shape, dilate
 
 from integration_system.model import LocationType
+from midf.mi_utilities import clean_admin_id
+from midf.model import MIDFSection
 
 logger = logging.getLogger(__name__)
 
@@ -13,7 +15,19 @@ __all__ = ["convert_sections"]
 def convert_sections(floor_key, level, mi_solution) -> None:
     if level.sections:
         for section in level.sections:
-            section_name = next(iter(level.name.values()))
+            section: MIDFSection
+
+            section_name = None
+            if section.name:
+                section_name = next(iter(section.name.values()))
+
+            if section_name is None or section_name == "":
+                if section.alt_name:
+                    section_name = next(iter(section.alt_name.values()))
+
+            if section_name is None or section_name == "":
+                section_name = section.id
+
             section_geom = clean_shape(section.geometry)
 
             location_type_key = LocationType.compute_key(name=section.category)
@@ -22,7 +36,7 @@ def convert_sections(floor_key, level, mi_solution) -> None:
 
             if isinstance(section_geom, shapely.Polygon):
                 mi_solution.add_area(
-                    admin_id=section.id,
+                    admin_id=clean_admin_id(section.id),
                     name=section_name,
                     polygon=section_geom,
                     floor_key=floor_key,

@@ -4,6 +4,8 @@ import shapely
 from jord.shapely_utilities import clean_shape, dilate
 
 from integration_system.model import LocationType
+from midf.mi_utilities import clean_admin_id
+from midf.model import MIDFFixture
 
 logger = logging.getLogger(__name__)
 
@@ -13,7 +15,19 @@ __all__ = ["convert_fixtures"]
 def convert_fixtures(floor_key, level, mi_solution) -> None:
     if level.fixtures:
         for fixture in level.fixtures:
-            fixture_name = next(iter(level.name.values()))
+            fixture: MIDFFixture
+
+            fixture_name = None
+            if fixture.name:
+                fixture_name = next(iter(fixture.name.values()))
+
+            if fixture_name is None or fixture_name == "":
+                if fixture.alt_name:
+                    fixture_name = next(iter(fixture.alt_name.values()))
+
+            if fixture_name is None or fixture_name == "":
+                fixture_name = fixture.id
+
             fixture_geom = clean_shape(fixture.geometry)
 
             location_type_key = LocationType.compute_key(name=fixture.category)
@@ -22,7 +36,7 @@ def convert_fixtures(floor_key, level, mi_solution) -> None:
 
             if isinstance(fixture_geom, shapely.Polygon):
                 mi_solution.add_area(
-                    admin_id=fixture.id,
+                    admin_id=clean_admin_id(fixture.id),
                     name=fixture_name,
                     polygon=fixture_geom,
                     floor_key=floor_key,

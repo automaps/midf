@@ -53,9 +53,8 @@ def link_imdf(
     )
 
     venue_mapping = link_venues(imdf_dict)
-    found_venue_addresses = venue_mapping.keys()
 
-    addresses = link_addresses(found_venue_addresses, imdf_dict, venue_mapping)
+    addresses = link_addresses(imdf_dict, venue_mapping)
 
     buildings = link_buildings(imdf_dict)
 
@@ -106,14 +105,30 @@ def link_imdf(
 
     geofences = link_geofences(imdf_dict)
 
-    relationships = link_relationships(imdf_dict)
+    relationships = link_relationships(
+        imdf_dict,
+        levels=levels,
+        geofences=geofences,
+        amenities=amenities,
+        buildings=buildings,
+        footprints=footprints,
+        addresses=addresses,
+        kiosks=kiosks,
+        openings=openings,
+        sections=sections,
+        units=units,
+        anchors=anchors,
+        occupants=occupants,
+        fixtures=fixtures,
+        details=details,
+    )
 
+    solution.relationships = list(relationships.values())
     solution.amenities = list(amenities.values())
     solution.addresses = list(addresses.values())
     solution.buildings = list(buildings.values())
     solution.footprints = list(footprints.values())
     solution.levels = list(levels.values())
     solution.geofences = list(geofences.values())
-    solution.relationships = relationships
 
     return solution

@@ -9,13 +9,21 @@ from midf.model import MIDFUnit
 
 __all__ = ["link_units"]
 
+import logging
+
+logger = logging.getLogger(__name__)
+
 
 def link_units(
     anchors,
     imdf_dict: Mapping[IMDFFeatureType, Collection[IMDFFeature]],
 ) -> Dict[str, List[MIDFUnit]]:
     units = defaultdict(list)
+    logger.error(f"Linking units {len(imdf_dict[IMDFFeatureType.unit])}")
     found_anchor_unit_ids = anchors.keys()
+
+    anchors_copy = anchors.copy()
+
     for unit in imdf_dict[IMDFFeatureType.unit]:
         unit: IMDFUnit
         units[unit.level_id].append(
@@ -28,7 +36,9 @@ def link_units(
                 restriction=unit.restriction,
                 accessibility=unit.accessibility,
                 anchors=(
-                    anchors.pop(unit.id) if unit.id in found_anchor_unit_ids else None
+                    anchors_copy.pop(unit.id)
+                    if unit.id in found_anchor_unit_ids
+                    else None
                 ),
             )
         )

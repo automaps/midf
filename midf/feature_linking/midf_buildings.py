@@ -1,3 +1,4 @@
+import logging
 from typing import Collection, Dict, Mapping
 
 from midf.enums import IMDFFeatureType
@@ -6,11 +7,16 @@ from midf.model import MIDFBuilding
 
 __all__ = ["link_buildings"]
 
+logger = logging.getLogger(__name__)
+
 
 def link_buildings(
     imdf_dict: Mapping[IMDFFeatureType, Collection[IMDFFeature]],
 ) -> Dict[str, MIDFBuilding]:
     buildings = {}
+
+    logger.error(f"IMDF buildings: {imdf_dict[IMDFFeatureType.building]}")
+
     for building in imdf_dict[IMDFFeatureType.building]:
         building: IMDFBuilding
         buildings[building.id] = MIDFBuilding(

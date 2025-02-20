@@ -9,12 +9,14 @@ from .level import MIDFLevel
 
 __all__ = ["MIDFGeofence"]
 
+from ...enums import IMDFGeofenceCategory
+
 
 @dataclass
 class MIDFGeofence(MIDFFeature):
     geometry: Polygonal
 
-    category: str
+    category: IMDFGeofenceCategory
     restriction: Optional[str] = None
     accessibility: Optional[List[str]] = None
 

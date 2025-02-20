@@ -1,22 +1,20 @@
 import logging
+from typing import Mapping
 
 from jord.shapely_utilities import clean_shape, dilate
 
-from integration_system.model import Building, Solution
-from midf.conversion import (
-    ASSUME_OUTDOOR_IF_MISSING_BUILDING,
-    OUTDOOR_BUILDING_NAME,
-    make_mi_building_admin_id_midf,
-)
-from midf.mi_conversion import (
-    convert_details,
-    convert_fixtures,
-    convert_kiosks,
-    convert_openings,
+from integration_system.model import Building, Floor, Solution
+from midf.constants import ASSUME_OUTDOOR_IF_MISSING_BUILDING, OUTDOOR_BUILDING_NAME
+from midf.mi_conversion.mi_details import convert_details
+from midf.mi_conversion.mi_fixtures import convert_fixtures
+from midf.mi_conversion.mi_kiosks import convert_kiosks
+from midf.mi_conversion.mi_openings import convert_openings
+from midf.mi_conversion.mi_sections import (
     convert_sections,
-    convert_units,
 )
-from midf.model import MIDFSolution
+from midf.mi_conversion.mi_units import convert_units
+from midf.mi_utilities import clean_admin_id, make_mi_building_admin_id_midf
+from midf.model import MIDFLevel, MIDFSolution
 
 logger = logging.getLogger(__name__)
 
@@ -24,16 +22,17 @@ __all__ = ["convert_levels"]
 
 
 def convert_levels(
-    anchor_location_type,
-    found_venue_key,
+    anchor_location_type: str,
+    found_venue_key: str,
     mi_solution: Solution,
     midf_solution: MIDFSolution,
-    occupant_category_mapping,
+    occupant_category_mapping: Mapping,
     venue_graph_key: str,
     venue_key: str,
 ) -> None:
     for level in midf_solution.levels:
         # level.address TODO: UNUSED ATM
+        level: MIDFLevel
 
         if level.buildings is None:
             if level.outdoor or ASSUME_OUTDOOR_IF_MISSING_BUILDING:
@@ -42,7 +41,7 @@ def convert_levels(
                     OUTDOOR_BUILDING_NAME, found_venue_key
                 )
                 found_building = mi_solution.buildings.get(
-                    Building.compute_key(admin_id=c)
+                    Building.compute_key(admin_id=clean_admin_id(c))
                 )
                 if found_building is None:
                     outdoor_building_key = mi_solution.add_building(
@@ -59,17 +58,32 @@ def convert_levels(
             a = make_mi_building_admin_id_midf(
                 next(iter(level.buildings)).id, found_venue_key
             )
-            found_building = mi_solution.buildings.get(Building.compute_key(admin_id=a))
+            found_building = mi_solution.buildings.get(
+                Building.compute_key(admin_id=clean_admin_id(a))
+            )
 
-        floor_name = next(iter(level.name.values()))
-        if floor_name is None:
-            floor_name = "Floor No Name Found"
+        floor_name = None
+        if level.name:
+            floor_name = next(iter(level.name.values()))
+
+        if floor_name is None or floor_name == "":
+            floor_name = level.id
+
+        floor_index = level.ordinal
+        while mi_solution.floors.get(
+            Floor.compute_key(building_key=found_building.key, floor_index=floor_index)
+        ):
+            if True:  # TODO: DISABLE WHEN FINISHED TESTING
+                floor_index += 100
+            else:
+                logger.error(f"Skipping {level}, already exists")
+                continue
 
         floor_key = mi_solution.add_floor(
             building_key=found_building.key,
             name=floor_name,
-            polygon=found_building.polygon,
-            floor_index=level.ordinal,
+            polygon=clean_shape(found_building.polygon),
+            floor_index=floor_index,
         )
 
         convert_units(

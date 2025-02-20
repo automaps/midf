@@ -5,17 +5,24 @@ from warg.data_structures.mappings import to_dict
 
 from midf.enums import IMDFFeatureType
 from midf.imdf_model import IMDFAnchor, IMDFFeature
-from midf.model import MIDFAnchor
+from midf.model import MIDFAnchor, MIDFOccupant
 
 __all__ = ["link_anchors"]
+
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 def link_anchors(
     found_occupant_anchors,
     imdf_dict: Mapping[IMDFFeatureType, Collection[IMDFFeature]],
-    occupants,
+    occupants: dict[str, List[MIDFOccupant]],
 ) -> Dict[str, List[MIDFAnchor]]:
     anchors = defaultdict(list)
+    occupants_copy = occupants.copy()
+
+    logger.error(f"Linking anchors {len(imdf_dict[IMDFFeatureType.anchor])}")
     for anchor in imdf_dict[IMDFFeatureType.anchor]:
         anchor: IMDFAnchor
         anchors[anchor.unit_id].append(
@@ -24,7 +31,7 @@ def link_anchors(
                 geometry=anchor.geometry,
                 # address=addresses[section.address_id], # TODO: INVALID IMDF!
                 occupants=(
-                    occupants.pop(anchor.id)
+                    occupants_copy.pop(anchor.id)
                     if anchor.id in found_occupant_anchors
                     else None
                 ),

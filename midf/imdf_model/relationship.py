@@ -2,19 +2,19 @@ from typing import Any, List, Optional
 
 import shapely
 
-from .base import IMDFFeature
+from .base import IMDFFeature, IMDFFeatureReference
 from ..enums import IMDFRelationshipCategory
 
 __all__ = ["IMDFRelationship"]
 
-from ..midf_typing import Direction
+from .opening import IMDFDirection
 
 
 class IMDFRelationship(IMDFFeature):
     category: IMDFRelationshipCategory
-    direction: Direction
-    origin: Optional[IMDFFeature] = None
-    intermediary: Optional[List[IMDFFeature]] = None
-    destination: Optional[IMDFFeature] = None
+    direction: IMDFDirection
+    origin: Optional[IMDFFeatureReference] = None
+    intermediary: Optional[List[IMDFFeatureReference]] = None
+    destination: Optional[IMDFFeatureReference] = None
     hours: Any = None
     geometry: Optional[shapely.geometry.base.BaseGeometry] = None

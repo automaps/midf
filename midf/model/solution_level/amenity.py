@@ -9,11 +9,13 @@ from .level_level import MIDFUnit
 
 __all__ = ["MIDFAmenity"]
 
+from ...enums import IMDFAmenityCategory
+
 
 @dataclass
 class MIDFAmenity(MIDFFeature):
     geometry: shapely.Point
-    category: str
+    category: IMDFAmenityCategory
     units: Collection[MIDFUnit]
 
     accessibility: Optional[str] = None

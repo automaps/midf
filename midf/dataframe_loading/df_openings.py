@@ -6,7 +6,7 @@ from pandas import DataFrame
 
 from midf.enums import IMDFFeatureType
 from midf.imdf_model import IMDFOpening
-from midf.midf_typing import Door
+from midf.imdf_model.opening import IMDFDoor
 
 __all__ = ["load_imdf_openings"]
 
@@ -51,7 +51,7 @@ def load_imdf_openings(
                     door = json.loads(door)
                 else:
                     ...
-                door = Door(**door)
+                door = IMDFDoor(**door)
 
             opening = IMDFOpening(
                 **opening_dict,

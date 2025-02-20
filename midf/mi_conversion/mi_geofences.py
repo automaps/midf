@@ -3,10 +3,8 @@ import logging
 from jord.shapely_utilities import clean_shape, dilate
 
 from integration_system.model import Building, LocationType
-from midf.conversion import (
-    OUTDOOR_BUILDING_NAME,
-    make_mi_building_admin_id_midf,
-)
+from midf.constants import OUTDOOR_BUILDING_NAME
+from midf.mi_utilities import clean_admin_id, make_mi_building_admin_id_midf
 from midf.model import MIDFGeofence
 
 logger = logging.getLogger(__name__)
@@ -36,15 +34,22 @@ def convert_geofences(found_venue_key, mi_solution, midf_solution):
             geofence_name = None
             if geofence.name:
                 geofence_name = next(iter(geofence.name.values()))
-            else:
+
+            if geofence_name is None or geofence_name == "":
                 if geofence.alt_name:
                     geofence_name = next(iter(geofence.alt_name.values()))
-                if geofence_name is None:
-                    geofence_name = geofence.category
+
+            if geofence_name is None or geofence_name == "":
+                geofence_name = geofence.category
+
+            if geofence_name is None or geofence_name == "":
+                geofence_name = geofence.id
 
             blk = Building.compute_key(
-                admin_id=make_mi_building_admin_id_midf(
-                    OUTDOOR_BUILDING_NAME, found_venue_key
+                admin_id=clean_admin_id(
+                    make_mi_building_admin_id_midf(
+                        OUTDOOR_BUILDING_NAME, found_venue_key
+                    )
                 )
             )
 
@@ -60,9 +65,9 @@ def convert_geofences(found_venue_key, mi_solution, midf_solution):
 
             gid = geofence.id  # + found_venue_key
             mi_solution.add_area(
-                admin_id=gid,
+                admin_id=clean_admin_id(gid),
                 name=geofence_name,
-                polygon=geofence.geometry,
+                polygon=clean_shape(geofence.geometry),
                 floor_key=floor_key,
                 location_type_key=ltk,
             )

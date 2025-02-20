@@ -16,11 +16,13 @@ from .level_level import (
 
 __all__ = ["MIDFLevel"]
 
+from ...enums import IMDFLevelCategory
+
 
 @dataclass
 class MIDFLevel(MIDFFeature):
     geometry: Polygonal
-    category: str
+    category: IMDFLevelCategory
     outdoor: bool
     ordinal: int
 

@@ -9,11 +9,16 @@ from midf.model import MIDFKiosk
 
 __all__ = ["link_kiosks"]
 
+import logging
+
+logger = logging.getLogger(__name__)
+
 
 def link_kiosks(
     anchor_id_mapping, imdf_dict: Mapping[IMDFFeatureType, Collection[IMDFFeature]]
 ) -> Dict[str, List[MIDFKiosk]]:
     kiosks = defaultdict(list)
+    logger.error(f"Linking {len(imdf_dict[IMDFFeatureType.kiosk])} kiosks")
     for kiosk in imdf_dict[IMDFFeatureType.kiosk]:
         kiosk: IMDFKiosk
         kiosks[kiosk.level_id].append(
