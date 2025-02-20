@@ -1,5 +1,6 @@
 from .address import *
 from .address_level import *
+from .amenity import *
 from .building import *
 from .building_level import *
 from .geofence import *

@@ -71,6 +71,13 @@ class IMDFDoorCategory(StrEnum):
     unspecified = "unspecified"
 
 
+class IMDFDoorMaterial(StrEnum):
+    wood = "wood"
+    glass = "glass"
+    metal = "metal"
+    gate = "gate"
+
+
 class IMDFDoorType(StrEnum):
     movablepartition = "movablepartition"
     open = "open"

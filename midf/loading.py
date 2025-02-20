@@ -2,7 +2,7 @@ import json
 import logging
 from collections import defaultdict
 from pathlib import Path
-from typing import Collection, Union
+from typing import Collection, List, Union
 
 from midf.imdf_model import (
     IMDFFeature,
@@ -59,7 +59,16 @@ def load_imdf(
             elif z_file_path.suffix == ".json":
                 with zf.open(file) as f:
                     assert manifest is None
-                    manifest = IMDFManifest(**json.loads(f.read()))
+                    manifest_file_content = json.loads(f.read())
+                    if isinstance(manifest_file_content, List):
+                        logger.error(f"{file} is a list, expected a dict")
+                        if len(manifest_file_content) == 1:
+                            manifest_file_content = manifest_file_content[0]
+                            logger.error(
+                                f"Using first and only element: {manifest_file_content}"
+                            )
+                    manifest = IMDFManifest(**manifest_file_content)
+                    logger.error(f"Successfully loaded manifest from {file}")
 
             else:
                 logger.error(f"{file} was skipped")

@@ -7,16 +7,35 @@ from midf.imdf_model import IMDFRelationship
 
 __all__ = ["load_imdf_relationships"]
 
+import logging
+
+logger = logging.getLogger(__name__)
+
 
 def load_imdf_relationships(
-    dataframes: Mapping[IMDFFeatureType, DataFrame],
+    dataframes: Mapping[str, DataFrame],
     out: Mapping[IMDFFeatureType, List[IMDFRelationship]],
 ) -> None:
     if IMDFFeatureType.relationship.value in dataframes:
+        logger.error(f"Loading {IMDFFeatureType.relationship} features")
         for ith_row, relationship_row in dataframes[
             IMDFFeatureType.relationship.value
         ].iterrows():
             relationship_dict = relationship_row.to_dict()
 
-            relationship = IMDFRelationship(**relationship_dict)
-            out[IMDFFeatureType.relationship].append(relationship)
+            destination = relationship_dict.pop("destination")
+            origin = relationship_dict.pop("origin")
+            intermediary = relationship_dict.pop("intermediary")
+
+            try:
+                relationship = IMDFRelationship(
+                    **relationship_dict,
+                    destination=destination,
+                    origin=origin,
+                    intermediary=intermediary,
+                )
+                out[IMDFFeatureType.relationship].append(relationship)
+            except Exception as e:
+                logger.error(
+                    f"Error loading {IMDFFeatureType.relationship} features: {e}"
+                )

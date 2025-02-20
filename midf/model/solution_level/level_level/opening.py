@@ -3,6 +3,11 @@ from typing import Any, List, Optional
 import shapely
 from attr import dataclass
 
+from midf.enums import (
+    IMDFAccessControlCategory,
+    IMDFAccessibilityCategory,
+    IMDFOpeningCategory,
+)
 from midf.midf_typing import Labels, MIDFFeature
 
 __all__ = ["MIDFOpening"]
@@ -12,10 +17,10 @@ __all__ = ["MIDFOpening"]
 class MIDFOpening(MIDFFeature):
     geometry: shapely.LineString
 
-    category: str
-    accessibility: Optional[List[str]] = None
+    category: IMDFOpeningCategory
+    accessibility: Optional[List[IMDFAccessibilityCategory]] = None
 
-    access_control: Optional[List[str]] = None
+    access_control: Optional[List[IMDFAccessControlCategory]] = None
 
     door: Optional[Any] = None
 

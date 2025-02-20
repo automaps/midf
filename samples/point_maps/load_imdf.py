@@ -12,10 +12,11 @@ logger.setLevel(logging.INFO)
 
 if __name__ == "__main__":
     data_base = Path(__file__).parent / "data" / "zips"
+    # data_base = (Path(__file__).parent / "data" / "zip3")
 
     for f in data_base.iterdir():
         if f.is_file() and f.suffix == ".zip":
-            if True:
+            if False:
                 if "DUB" not in f.stem:
                     continue
 
@@ -50,6 +51,6 @@ if __name__ == "__main__":
                     with open(data_base / "go.json", "w") as f:
                         f.write(to_json(mi_solution))
             except Exception as e:
-                if False:
+                if True:
                     raise e
                 logger.error(f"Failed to process {f}: {e}")

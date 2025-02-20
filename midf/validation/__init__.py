@@ -32,7 +32,7 @@ from .features import (
 
 
 def validate_geometric_containment(
-    imdf_dict: dict[str, Collection[IMDFFeature]]
+    imdf_dict: dict[str, Collection[IMDFFeature]],
 ) -> None:
     levels = imdf_dict.get(IMDFFeatureType.level, [])
     units = imdf_dict.get(IMDFFeatureType.unit, [])

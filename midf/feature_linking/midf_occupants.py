@@ -9,11 +9,16 @@ from midf.model import MIDFOccupant
 
 __all__ = ["link_occupants"]
 
+import logging
+
+logger = logging.getLogger(__name__)
+
 
 def link_occupants(
-    imdf_dict: Mapping[IMDFFeatureType, Collection[IMDFFeature]]
+    imdf_dict: Mapping[IMDFFeatureType, Collection[IMDFFeature]],
 ) -> Dict[str, List[MIDFOccupant]]:
     occupants = defaultdict(list)
+    logger.error(f"Linking {len(imdf_dict[IMDFFeatureType.occupant])} occupants")
     for occupant in imdf_dict[IMDFFeatureType.occupant]:
         occupant: IMDFOccupant
         occupants[occupant.anchor_id].append(

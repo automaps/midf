@@ -8,11 +8,18 @@ from midf.model import MIDFFootprint
 
 __all__ = ["link_footprints"]
 
+import logging
+
+logger = logging.getLogger(__name__)
+
 
 def link_footprints(
     buildings, imdf_dict: Mapping[IMDFFeatureType, Collection[IMDFFeature]]
 ) -> Dict[str, MIDFFootprint]:
     footprints = {}
+    logger.error(
+        f"Linking footprints from {len(imdf_dict[IMDFFeatureType.footprint])} footprints"
+    )
     for footprint in imdf_dict[IMDFFeatureType.footprint]:
         footprint: IMDFFootprint
         footprints[footprint.id] = MIDFFootprint(

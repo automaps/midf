@@ -3,6 +3,7 @@ from typing import Optional
 import shapely
 from attr import dataclass
 
+from midf.enums import IMDFVenueCategory
 from midf.midf_typing import Labels, MIDFFeature, Polygonal
 
 __all__ = ["MIDFVenue"]
@@ -11,7 +12,7 @@ __all__ = ["MIDFVenue"]
 @dataclass
 class MIDFVenue(MIDFFeature):
     geometry: Polygonal
-    category: str
+    category: IMDFVenueCategory
 
     name: Labels
 

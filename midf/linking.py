@@ -1,6 +1,6 @@
-from datetime import datetime
 from typing import Collection, Mapping, Union
 
+from integration_system.mi import from_manager_api_datetime_format
 from midf.enums import IMDFFeatureType
 from midf.feature_linking import (
     link_addresses,
@@ -19,6 +19,7 @@ from midf.feature_linking import (
     link_units,
     link_venues,
 )
+from midf.feature_linking.midf_amenities import link_amenities
 from midf.imdf_model import (
     IMDFFeature,
     IMDFManifest,
@@ -31,17 +32,13 @@ from midf.model import (
 
 
 def parse_datetime(created):
-    return (
-        datetime.strptime(created, "%Y-%m-%dT%H:%M:%S.%fZ")
-        if created is not None
-        else None
-    )
+    return from_manager_api_datetime_format(created) if created is not None else None
 
 
 def link_imdf(
     imdf_dict: Mapping[
         Union[str, IMDFFeatureType], Collection[Union[IMDFManifest, IMDFFeature]]
-    ]
+    ],
 ) -> MIDFSolution:
     imdf_manifest: IMDFManifest = next(iter(imdf_dict[MANIFEST_KEY]))
 
@@ -56,9 +53,8 @@ def link_imdf(
     )
 
     venue_mapping = link_venues(imdf_dict)
-    found_venue_addresses = venue_mapping.keys()
 
-    addresses = link_addresses(found_venue_addresses, imdf_dict, venue_mapping)
+    addresses = link_addresses(imdf_dict, venue_mapping)
 
     buildings = link_buildings(imdf_dict)
 
@@ -70,10 +66,10 @@ def link_imdf(
     found_occupant_anchors = occupants.keys()
 
     anchors = link_anchors(found_occupant_anchors, imdf_dict, occupants)
-    found_anchor_unit_ids = anchors.keys()
 
-    units = link_units(anchors, found_anchor_unit_ids, imdf_dict)
+    units = link_units(anchors, imdf_dict)
 
+    amenities = link_amenities(imdf_dict, units)
     details = link_details(imdf_dict)
 
     anchor_id_mapping = {anchor_.id: anchor_ for a in anchors.values() for anchor_ in a}
@@ -109,13 +105,30 @@ def link_imdf(
 
     geofences = link_geofences(imdf_dict)
 
-    relationships = link_relationships(imdf_dict)
+    relationships = link_relationships(
+        imdf_dict,
+        levels=levels,
+        geofences=geofences,
+        amenities=amenities,
+        buildings=buildings,
+        footprints=footprints,
+        addresses=addresses,
+        kiosks=kiosks,
+        openings=openings,
+        sections=sections,
+        units=units,
+        anchors=anchors,
+        occupants=occupants,
+        fixtures=fixtures,
+        details=details,
+    )
 
+    solution.relationships = list(relationships.values())
+    solution.amenities = list(amenities.values())
     solution.addresses = list(addresses.values())
     solution.buildings = list(buildings.values())
     solution.footprints = list(footprints.values())
     solution.levels = list(levels.values())
     solution.geofences = list(geofences.values())
-    solution.relationships = relationships
 
     return solution

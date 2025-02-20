@@ -6,6 +6,10 @@ from midf.model import MIDFLevel
 
 __all__ = ["link_levels"]
 
+import logging
+
+logger = logging.getLogger(__name__)
+
 
 def link_levels(
     *,
@@ -25,6 +29,14 @@ def link_levels(
     units,
 ) -> Dict[str, MIDFLevel]:
     levels = {}
+    logger.error(f"Linking levels from {len(imdf_dict[IMDFFeatureType.level])} levels")
+
+    kiosks_copy = kiosks.copy()
+    openings_copy = openings.copy()
+    sections_copy = sections.copy()
+    units_copy = units.copy()
+    fixtures_copy = fixtures.copy()
+    details_copy = details.copy()
     for level in imdf_dict[IMDFFeatureType.level]:
         level: IMDFLevel
 
@@ -46,16 +58,26 @@ def link_levels(
             # address=addresses[section.address_id], # TODO: INVALID IMDF!
             buildings=building_references,
             sections=(
-                sections.pop(level.id) if level.id in found_section_levels else None
+                sections_copy.pop(level.id)
+                if level.id in found_section_levels
+                else None
             ),
-            kiosks=kiosks.pop(level.id) if level.id in found_kiosk_levels else None,
+            kiosks=(
+                kiosks_copy.pop(level.id) if level.id in found_kiosk_levels else None
+            ),
             fixtures=(
-                fixtures.pop(level.id) if level.id in found_fixture_levels else None
+                fixtures_copy.pop(level.id)
+                if level.id in found_fixture_levels
+                else None
             ),
             openings=(
-                openings.pop(level.id) if level.id in found_opening_levels else None
+                openings_copy.pop(level.id)
+                if level.id in found_opening_levels
+                else None
             ),
-            units=units.pop(level.id) if level.id in found_unit_levels else None,
-            details=details.pop(level.id) if level.id in found_detail_levels else None,
+            units=units_copy.pop(level.id) if level.id in found_unit_levels else None,
+            details=(
+                details_copy.pop(level.id) if level.id in found_detail_levels else None
+            ),
         )
     return levels

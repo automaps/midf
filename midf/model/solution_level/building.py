@@ -8,10 +8,12 @@ from .address import MIDFAddress
 
 __all__ = ["MIDFBuilding"]
 
+from ...enums import IMDFBuildingCategory
+
 
 @dataclass
 class MIDFBuilding(MIDFFeature):
-    category: str
+    category: IMDFBuildingCategory
 
     name: Optional[Labels] = None
     alt_name: Optional[Labels] = None

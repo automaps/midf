@@ -9,12 +9,17 @@ from midf.imdf_model import IMDFLevel
 
 __all__ = ["load_imdf_levels"]
 
+import logging
+
+logger = logging.getLogger(__name__)
+
 
 def load_imdf_levels(
-    dataframes: Mapping[IMDFFeatureType, DataFrame],
+    dataframes: Mapping[str, DataFrame],
     out: Mapping[IMDFFeatureType, List[IMDFLevel]],
 ) -> None:
     if IMDFFeatureType.level.value in dataframes:
+        logger.error(f"Loading {IMDFFeatureType.level} features")
         for ith_row, level_row in dataframes[IMDFFeatureType.level.value].iterrows():
             level_dict = level_row.to_dict()
 

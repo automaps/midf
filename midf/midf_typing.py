@@ -1,11 +1,12 @@
-__all__ = ["Polygonal", "Lineal", "MIDFFeature", "Labels", "Direction", "Temporality"]
+__all__ = ["Polygonal", "Lineal", "MIDFFeature", "Labels", "Temporality"]
 
-from typing import Mapping, Optional, Union
+from typing import Mapping, Union
 
 try:
     from enum import StrEnum
 except ImportError:
     from strenum import StrEnum
+
 import shapely
 from attr import dataclass
 
@@ -19,20 +20,8 @@ class MIDFFeature:
     id: str
 
 
-class Direction(StrEnum):
-    directed = "directed"
-    undirected = "undirected"
-
-
 @dataclass
 class Temporality:
     start: str
     end: str
     modified: str
-
-
-@dataclass
-class Door:
-    type: Optional[str] = None
-    automatic: bool = False
-    material: Optional[str] = None
