@@ -34,7 +34,7 @@ def convert_levels(
         # level.address TODO: UNUSED ATM
         level: MIDFLevel
 
-        if level.buildings is None:
+        if level.buildings is None or len(level.buildings) == 0:
             if level.outdoor or ASSUME_OUTDOOR_IF_MISSING_BUILDING:
                 assert found_venue_key, "Venue key not found"
                 c = make_mi_building_admin_id_midf(

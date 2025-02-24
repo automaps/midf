@@ -20,6 +20,9 @@ def convert_buildings(
     venue: Venue,
     venue_key: str,
 ) -> str:
+    if not midf_solution.buildings:
+        return venue_key
+
     for building in midf_solution.buildings:
         building: MIDFBuilding
 
@@ -69,4 +72,9 @@ def convert_buildings(
             polygon=clean_shape(building_footprint),
             venue_key=found_venue_key,
         )
+
+    if found_venue_key is None:
+        logger.error(f"Could not find venue for building {building.id}")
+        raise ValueError(f"Could not find a venue for buildings")
+
     return found_venue_key

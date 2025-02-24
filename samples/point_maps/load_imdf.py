@@ -11,13 +11,13 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
 if __name__ == "__main__":
-    data_base = Path(__file__).parent / "data" / "zips"
+    data_base = Path(__file__).parent / "data" / "zips9"
     # data_base = (Path(__file__).parent / "data" / "zip3")
 
     for f in data_base.iterdir():
         if f.is_file() and f.suffix == ".zip":
-            if True:
-                if "Vitra" not in f.stem:
+            if False:
+                if "Temasek_IMDF" not in f.stem:
                     continue
 
             logger.error(f"Processing {f}")

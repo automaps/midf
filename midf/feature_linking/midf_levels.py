@@ -40,11 +40,14 @@ def link_levels(
     for level in imdf_dict[IMDFFeatureType.level]:
         level: IMDFLevel
 
-        building_references = (
-            [buildings[b_id] for b_id in level.building_ids]
-            if level.building_ids
-            else None
-        )
+        building_references = None
+        if level.building_ids:
+            building_references = []
+            for b_id in level.building_ids:
+                if b_id in buildings:
+                    building_references.append(buildings[b_id])
+                else:
+                    logger.error(f"Building {b_id} not found for level {level.id}")
 
         levels[level.id] = MIDFLevel(
             id=level.id,

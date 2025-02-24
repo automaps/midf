@@ -52,9 +52,14 @@ def load_imdf(
             z_file_path = Path(file)
             if z_file_path.suffix == ".geojson":  # optional filtering by filetype
                 with zf.open(file) as f:
-                    df = geopandas.read_file(f, engine="fiona")
-                    feature_name = z_file_path.stem
-                    dataframes[feature_name] = df
+                    try:
+                        df = geopandas.read_file(f, engine="fiona")
+                        feature_name = z_file_path.stem
+                        dataframes[feature_name] = df
+                    except Exception as e:
+                        logger.error(f"Failed to load {file}: {e}")
+                        if False:
+                            raise e
 
             elif z_file_path.suffix == ".json":
                 with zf.open(file) as f:

@@ -10,6 +10,7 @@ from integration_system.model import (
     Occupant,
     OccupantTemplate,
     OccupantType,
+    Room,
     Solution,
 )
 from midf.constants import ANCHOR_NAME
@@ -49,19 +50,30 @@ def convert_units(
             if mi_solution.location_types.get(location_type_key) is None:
                 mi_solution.add_location_type(name=unit.category)
 
+            unit_location_key = clean_admin_id(unit.id)
+
             if isinstance(unit_geom, shapely.Polygon):
                 if False:
                     unit_location_key = mi_solution.add_area(
-                        admin_id=clean_admin_id(unit.id),
+                        admin_id=unit_location_key,
                         name=unit_name,
                         polygon=unit_geom,
                         floor_key=floor_key,
                         location_type_key=location_type_key,
                     )
                 else:
+                    if (
+                        mi_solution.rooms.get(
+                            Room.compute_key(admin_id=unit_location_key)
+                        )
+                        is not None
+                    ):
+                        logger.error(f"Unit {unit.id} already exists. skipping.")
+                        continue
+
                     try:
                         unit_location_key = mi_solution.add_room(
-                            admin_id=clean_admin_id(unit.id),
+                            admin_id=unit_location_key,
                             name=unit_name,
                             polygon=unit_geom,
                             floor_key=floor_key,

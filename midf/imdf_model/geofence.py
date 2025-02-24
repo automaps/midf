@@ -1,4 +1,4 @@
-from typing import Any, List, Mapping, Optional
+from typing import Any, List, Mapping, Optional, Union
 
 from .base import IMDFFeature
 
@@ -13,7 +13,9 @@ from ..enums import (
 
 class IMDFGeofence(IMDFFeature):
     geometry: Any  # Polygonal
-    category: IMDFGeofenceCategory
+    category: Union[
+        IMDFGeofenceCategory, str
+    ]  # TODO: Some geofences have a category that is not in the enum, so we allow a
     name: Optional[Mapping[str, str]] = None
     alt_name: Optional[Mapping[str, str]] = None
     restriction: Optional[IMDFRestrictionCategory] = None

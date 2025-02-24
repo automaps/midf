@@ -34,7 +34,11 @@ def convert_fixtures(floor_key, level, mi_solution) -> None:
             if mi_solution.location_types.get(location_type_key) is None:
                 mi_solution.add_location_type(name=fixture.category)
 
-            if isinstance(fixture_geom, shapely.Polygon):
+            if (
+                isinstance(fixture_geom, shapely.Polygon)
+                and fixture_geom.is_valid
+                and (not fixture_geom.is_empty)
+            ):
                 mi_solution.add_area(
                     admin_id=clean_admin_id(fixture.id),
                     name=fixture_name,

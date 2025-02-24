@@ -4,7 +4,7 @@ from typing import Mapping
 import shapely
 from jord.shapely_utilities import clean_shape, dilate, dilate, erode
 
-from integration_system.model import PostalAddress, Solution
+from integration_system.model import PostalAddress, Solution, VenueType
 from midf.constants import IMDF_VENUE_CATEGORY_TO_MI_VENUE_TYPE
 from midf.mi_utilities import clean_admin_id
 from midf.model import MIDFSolution, MIDFVenue
@@ -39,7 +39,11 @@ def convert_venues(
                 venue_key = mi_solution.add_venue(
                     admin_id=clean_admin_id(venue.id),
                     name=venue_name,
-                    venue_type=IMDF_VENUE_CATEGORY_TO_MI_VENUE_TYPE[venue.category],
+                    venue_type=(
+                        IMDF_VENUE_CATEGORY_TO_MI_VENUE_TYPE[venue.category]
+                        if venue.category in IMDF_VENUE_CATEGORY_TO_MI_VENUE_TYPE
+                        else VenueType.not_specified
+                    ),
                     address=PostalAddress(
                         postal_code=address.postal_code,
                         street1=address.address,

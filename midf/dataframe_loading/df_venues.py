@@ -35,5 +35,14 @@ def load_imdf_venues(
                 else:
                     display_point = shapely.from_geojson(display_point)
 
-            venue = IMDFVenue(**venue_dict, name=name, display_point=display_point)
+            if "id" in venue_dict:
+                venue_id = venue_dict.pop("id")
+                if venue_id is None:
+                    venue_id = next(iter(name.values()))
+            else:
+                venue_id = next(iter(name.values()))
+
+            venue = IMDFVenue(
+                **venue_dict, id=venue_id, name=name, display_point=display_point
+            )
             out[IMDFFeatureType.venue].append(venue)
