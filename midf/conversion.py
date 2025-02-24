@@ -27,9 +27,13 @@ logger = logging.getLogger(__name__)
 
 
 def to_mi_solution(midf_solution: MIDFSolution) -> Solution:
+    name = "ChenIMDFImport"
+    if midf_solution.manifest.generated_by:
+        name = midf_solution.manifest.generated_by
+
     mi_solution = Solution(
-        external_id=f"{midf_solution.manifest.generated_by}{midf_solution.manifest.version}",
-        name=midf_solution.manifest.generated_by,
+        external_id=f"{name}{midf_solution.manifest.version}",
+        name=name,
         customer_id="953f7a89334a4013927857ab",
         occupants_enabled=True,
     )

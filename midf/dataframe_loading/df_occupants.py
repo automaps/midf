@@ -31,9 +31,12 @@ def load_imdf_occupants(
                 if name is not None:
                     name = json.loads(name)
 
-            validity = occupant_dict.pop("validity")
-            if validity is not None:
-                validity = Temporality(**json.loads(validity))
+            if "validity" in occupant_dict:
+                validity = occupant_dict.pop("validity")
+                if validity is not None:
+                    validity = Temporality(**json.loads(validity))
+            else:
+                validity = None
 
             occupant = IMDFOccupant(**occupant_dict, name=name, validity=validity)
             out[IMDFFeatureType.occupant].append(occupant)
