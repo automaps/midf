@@ -16,8 +16,8 @@ if __name__ == "__main__":
 
     for f in data_base.iterdir():
         if f.is_file() and f.suffix == ".zip":
-            if False:
-                if "DUB" not in f.stem:
+            if True:
+                if "Vitra" not in f.stem:
                     continue
 
             logger.error(f"Processing {f}")
