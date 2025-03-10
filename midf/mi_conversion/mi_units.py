@@ -92,7 +92,7 @@ def convert_units(
                         mi_solution.occupants.get(
                             Occupant.compute_key(location_key=unit_location_key)
                         )
-                        is not None
+                        is None
                     ):
                         anchor_key = unit_location_key
                     else:  # Location already has an occupant, add anchor as a point of interest for the occupant to

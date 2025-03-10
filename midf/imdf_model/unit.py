@@ -11,7 +11,10 @@ __all__ = ["IMDFUnit"]
 class IMDFUnit(IMDFFeature):
     geometry: Any  # Polygonal
     level_id: str
-    category: Union[IMDFUnitCategory, str]
+    category: Union[
+        IMDFUnitCategory, str
+    ]  # TODO: Some sections have a category that is not in the enum, so we allow a #
+    # TODO: REMOVE FOR STRICT
     restriction: Optional[str] = None
     accessibility: Optional[str] = None
     phone: Optional[str] = None

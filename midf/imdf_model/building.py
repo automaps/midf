@@ -10,9 +10,11 @@ from ..enums import IMDFBuildingCategory
 
 
 class IMDFBuilding(IMDFFeature):
+    # geometry: None # Nonsense
+
     category: Union[
         IMDFBuildingCategory, str
-    ]  # May have invalid categories, hence the union with str
+    ]  # May have invalid categories, hence the union with str # TODO: REMOVE FOR STRICT
     restriction: Optional[str] = None
     name: Optional[Mapping[str, str]] = None
     alt_name: Optional[Mapping[str, str]] = None

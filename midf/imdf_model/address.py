@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Optional
 
 from .base import IMDFFeature
 
@@ -6,11 +6,14 @@ __all__ = ["IMDFAddress"]
 
 
 class IMDFAddress(IMDFFeature):
-    address: Any = ""
-    unit: Any = None
-    locality: Any = ""
-    province: Any = None
-    country: Any = ""
-    postal_code: Any = None
-    postal_code_ext: Any = None
-    postal_code_vanity: Any = None
+    # geometry: None # Nonsense
+
+    address: str = ""  # No default value for STRICT!
+    locality: str = ""  # No default value for STRICT!
+    country: str = ""  # No default value for STRICT! # actual type ISO 3166
+
+    province: Optional[str] = None  # actual type ISO 3166-2
+    unit: Optional[str] = None
+    postal_code: Optional[str] = None
+    postal_code_ext: Optional[str] = None
+    postal_code_vanity: Optional[str] = None

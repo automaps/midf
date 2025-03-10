@@ -15,7 +15,7 @@ class IMDFGeofence(IMDFFeature):
     geometry: Any  # Polygonal
     category: Union[
         IMDFGeofenceCategory, str
-    ]  # TODO: Some geofences have a category that is not in the enum, so we allow a
+    ]  # TODO: Some geofences have a category that is not in the enum, so we allow a # TODO: REMOVE FOR STRICT
     name: Optional[Mapping[str, str]] = None
     alt_name: Optional[Mapping[str, str]] = None
     restriction: Optional[IMDFRestrictionCategory] = None

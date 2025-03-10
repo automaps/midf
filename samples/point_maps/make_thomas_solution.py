@@ -8,10 +8,10 @@ from integration_system.model import MediaType, Solution
 
 logging.basicConfig(level=logging.DEBUG)
 
-solution_name = "Temasek Polytechnic"
+solution_name = "Temasek Polytechnic With Pics"
 chen_customer_id = "953f7a89334a4013927857ab"
 venue_name = "Temasek Polytechnic"
-file = "occupant.geojson"
+file = "data/zips9/thomas_temasek/occupant.geojson"
 
 df = geopandas.read_file(file, engine="fiona")
 venue_poly = df.unary_union.convex_hull
@@ -41,10 +41,12 @@ for ir, r in df.iterrows():
                 r["EMAIL"],
                 r["PHONE"],
                 r["HOURS"],
-                f"media: {media_key}",
             ]
         ),
         floor_key=floor_key,
+        media_key=media_key,
     )
+
+    # break
 
 synchronize(solution)

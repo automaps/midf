@@ -16,5 +16,5 @@ class IMDFRelationship(IMDFFeature):
     origin: Optional[IMDFFeatureReference] = None
     intermediary: Optional[List[IMDFFeatureReference]] = None
     destination: Optional[IMDFFeatureReference] = None
-    hours: Any = None
+    hours: Any = None  # Actual type HOURS
     geometry: Optional[shapely.geometry.base.BaseGeometry] = None

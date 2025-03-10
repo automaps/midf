@@ -19,6 +19,13 @@ def link_anchors(
     imdf_dict: Mapping[IMDFFeatureType, Collection[IMDFFeature]],
     occupants: dict[str, List[MIDFOccupant]],
 ) -> Dict[str, List[MIDFAnchor]]:
+    """
+
+    :param found_occupant_anchors:
+    :param imdf_dict:
+    :param occupants:
+    :return:
+    """
     anchors = defaultdict(list)
     occupants_copy = occupants.copy()
 

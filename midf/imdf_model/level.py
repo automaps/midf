@@ -13,7 +13,8 @@ class IMDFLevel(IMDFFeature):
     category: Union[
         IMDFLevelCategory, str
     ]  # TODO: Some levels have a category that is not in the enum, so we allow a
-    # string here, but we should validate it, it is not valid, we should raise an error.
+    # string here, but we should validate it, it is not valid, we should raise an error. # TODO: REMOVE FOR
+    #  STRICT
     restriction: Optional[str] = None
     outdoor: bool = False
     ordinal: int = 0

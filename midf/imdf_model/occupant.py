@@ -16,7 +16,8 @@ class IMDFOccupant(IMDFFeature):
     category: Union[
         IMDFOccupantCategory, str
     ]  # TODO: Some occupants have a category that is not in the enum, so we allow a
-    # string here, but we should validate it, it is not valid, we should raise an error.
+    # string here, but we should validate it, it is not valid, we should raise an error. # TODO: REMOVE FOR
+    #  STRICT
     anchor_id: str = ""
     hours: Any = None
     phone: Any = None

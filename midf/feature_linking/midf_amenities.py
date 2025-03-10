@@ -17,6 +17,12 @@ logger = logging.getLogger(__name__)
 def link_amenities(
     imdf_dict: Mapping[IMDFFeatureType, Collection[IMDFFeature]], units
 ) -> Dict[str, MIDFAmenity]:
+    """
+
+    :param imdf_dict:
+    :param units:
+    :return:
+    """
     amenities = defaultdict()
 
     unit_id_mapping = {unit.id: unit for a in units.values() for unit in a}

@@ -33,7 +33,8 @@ class IMDFOpening(IMDFFeature):
     category: Union[
         IMDFOpeningCategory, str
     ]  # TODO: Some openings have a category that is not in the enum, so we allow a
-    # string here, but we should validate it, it is not valid, we should raise an error.
+    # string here, but we should validate it, it is not valid, we should raise an error. # TODO: REMOVE FOR
+    #  STRICT
     level_id: str
 
     accessibility: Optional[IMDFAccessibilityCategory] = None
