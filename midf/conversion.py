@@ -91,6 +91,9 @@ def to_mi_solution(midf_solution: MIDFSolution) -> Solution:
         )
     )
 
+    if solution_locations_union.is_empty:
+        raise Exception("No solution was found in the data")
+
     blk = make_mi_building_admin_id_midf(OUTDOOR_BUILDING_NAME, found_venue_key)
     if mi_solution.buildings.get(Building.compute_key(admin_id=blk)) is not None:
         mi_solution.update_building(blk, polygon=solution_locations_union)

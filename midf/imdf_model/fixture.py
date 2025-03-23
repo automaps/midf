@@ -1,11 +1,17 @@
+import json
+import logging
 from typing import Any, Mapping, Optional, Union
+
+import shapely
 
 from .base import IMDFFeature
 
 __all__ = ["IMDFFixture"]
 
-from ..enums import IMDFFixtureCategory
+from ..enums import IMDFFeatureType, IMDFFixtureCategory
 from ..midf_typing import Polygonal
+
+logger = logging.getLogger(__name__)
 
 
 class IMDFFixture(IMDFFeature):
@@ -19,7 +25,24 @@ class IMDFFixture(IMDFFeature):
     #  STRICT
     anchor_id: Any = None
 
-    display_point: Optional[Any] = None
+    display_point: Optional[shapely.Point] = None
 
     name: Optional[Mapping[str, str]] = None
     alt_name: Optional[Mapping[str, str]] = None
+
+    def to_imdf_spec_feature(self) -> dict[str, Any]:
+        out = self.model_dump()
+
+        out["feature_type"] = IMDFFeatureType.fixture.value
+        if False:
+            out["geometry"] = json.loads(shapely.to_geojson(out.pop("geometry")))
+
+        if True:
+            if out["display_point"] is not None:
+                display_point = out.pop("display_point")
+                if not display_point.is_empty:
+                    out["display_point"] = json.loads(shapely.to_geojson(display_point))
+                else:
+                    logger.error(f"{display_point} was empty, remains None in out")
+
+        return out

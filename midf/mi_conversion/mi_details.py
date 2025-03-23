@@ -24,7 +24,9 @@ def convert_details(floor_key, level, mi_solution):
 
             location_type_key = LocationType.compute_key(name=DETAIL_LOCATION_TYPE_NAME)
             if mi_solution.location_types.get(location_type_key) is None:
-                mi_solution.add_location_type(name=DETAIL_LOCATION_TYPE_NAME)
+                location_type_key = mi_solution.add_location_type(
+                    name=DETAIL_LOCATION_TYPE_NAME
+                )
 
             if isinstance(detail_geom, shapely.Polygon):
                 mi_solution.add_area(

@@ -1,8 +1,10 @@
-from typing import Optional
+from typing import Any, Optional
 
 from .base import IMDFFeature
 
 __all__ = ["IMDFAddress"]
+
+from ..enums import IMDFFeatureType
 
 
 class IMDFAddress(IMDFFeature):
@@ -17,3 +19,11 @@ class IMDFAddress(IMDFFeature):
     postal_code: Optional[str] = None
     postal_code_ext: Optional[str] = None
     postal_code_vanity: Optional[str] = None
+
+    def to_imdf_spec_feature(self) -> dict[str, Any]:
+        out = self.model_dump()
+
+        out["feature_type"] = IMDFFeatureType.address.value
+        out["geometry"] = None
+
+        return out

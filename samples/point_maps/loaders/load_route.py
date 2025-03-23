@@ -37,7 +37,7 @@ def save_graph(new_graph: MultiDiGraph, save_path: Path) -> None:
     )
 
 
-def parse_route(route_file_path: Path):
+def parse_route(route_file_path: Path, target_file_path: Path) -> MultiDiGraph:
     assert route_file_path.exists()
     assert route_file_path.is_file()
     assert route_file_path.suffix == ".json"
@@ -74,23 +74,31 @@ def parse_route(route_file_path: Path):
             next(edge_id_counter)
         for i, edges in enumerate(links):
             for edge in edges:
-                (to_distance, to_link) = edge.values()
+                to_distance = edge["d"]
+                to_link = edge["i"]
+
+                # assert isinstance(to_distance, float), f'{to_distance} was not a float'
+                assert isinstance(to_link, int), f"{to_link} was not an int"
+
                 if i != to_link:
                     assertive_add_edge(
                         graph=graph,
-                        u=i + node_id_offset,
-                        v=to_link + node_id_offset,
+                        u=int(i + node_id_offset),
+                        v=int(to_link + node_id_offset),
                         uniqueid=next(edge_id_counter),
                         attributes=dict(
-                            distance=to_distance, level=coordinate_levels[i]
+                            # distance=to_distance,
+                            level=coordinate_levels[i]
                         ),
                         allow_loops=False,
                         allow_duplicates=False,
                     )
                 else:
                     logger.error(f"Loop detected {i, to_link}")
+        if True:
+            save_graph(graph, target_file_path)
 
-        save_graph(graph, Path("../test.osm"))
+        return graph
 
 
 if __name__ == "__main__":

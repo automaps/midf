@@ -33,7 +33,9 @@ def convert_openings(level, mi_solution, venue_graph_key, floor_key) -> None:
                 opening_geom = dilate(opening_geom)
                 location_type_key = LocationType.compute_key(name=opening.category)
                 if mi_solution.location_types.get(location_type_key) is None:
-                    mi_solution.add_location_type(name=opening.category)
+                    location_type_key = mi_solution.add_location_type(
+                        name=opening.category
+                    )
 
                 if isinstance(opening_geom, shapely.Polygon):
                     mi_solution.add_area(

@@ -1,4 +1,5 @@
-from typing import Mapping, Optional, Union
+import json
+from typing import Any, Mapping, Optional, Union
 
 import shapely
 from attr import dataclass
@@ -10,6 +11,7 @@ from ..enums import (
     IMDFAccessibilityCategory,
     IMDFDoorCategory,
     IMDFDoorMaterial,
+    IMDFFeatureType,
     IMDFOpeningCategory,
 )
 
@@ -43,3 +45,17 @@ class IMDFOpening(IMDFFeature):
     name: Optional[Mapping[str, str]] = None
     alt_name: Optional[Mapping[str, str]] = None
     display_point: Optional[shapely.Point] = None
+
+    def to_imdf_spec_feature(self) -> dict[str, Any]:
+        out = self.model_dump()
+
+        out["feature_type"] = IMDFFeatureType.opening.value
+        if False:
+            out["geometry"] = json.loads(shapely.to_geojson(out.pop("geometry")))
+        if True:
+            if out["display_point"] is not None:
+                out["display_point"] = json.loads(
+                    shapely.to_geojson(out.pop("display_point"))
+                )
+
+        return out

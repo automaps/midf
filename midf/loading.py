@@ -1,5 +1,6 @@
 import json
 import logging
+import tempfile
 from collections import defaultdict
 from pathlib import Path
 from typing import Collection, List, Union
@@ -53,9 +54,21 @@ def load_imdf(
             if z_file_path.suffix == ".geojson":  # optional filtering by filetype
                 with zf.open(file) as f:
                     try:
-                        df = geopandas.read_file(f, engine="fiona")
                         feature_name = z_file_path.stem
-                        dataframes[feature_name] = df
+                        if False:
+                            with tempfile.TemporaryDirectory() as tmp_dir:
+                                tmp_file = Path(tmp_dir) / f"{feature_name}.geojson"
+                                with open(tmp_file, "wb") as ft:
+                                    a = f.read()
+                                    ft.write(a)
+
+                                df = geopandas.read_file(tmp_file, engine="fiona")
+
+                                dataframes[feature_name] = df
+                        else:
+                            df = geopandas.read_file(f, engine="fiona")
+
+                            dataframes[feature_name] = df
                     except Exception as e:
                         logger.error(f"Failed to load {file}: {e}")
                         if False:

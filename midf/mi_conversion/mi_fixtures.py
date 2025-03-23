@@ -32,19 +32,27 @@ def convert_fixtures(floor_key, level, mi_solution) -> None:
 
             location_type_key = LocationType.compute_key(name=fixture.category)
             if mi_solution.location_types.get(location_type_key) is None:
-                mi_solution.add_location_type(name=fixture.category)
+                location_type_key = mi_solution.add_location_type(name=fixture.category)
 
-            if (
-                isinstance(fixture_geom, shapely.Polygon)
-                and fixture_geom.is_valid
-                and (not fixture_geom.is_empty)
-            ):
-                mi_solution.add_area(
-                    admin_id=clean_admin_id(fixture.id),
-                    name=fixture_name,
-                    polygon=fixture_geom,
-                    floor_key=floor_key,
-                    location_type_key=location_type_key,
-                )
+            if fixture_geom.is_valid and (not fixture_geom.is_empty):
+                if isinstance(fixture_geom, shapely.Polygon):
+                    mi_solution.add_area(
+                        admin_id=clean_admin_id(fixture.id),
+                        name=fixture_name,
+                        polygon=fixture_geom,
+                        floor_key=floor_key,
+                        location_type_key=location_type_key,
+                    )
+                elif isinstance(fixture_geom, shapely.MultiPolygon):
+                    for ith, polygon in enumerate(fixture_geom.geoms):
+                        mi_solution.add_area(
+                            admin_id=clean_admin_id(f"{fixture.id}_part_{str(ith)}"),
+                            name=fixture_name,
+                            polygon=polygon,
+                            floor_key=floor_key,
+                            location_type_key=location_type_key,
+                        )
+                else:
+                    logger.error(f"Ignoring {fixture}")
             else:
                 logger.error(f"Ignoring {fixture}")

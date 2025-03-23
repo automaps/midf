@@ -8,6 +8,7 @@ from integration_system.model import (
     InvalidPolygonError,
     LocationType,
     Occupant,
+    OccupantCategory,
     OccupantTemplate,
     OccupantType,
     Room,
@@ -48,7 +49,7 @@ def convert_units(
 
             location_type_key = LocationType.compute_key(name=unit.category)
             if mi_solution.location_types.get(location_type_key) is None:
-                mi_solution.add_location_type(name=unit.category)
+                location_type_key = mi_solution.add_location_type(name=unit.category)
 
             unit_location_key = clean_admin_id(unit.id)
 
@@ -121,7 +122,23 @@ def convert_units(
                                 logger.error(
                                     f"Occupant category {occupant.category} not found."
                                 )
-                                continue
+                                if False:  # FAIL HERE! continue to next occupant
+                                    logger.error(
+                                        f"Occupant category {occupant.category} not found."
+                                    )
+                                    continue
+                                else:
+                                    aa = mi_solution.occupant_categories.get(
+                                        OccupantCategory.compute_key(
+                                            name=occupant.category
+                                        )
+                                    )
+                                    if aa is None:
+                                        l = mi_solution.add_occupant_category(
+                                            occupant.category
+                                        )
+                                    else:
+                                        l = aa.key
 
                             a = OccupantTemplate.compute_key(
                                 name=occupant_name,
@@ -138,6 +155,17 @@ def convert_units(
                                 )
                             else:
                                 occupant_template_key = a
+
+                            if (
+                                mi_solution.occupants.get(
+                                    Occupant.compute_key(location_key=anchor_key)
+                                )
+                                is not None
+                            ):
+                                logger.error(
+                                    f"Occupant {occupant.id} already exists. skipping."
+                                )
+                                continue
 
                             mi_solution.add_occupant(
                                 location_key=anchor_key,

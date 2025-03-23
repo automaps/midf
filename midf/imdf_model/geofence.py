@@ -1,4 +1,7 @@
+import json
 from typing import Any, List, Mapping, Optional, Union
+
+import shapely
 
 from .base import IMDFFeature
 
@@ -6,13 +9,15 @@ __all__ = ["IMDFGeofence"]
 
 from ..enums import (
     IMDFAccessibilityCategory,
+    IMDFFeatureType,
     IMDFGeofenceCategory,
     IMDFRestrictionCategory,
 )
+from ..midf_typing import Polygonal
 
 
 class IMDFGeofence(IMDFFeature):
-    geometry: Any  # Polygonal
+    geometry: Polygonal
     category: Union[
         IMDFGeofenceCategory, str
     ]  # TODO: Some geofences have a category that is not in the enum, so we allow a # TODO: REMOVE FOR STRICT
@@ -21,7 +26,21 @@ class IMDFGeofence(IMDFFeature):
     restriction: Optional[IMDFRestrictionCategory] = None
     accessibility: Optional[IMDFAccessibilityCategory] = None
     correlation_id: Optional[str] = None
-    display_point: Optional[Any] = None
+    display_point: Optional[shapely.Point] = None
     building_ids: Optional[List[str]] = None
     level_ids: Optional[List[str]] = None
     parents: Optional[List[str]] = None
+
+    def to_imdf_spec_feature(self) -> dict[str, Any]:
+        out = self.model_dump()
+
+        out["feature_type"] = IMDFFeatureType.geofence.value
+        if False:
+            out["geometry"] = json.loads(shapely.to_geojson(out.pop("geometry")))
+        if True:
+            if out["display_point"] is not None:
+                out["display_point"] = json.loads(
+                    shapely.to_geojson(out.pop("display_point"))
+                )
+
+        return out

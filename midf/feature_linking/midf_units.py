@@ -1,5 +1,5 @@
 from collections import defaultdict
-from typing import Collection, Dict, List, Mapping
+from typing import Any, Collection, Dict, List, Mapping
 
 from warg.data_structures.mappings import to_dict
 
@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 
 
 def link_units(
-    anchors,
+    anchors: Dict[str, Any],
     imdf_dict: Mapping[IMDFFeatureType, Collection[IMDFFeature]],
 ) -> Dict[str, List[MIDFUnit]]:
     units = defaultdict(list)

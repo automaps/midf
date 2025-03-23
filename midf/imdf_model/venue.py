@@ -1,3 +1,4 @@
+import json
 from typing import Any, Optional, Union
 
 import shapely
@@ -6,7 +7,7 @@ from .base import IMDFFeature
 
 __all__ = ["IMDFVenue"]
 
-from ..enums import IMDFVenueCategory
+from ..enums import IMDFFeatureType, IMDFVenueCategory
 from ..midf_typing import Labels, Polygonal
 
 
@@ -25,3 +26,17 @@ class IMDFVenue(IMDFFeature):
     phone: Optional[str] = None  # +1-816-243-5237
     restriction: Optional[Any] = None
     alt_name: Optional[Labels] = None
+
+    def to_imdf_spec_feature(self) -> dict[str, Any]:
+        out = self.model_dump()
+
+        out["feature_type"] = IMDFFeatureType.venue.value
+        if False:
+            out["geometry"] = json.loads(shapely.to_geojson(out.pop("geometry")))
+        if True:
+            if out["display_point"] is not None:
+                out["display_point"] = json.loads(
+                    shapely.to_geojson(out.pop("display_point"))
+                )
+
+        return out

@@ -32,16 +32,22 @@ def link_anchors(
     logger.error(f"Linking anchors {len(imdf_dict[IMDFFeatureType.anchor])}")
     for anchor in imdf_dict[IMDFFeatureType.anchor]:
         anchor: IMDFAnchor
+
+        occupants_linked = None
+        if anchor.id in found_occupant_anchors:
+            if anchor.id in occupants_copy:
+                occupants_linked = occupants_copy.pop(anchor.id)
+            else:
+                logger.error(
+                    f"{anchor.id} not in {found_occupant_anchors}, THIS SHOULD NOT HAPPEN!"
+                )
+
         anchors[anchor.unit_id].append(
             MIDFAnchor(
                 id=anchor.id,
                 geometry=anchor.geometry,
                 # address=addresses[section.address_id], # TODO: INVALID IMDF!
-                occupants=(
-                    occupants_copy.pop(anchor.id)
-                    if anchor.id in found_occupant_anchors
-                    else None
-                ),
+                occupants=occupants_linked,
             )
         )
     return to_dict(anchors)

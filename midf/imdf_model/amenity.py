@@ -1,4 +1,5 @@
-from typing import Any, List, Optional, Union
+import json
+from typing import Any, List, Mapping, Optional, Union
 
 import shapely
 
@@ -6,7 +7,7 @@ from .base import IMDFFeature
 
 __all__ = ["IMDFAmenity"]
 
-from ..enums import IMDFAmenityCategory
+from ..enums import IMDFAccessibilityCategory, IMDFAmenityCategory, IMDFFeatureType
 
 
 class IMDFAmenity(IMDFFeature):
@@ -17,12 +18,21 @@ class IMDFAmenity(IMDFFeature):
     ]  # TODO: Some amenity have a category that is not in the enum, so we allow a
     # string here, but we should validate it, it is not valid, we should raise an error. # TODO: REMOVE FOR
     #  STRICT
-    accessibility: Any = None
-    name: Any = None
-    alt_name: Any = None
+    accessibility: IMDFAccessibilityCategory = None
+    name: Optional[Mapping[str, str]] = None
+    alt_name: Optional[Mapping[str, str]] = None
     hours: Any = None
     phone: Any = None
     website: Any = None
 
-    address_id: Any = None
-    correlation_id: Any = None
+    address_id: Optional[str] = None
+    correlation_id: Optional[str] = None
+
+    def to_imdf_spec_feature(self) -> dict[str, Any]:
+        out = self.model_dump()
+
+        out["feature_type"] = IMDFFeatureType.amenity.value
+        if False:
+            out["geometry"] = json.loads(shapely.to_geojson(out.pop("geometry")))
+
+        return out
