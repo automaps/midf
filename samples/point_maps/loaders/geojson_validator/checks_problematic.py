@@ -1,18 +1,23 @@
-from shapely.geometry import Polygon
+import logging
+
+import shapely.geometry
 from shapely.validation import explain_validity
 
+logger = logging.getLogger(__name__)
 
-def check_holes(geom: Polygon) -> bool:
+
+def check_holes(geom: shapely.geometry.Polygon) -> bool:
     """Return True if the geometry has holes (interior rings)."""
     return len(geom.interiors) > 0
 
 
-def check_self_intersection(geom: Polygon) -> bool:
+def check_self_intersection(geom: shapely.geometry.Polygon) -> bool:
     """Return True if the geometry is self-intersecting."""
     # TODO: Shapely independent?
     self_intersection = False
     if not geom.is_valid:
         self_intersection = "Self-intersection" in explain_validity(geom)
+
     return self_intersection
 
 
@@ -30,35 +35,13 @@ def check_duplicate_nodes(geometry: dict) -> bool:
     return has_duplicates and not only_closed_ring_duplicate
 
 
-def check_excessive_coordinate_precision(
-    geometry: dict, precision=6, n_first_coords=2
-) -> bool:
-    """Return True if coordinates have more than 6 decimal places in the longitude."""
-    # For speedup, by default only checks the x&y coordinates of the n_first_coords=2 coordinate pairs.
-    coords = geometry["coordinates"][0][:n_first_coords]
-    for coord_xy in coords:
-        for coord in coord_xy:
-            splits = str(coord).split(".")
-            if (
-                len(splits) == 2 and len(splits[1]) > precision
-            ):  # catch coord without after comma
-                return True
-    return False
-
-
-def check_excessive_vertices(
-    geometry: dict,
-) -> bool:
-    """Return True if geometry has more than 999 vertices"""
-    return len(geometry["coordinates"][0]) > 999
-
-
 def check_3d_coordinates(geometry: dict, n_first_coords=2) -> bool:
     """Return True if any coordinates are more than 2D."""
     # TODO: should all coordinates be checked?
     for coords in geometry["coordinates"][0][:n_first_coords]:
         if len(coords) > 2:
             return True
+
     return False
 
 
@@ -71,6 +54,7 @@ def check_outside_lat_lon_boundaries(geometry: dict) -> bool:
     for coords in geometry["coordinates"][0]:
         if not _inside_boundaries(coords[0], coords[1]):
             return True
+
     return False
 
 
@@ -85,4 +69,5 @@ def check_crosses_antimeridian(geometry: dict) -> bool:
         # Check for longitude switch indicating crossing
         if abs(norm_end_lon - norm_start_lon) > 180:
             return True
+
     return False

@@ -26,7 +26,7 @@ def convert_levels(
     found_venue_key: str,
     mi_solution: Solution,
     midf_solution: MIDFSolution,
-    occupant_category_mapping: Mapping,
+    occupant_category_mapping: Mapping[str, str],
     venue_graph_key: str,
     venue_key: str,
 ) -> None:

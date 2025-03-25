@@ -1,5 +1,5 @@
 import logging
-from typing import Mapping
+from typing import List, Mapping
 
 import shapely
 from jord.shapely_utilities import clean_shape, dilate, dilate, erode
@@ -7,7 +7,7 @@ from jord.shapely_utilities import clean_shape, dilate, dilate, erode
 from integration_system.model import PostalAddress, Solution, VenueType
 from midf.constants import IMDF_VENUE_CATEGORY_TO_MI_VENUE_TYPE
 from midf.mi_utilities import clean_admin_id
-from midf.model import MIDFSolution, MIDFVenue
+from midf.model import MIDFAddress, MIDFSolution, MIDFVenue
 
 logger = logging.getLogger(__name__)
 
@@ -15,7 +15,9 @@ __all__ = ["convert_venues"]
 
 
 def convert_venues(
-    address_venue_mapping: Mapping, mi_solution: Solution, midf_solution: MIDFSolution
+    address_venue_mapping: Mapping[str, List[MIDFAddress]],
+    mi_solution: Solution,
+    midf_solution: MIDFSolution,
 ) -> (MIDFVenue, str):
     venue_key = None
     venue = None

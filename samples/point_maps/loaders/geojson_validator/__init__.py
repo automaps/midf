@@ -1,6 +1,1 @@
-from .main import (
-    validate_structure,
-    validate_geometries,
-    fix_geometries,
-    configure_logging,
-)
+from .main import fix_geometries, validate_geometries, validate_structure

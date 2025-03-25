@@ -1,4 +1,7 @@
-from typing import List, Any, Union
+import logging
+from typing import Any, List, Union
+
+logger = logging.getLogger(__name__)
 
 
 class GeoJsonLint:
@@ -255,7 +258,8 @@ class GeoJsonLint:
             )
         elif len(coords) > 3:
             self._add_error(
-                "Coordinate position should not have more than 3 values (longitude, latitude and optional elevation).",
+                "Coordinate position should not have more than 3 values (longitude, latitude and optional "
+                "elevation).",
                 path,
             )
         if not all(isinstance(coord, (int, float)) for coord in coords):

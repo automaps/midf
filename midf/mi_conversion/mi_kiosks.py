@@ -3,17 +3,17 @@ import logging
 import shapely
 from jord.shapely_utilities import clean_shape, dilate
 
-from integration_system.model import LocationType
+from integration_system.model import LocationType, Solution
 from midf.constants import KIOSK_LOCATION_TYPE_NAME
 from midf.mi_utilities import clean_admin_id
-from midf.model import MIDFKiosk
+from midf.model import MIDFKiosk, MIDFLevel
 
 logger = logging.getLogger(__name__)
 
 __all__ = ["convert_kiosks"]
 
 
-def convert_kiosks(floor_key, level, mi_solution):
+def convert_kiosks(floor_key: str, level: MIDFLevel, mi_solution: Solution) -> None:
     if level.kiosks:
         for kiosk in level.kiosks:
             kiosk: MIDFKiosk

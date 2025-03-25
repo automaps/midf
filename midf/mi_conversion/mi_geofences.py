@@ -2,17 +2,19 @@ import logging
 
 from jord.shapely_utilities import clean_shape, dilate
 
-from integration_system.model import Building, LocationType
+from integration_system.model import Building, LocationType, Solution
 from midf.constants import OUTDOOR_BUILDING_NAME
 from midf.mi_utilities import clean_admin_id, make_mi_building_admin_id_midf
-from midf.model import MIDFGeofence
+from midf.model import MIDFGeofence, MIDFSolution
 
 logger = logging.getLogger(__name__)
 
 __all__ = ["convert_geofences"]
 
 
-def convert_geofences(found_venue_key, mi_solution, midf_solution):
+def convert_geofences(
+    found_venue_key: str, mi_solution: Solution, midf_solution: MIDFSolution
+) -> None:
     if midf_solution.geofences:
         for geofence in midf_solution.geofences:
             geofence: MIDFGeofence

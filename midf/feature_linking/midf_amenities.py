@@ -9,13 +9,16 @@ from midf.imdf_model import IMDFAmenity, IMDFFeature
 
 __all__ = ["link_amenities"]
 
+from midf.model import MIDFUnit
+
 from midf.model.solution_level.amenity import MIDFAmenity
 
 logger = logging.getLogger(__name__)
 
 
 def link_amenities(
-    imdf_dict: Mapping[IMDFFeatureType, Collection[IMDFFeature]], units
+    imdf_dict: Mapping[IMDFFeatureType, Collection[IMDFFeature]],
+    units: Mapping[str, Collection[MIDFUnit]],
 ) -> Dict[str, MIDFAmenity]:
     """
 

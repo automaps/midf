@@ -3,16 +3,16 @@ import logging
 import shapely
 from jord.shapely_utilities import clean_shape, dilate
 
-from integration_system.model import LocationType
+from integration_system.model import LocationType, Solution
 from midf.mi_utilities import clean_admin_id
-from midf.model import MIDFFixture
+from midf.model import MIDFFixture, MIDFLevel
 
 logger = logging.getLogger(__name__)
 
 __all__ = ["convert_fixtures"]
 
 
-def convert_fixtures(floor_key, level, mi_solution) -> None:
+def convert_fixtures(floor_key: str, level: MIDFLevel, mi_solution: Solution) -> None:
     if level.fixtures:
         for fixture in level.fixtures:
             fixture: MIDFFixture

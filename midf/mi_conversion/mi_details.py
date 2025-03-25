@@ -3,17 +3,17 @@ import logging
 import shapely
 from jord.shapely_utilities import clean_shape, dilate
 
-from integration_system.model import LocationType
+from integration_system.model import LocationType, Solution
 from midf.constants import DETAIL_LOCATION_TYPE_NAME
 from midf.mi_utilities import clean_admin_id
-from midf.model import MIDFDetail
+from midf.model import MIDFDetail, MIDFLevel
 
 logger = logging.getLogger(__name__)
 
 __all__ = ["convert_details"]
 
 
-def convert_details(floor_key, level, mi_solution):
+def convert_details(floor_key: str, level: MIDFLevel, mi_solution: Solution) -> None:
     if level.details:
         for detail in level.details:
             detail: MIDFDetail

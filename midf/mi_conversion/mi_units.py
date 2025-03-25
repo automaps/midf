@@ -28,7 +28,7 @@ def convert_units(
     floor_key: str,
     level: MIDFLevel,
     mi_solution: Solution,
-    occupant_category_mapping: Mapping,
+    occupant_category_mapping: Mapping[str, str],
 ) -> None:
     if level.units:
         for unit in level.units:

@@ -3,16 +3,16 @@ import logging
 import shapely
 from jord.shapely_utilities import clean_shape, dilate
 
-from integration_system.model import LocationType
+from integration_system.model import LocationType, Solution
 from midf.mi_utilities import clean_admin_id
-from midf.model import MIDFSection
+from midf.model import MIDFLevel, MIDFSection
 
 logger = logging.getLogger(__name__)
 
 __all__ = ["convert_sections"]
 
 
-def convert_sections(floor_key, level, mi_solution) -> None:
+def convert_sections(floor_key: str, level: MIDFLevel, mi_solution: Solution) -> None:
     if level.sections:
         for section in level.sections:
             section: MIDFSection

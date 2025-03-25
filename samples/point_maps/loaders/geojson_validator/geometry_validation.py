@@ -1,16 +1,11 @@
-from typing import List
-import sys
+import logging
 from collections import Counter
-
-from loguru import logger
+from typing import List
 
 from . import checks_invalid, checks_problematic
-from .geometry_utils import prepare_geometries_for_checks, extract_single_geometries
+from .geometry_utils import extract_single_geometries, prepare_geometries_for_checks
 
-logger.remove()
-logger_format = "{time:YYYY-MM-DD_HH:mm:ss.SSS} | {message}"
-logger.add(sink=sys.stderr, format=logger_format, level="INFO")
-
+logger = logging.getLogger(__name__)
 
 ALL_ACCEPTED_GEOMETRY_TYPES = POI, MPOI, LS, MLS, POL, MPOL, GC = [
     "Point",

@@ -26,14 +26,15 @@ from midf.model import MIDFSolution
 logger = logging.getLogger(__name__)
 
 
-def to_mi_solution(midf_solution: MIDFSolution) -> Solution:
-    name = "ChenIMDFImport"
+def to_mi_solution(
+    midf_solution: MIDFSolution, solution_name: str = "ChenIMDFImport"
+) -> Solution:
     if midf_solution.manifest.generated_by:
-        name = midf_solution.manifest.generated_by
+        solution_name = midf_solution.manifest.generated_by
 
     mi_solution = Solution(
-        external_id=f"{name}{midf_solution.manifest.version}",
-        name=name,
+        external_id=f"{solution_name}{midf_solution.manifest.version}",
+        name=solution_name,
         customer_id="953f7a89334a4013927857ab",
         occupants_enabled=True,
     )

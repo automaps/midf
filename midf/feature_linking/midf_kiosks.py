@@ -5,7 +5,7 @@ from warg.data_structures.mappings import to_dict
 
 from midf.enums import IMDFFeatureType
 from midf.imdf_model import IMDFFeature, IMDFKiosk
-from midf.model import MIDFKiosk
+from midf.model import MIDFAnchor, MIDFKiosk
 
 __all__ = ["link_kiosks"]
 
@@ -15,7 +15,8 @@ logger = logging.getLogger(__name__)
 
 
 def link_kiosks(
-    anchor_id_mapping, imdf_dict: Mapping[IMDFFeatureType, Collection[IMDFFeature]]
+    anchor_id_mapping: Mapping[str, MIDFAnchor],
+    imdf_dict: Mapping[IMDFFeatureType, Collection[IMDFFeature]],
 ) -> Dict[str, List[MIDFKiosk]]:
     kiosks = defaultdict(list)
     logger.error(f"Linking {len(imdf_dict[IMDFFeatureType.kiosk])} kiosks")

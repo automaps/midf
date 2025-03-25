@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 
 
 def link_anchors(
-    found_occupant_anchors,
+    found_occupant_anchors: Collection[str],
     imdf_dict: Mapping[IMDFFeatureType, Collection[IMDFFeature]],
     occupants: dict[str, List[MIDFOccupant]],
 ) -> Dict[str, List[MIDFAnchor]]:

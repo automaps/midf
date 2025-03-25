@@ -1,24 +1,17 @@
-from typing import Dict, Union, List, Tuple, Any
-import sys
+import logging
 from pathlib import Path
+from typing import Any, Dict, List, Tuple, Union
 
-from loguru import logger
-
-from .schema_validation import GeoJsonLint
-from .geometry_utils import (
-    input_to_geojson,
-    any_geojson_to_featurecollection,
-)
+from .fixes_utils import process_fix
+from .geometry_utils import any_geojson_to_featurecollection, input_to_geojson
 from .geometry_validation import (
     VALIDATION_CRITERIA,
     check_criteria,
     process_validation,
 )
-from .fixes_utils import process_fix
+from .schema_validation import GeoJsonLint
 
-logger.remove()
-logger_format = "{time:YYYY-MM-DD_HH:mm:ss.SSS} | {message}"
-logger.add(sink=sys.stderr, format=logger_format, level="INFO")
+logger = logging.getLogger(__name__)
 
 
 def validate_structure(
@@ -30,8 +23,10 @@ def validate_structure(
     Enhances error messages by specifying which elements failed validation.
     """
     geojson_data = input_to_geojson(geojson_input)
+
     errors = GeoJsonLint(check_crs=check_crs).lint(geojson_data)
     logger.info(f"Structure validation results: {errors}")
+
     return errors
 
 
@@ -50,17 +45,23 @@ def validate_geometries(
 
     Returns:
         The validated & fixed GeoJSON feature collection.
+
+    :param criteria_problematic:
+    :param criteria_invalid:
+    :param geojson_input:
     """
     if not criteria_invalid and not criteria_problematic:
         raise ValueError(
             "Select at least one criteria in `criteria_invalid` or `criteria_problematic`"
         )
     check_criteria(criteria_invalid, VALIDATION_CRITERIA["invalid"], name="invalid")
+
     check_criteria(
         criteria_problematic, VALIDATION_CRITERIA["problematic"], name="problematic"
     )
 
     geojson_input = input_to_geojson(geojson_input)
+
     fc = any_geojson_to_featurecollection(geojson_input)
 
     geometries = [feature["geometry"] for feature in fc["features"]]
@@ -76,16 +77,18 @@ def fix_geometries(
         # "excessive_coordinate_precision",
         "duplicate_nodes",
     ],
-):
+) -> dict:
     criteria = [
         "unclosed",
         "exterior_not_ccw",
         "interior_not_cw",
     ]
+
     allowed_optional = [
         # "excessive_coordinate_precision",
         "duplicate_nodes",
     ]
+
     check_criteria(optional, allowed_optional, name="optional")
 
     geometry_validation_results = validate_geometries(
@@ -93,31 +96,16 @@ def fix_geometries(
         criteria_invalid=criteria,
         criteria_problematic=optional,
     )
+
     geojson_input = input_to_geojson(geojson_input)
     validate_structure(geojson_input)
     fc = any_geojson_to_featurecollection(geojson_input)
 
     if optional:
         criteria.extend(optional)
+
     fixed_fc = process_fix(fc, geometry_validation_results, criteria)
+
     logger.info(f"Fixed geometries for criteria {criteria}")
+
     return fixed_fc
-
-
-def configure_logging(enabled=True, level="INFO"):
-    """
-    Configures the library logging behavior.
-
-    Args:
-        enabled (bool): If False, disables all logging.
-        level (str): Logging level, e.g., 'INFO', 'DEBUG', 'WARNING', 'ERROR'.
-
-    Returns:
-        logger: The configured loguru logger instance.
-    """
-    logger.remove()  # Clear all existing loggers
-    if enabled:
-        logger.add(
-            sys.stderr, format="{time:YYYY-MM-DD_HH:mm:ss.SSS} | {message}", level=level
-        )
-    return logger

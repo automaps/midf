@@ -1,10 +1,14 @@
-from typing import Union, Any
-from urllib.parse import urlparse
-from pathlib import Path
 import json
+import logging
+import pathlib
+from pathlib import Path
+from typing import Any, Union
+from urllib.parse import urlparse
 
-from shapely.geometry import shape
 import requests
+import shapely.geometry
+
+logger = logging.getLogger(__name__)
 
 
 def read_geojson_file_or_url(fp_or_url: Union[str, Path]):
@@ -16,6 +20,7 @@ def read_geojson_file_or_url(fp_or_url: Union[str, Path]):
         ".GEOJSON",
     ]:
         raise ValueError("Filepath or URL must be a geojson or json file")
+
     if urlparse(str(fp_or_url)).scheme in ("http", "https", "ftp", "ftps"):
         response = requests.get(str(fp_or_url), timeout=5)
         if response.status_code == 200:  # Check if the request was successful
@@ -26,25 +31,39 @@ def read_geojson_file_or_url(fp_or_url: Union[str, Path]):
 
 
 def input_to_geojson(geojson_input: Union[str, Path, dict, Any]) -> dict:
-    """Take the input which can be various types and reads/transforms it to Geojson"""
-    if isinstance(geojson_input, (str, Path)):
+    """
+    Take the input which can be various types and reads/transforms it to Geojson
+
+    :param geojson_input:
+    :return:
+    """
+
+    if isinstance(geojson_input, (str, pathlib.Path)):
         geojson_input = read_geojson_file_or_url(geojson_input)
+
     elif hasattr(
         geojson_input, "__geo_interface__"
     ):  # e.g. shapely geometry object, geojson library objects
         geojson_input = geojson_input.__geo_interface__
-    elif not isinstance(geojson_input, (dict)) or "type" not in geojson_input:
+
+    elif not isinstance(geojson_input, dict) or "type" not in geojson_input:
         raise ValueError(
             f"Unsupported input '{type(geojson_input)}'. Input must be a GeoJSON, filepath/url to GeoJSON, "
             f"shapely geometry or any object with a __geo_interface__"
         )
+
     return geojson_input
 
 
 def any_geojson_to_featurecollection(
     geojson_input: Union[str, Path, dict, Any],
 ) -> dict:
-    """Take a geojson of various types (Feature, Geometry, Fc) and transform it to a featurecollection"""
+    """
+    Take a geojson of various types (Feature, Geometry, Fc) and transform it to a featurecollection
+
+    :param geojson_input:
+    :return:
+    """
     supported_geojson_types = [
         "Point",
         "MultiPoint",
@@ -54,7 +73,9 @@ def any_geojson_to_featurecollection(
         "MultiPolygon",
         "GeometryCollection",
     ]
+
     type_ = geojson_input.get("type", None)  # FeatureCollection, Feature, Geometry
+
     if type_ is None:
         raise ValueError("No 'type' field found in GeoJSON")
     if type_ == "FeatureCollection":
@@ -80,8 +101,11 @@ def extract_single_geometries(geometry, geometry_type):
         return [
             {"type": single_type, "coordinates": g} for g in geometry["coordinates"]
         ]
+
     elif geometry_type == "GeometryCollection":
         return geometry["geometries"]
+
+    raise ValueError(f"{geometry_type} is not a valid geometry type")
 
 
 def prepare_geometries_for_checks(geometry):
@@ -89,16 +113,20 @@ def prepare_geometries_for_checks(geometry):
     # Some criteria require the original json geometry dict as shapely etc. autofixes (e.g. closes) geometries.
     # Initiating the shapely type in each check function specifically is time intensive.
     try:
-        shapely_geom = shape(geometry)
+        shapely_geom = shapely.geometry.shape(geometry)
     except TypeError as e:
         raise TypeError(
             f"Could not convert geometry to shapely object, likely wrong type: {geometry}"
         ) from e
+
     # To avoid adjusting the checks code for each geometry type, they are brought to the same
     # list depth (not ideal but okay).
     geometry_type = geometry.get("type", None)
+
     if geometry_type == "Point":
         geometry["coordinates"] = [[geometry["coordinates"]]]
-    if geometry_type == "LineString":
+
+    elif geometry_type == "LineString":
         geometry["coordinates"] = [geometry["coordinates"]]
+
     return geometry, shapely_geom
