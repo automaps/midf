@@ -8,7 +8,9 @@ logger = logging.getLogger(__name__)
 def check_unclosed(geometry: dict) -> bool:
     """Return True if the geometry is not closed (first coordinate != last coordinate)."""
     # This needs to check the original json string, as shapely or geopandas automatically close.
-    assert len(geometry["coordinates"]) > 0, f"{geometry} has no coordinates"
+    # assert len(geometry["coordinates"]) > 0, f"{geometry} has no coordinates"
+    if not geometry["coordinates"]:
+        return True
 
     coords = geometry["coordinates"][0]
     return coords[0] != coords[-1]
@@ -16,7 +18,9 @@ def check_unclosed(geometry: dict) -> bool:
 
 def check_less_three_unique_nodes(geometry: dict) -> bool:
     """Return True if there are fewer than three unique nodes in the geometry."""
-    assert len(geometry["coordinates"]) > 0, f"{geometry} has no coordinates"
+    # assert len(geometry["coordinates"]) > 0, f"{geometry} has no coordinates"
+    if not geometry["coordinates"]:
+        return True
 
     coords = geometry["coordinates"][0]
     return len(set(map(tuple, coords))) < 3

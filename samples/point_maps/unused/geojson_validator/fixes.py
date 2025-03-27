@@ -22,6 +22,7 @@ def fix_unclosed(geom: shapely.Polygon):
 
     if coords[0] != coords[-1]:
         coords.append(coords[0])
+
     closed_polygon = shapely.Polygon(coords)
     return closed_polygon
 

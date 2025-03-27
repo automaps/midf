@@ -22,10 +22,12 @@ def convert_details(floor_key: str, level: MIDFLevel, mi_solution: Solution) -> 
 
             detail_geom = dilate(clean_shape(detail.geometry))
 
-            location_type_key = LocationType.compute_key(name=DETAIL_LOCATION_TYPE_NAME)
+            location_type_key = LocationType.compute_key(
+                admin_id=DETAIL_LOCATION_TYPE_NAME
+            )
             if mi_solution.location_types.get(location_type_key) is None:
                 location_type_key = mi_solution.add_location_type(
-                    name=DETAIL_LOCATION_TYPE_NAME
+                    admin_id=DETAIL_LOCATION_TYPE_NAME, name=DETAIL_LOCATION_TYPE_NAME
                 )
 
             if isinstance(detail_geom, shapely.Polygon):

@@ -30,9 +30,11 @@ def convert_sections(floor_key: str, level: MIDFLevel, mi_solution: Solution) ->
 
             section_geom = clean_shape(section.geometry)
 
-            location_type_key = LocationType.compute_key(name=section.category)
+            location_type_key = LocationType.compute_key(admin_id=section.category)
             if mi_solution.location_types.get(location_type_key) is None:
-                location_type_key = mi_solution.add_location_type(name=section.category)
+                location_type_key = mi_solution.add_location_type(
+                    admin_id=section.category, name=section.category
+                )
 
             if isinstance(section_geom, shapely.Polygon):
                 mi_solution.add_area(

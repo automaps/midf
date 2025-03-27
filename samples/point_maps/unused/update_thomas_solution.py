@@ -9,7 +9,7 @@ logging.basicConfig(level=logging.DEBUG)
 solution_name = "Temasek Polytechnic"
 chen_customer_id = "953f7a89334a4013927857ab"
 venue_name = "Temasek Polytechnic"
-file = "../data/zips9/thomas_temasek/occupant.geojson"
+file = "data/zips9/thomas_temasek/occupant.geojson"
 
 df = geopandas.read_file(file, engine="fiona")
 venue_poly = df.unary_union.convex_hull

@@ -30,9 +30,11 @@ def convert_fixtures(floor_key: str, level: MIDFLevel, mi_solution: Solution) ->
 
             fixture_geom = clean_shape(fixture.geometry)
 
-            location_type_key = LocationType.compute_key(name=fixture.category)
+            location_type_key = LocationType.compute_key(admin_id=fixture.category)
             if mi_solution.location_types.get(location_type_key) is None:
-                location_type_key = mi_solution.add_location_type(name=fixture.category)
+                location_type_key = mi_solution.add_location_type(
+                    admin_id=fixture.category, name=fixture.category
+                )
 
             if fixture_geom.is_valid and (not fixture_geom.is_empty):
                 if isinstance(fixture_geom, shapely.Polygon):

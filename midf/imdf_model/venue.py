@@ -15,9 +15,7 @@ class IMDFVenue(IMDFFeature):
     geometry: Polygonal
     name: Labels  # Language:Value # { ""en"": ""Kansas City International Airport"" }"
     address_id: str  # 984eb70b-da05-4ed7-809b-4d0e169f5d29
-    display_point: Optional[
-        shapely.Point
-    ]  # TODO: SHOULD NOT BE OPTIONAL! # TODO: REMOVE FOR STRICT
+    display_point: shapely.Point
     category: Union[
         IMDFVenueCategory, str
     ]  # TODO: Some venue have a category that is not in the enum, so we allow a # TODO: REMOVE FOR STRICT

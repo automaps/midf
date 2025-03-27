@@ -53,7 +53,9 @@ def to_mi_solution(
 
     building_footprint_mapping = defaultdict(list)
 
-    anchor_location_type = mi_solution.add_location_type(name=ANCHOR_NAME)
+    anchor_location_type = mi_solution.add_location_type(
+        admin_id=ANCHOR_NAME, name=ANCHOR_NAME
+    )
 
     occupant_category_mapping = convert_occupant_categories(mi_solution)
 

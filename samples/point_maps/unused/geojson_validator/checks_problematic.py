@@ -23,6 +23,9 @@ def check_self_intersection(geom: shapely.geometry.Polygon) -> bool:
 
 def check_duplicate_nodes(geometry: dict) -> bool:
     """Return True if there are duplicate nodes, excluding the acceptable duplicate of a closed ring."""
+    if not geometry["coordinates"]:
+        return True
+
     coords = geometry["coordinates"][0]
     unique_coords = set(map(tuple, coords))
 
@@ -38,6 +41,9 @@ def check_duplicate_nodes(geometry: dict) -> bool:
 def check_3d_coordinates(geometry: dict, n_first_coords=2) -> bool:
     """Return True if any coordinates are more than 2D."""
     # TODO: should all coordinates be checked?
+    if not geometry["coordinates"]:
+        return False
+
     for coords in geometry["coordinates"][0][:n_first_coords]:
         if len(coords) > 2:
             return True
@@ -47,6 +53,9 @@ def check_3d_coordinates(geometry: dict, n_first_coords=2) -> bool:
 
 def check_outside_lat_lon_boundaries(geometry: dict) -> bool:
     """Return True if not all coordinates are within the standard lat/lon boundaries."""
+
+    if not geometry["coordinates"]:
+        return True
 
     def _inside_boundaries(lon, lat):
         return -180 <= lon <= 180 and -90 <= lat <= 90
@@ -60,6 +69,9 @@ def check_outside_lat_lon_boundaries(geometry: dict) -> bool:
 
 def check_crosses_antimeridian(geometry: dict) -> bool:
     """Return True if the geometry crosses the antimeridian (meridian at 180 longitude)."""
+    if not geometry["coordinates"]:
+        return False
+
     coords = geometry["coordinates"][0]
     for start, end in zip(coords, coords[1:]):
         # Normalize longitudes to -180 to 180 range

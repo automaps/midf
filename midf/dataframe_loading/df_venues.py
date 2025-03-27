@@ -34,6 +34,8 @@ def load_imdf_venues(
                     display_point = shapely.from_geojson(json.dumps(display_point))
                 else:
                     display_point = shapely.from_geojson(display_point)
+            else:
+                display_point = venue_dict["geometry"].representative_point()
 
             if "id" in venue_dict:
                 venue_id = venue_dict.pop("id")

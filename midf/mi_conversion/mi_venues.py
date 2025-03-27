@@ -53,7 +53,8 @@ def convert_venues(
                         city=address.locality,
                         region=address.province,
                     ),
-                    polygon=dilate(venue.display_point),
+                    polygon=venue.geometry,
+                    # dilate(venue.display_point),
                 )
                 address_venue_mapping[address.id].append(venue_key)
 

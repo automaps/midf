@@ -47,9 +47,11 @@ def convert_units(
 
             unit_geom = clean_shape(unit.geometry)
 
-            location_type_key = LocationType.compute_key(name=unit.category)
+            location_type_key = LocationType.compute_key(admin_id=unit.category)
             if mi_solution.location_types.get(location_type_key) is None:
-                location_type_key = mi_solution.add_location_type(name=unit.category)
+                location_type_key = mi_solution.add_location_type(
+                    admin_id=unit.category, name=unit.category
+                )
 
             unit_location_key = clean_admin_id(unit.id)
 

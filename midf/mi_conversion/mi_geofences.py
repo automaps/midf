@@ -19,9 +19,11 @@ def convert_geofences(
         for geofence in midf_solution.geofences:
             geofence: MIDFGeofence
 
-            ltk = LocationType.compute_key(name=geofence.category)
+            ltk = LocationType.compute_key(admin_id=geofence.category)
             if mi_solution.location_types.get(ltk) is None:
-                ltk = mi_solution.add_location_type(name=geofence.category)
+                ltk = mi_solution.add_location_type(
+                    admin_id=geofence.category, name=geofence.category
+                )
 
             if geofence.buildings:
                 for building in geofence.buildings:

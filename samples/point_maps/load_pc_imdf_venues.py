@@ -17,10 +17,11 @@ if __name__ == "__main__":
     data_base = Path(__file__).parent / "imdfication2"
 
     for pc_venue_dir in data_base.iterdir():
-        if False:
+        if True:
             if pc_venue_dir.stem not in (
-                "zurich_airport",
-                "temasek",
+                # "national_gallery_1",
+                # "zurich_airport",
+                # "temasek",
                 "suss_wayfinding",
                 "sit_visitor",
             ):
@@ -106,6 +107,6 @@ if __name__ == "__main__":
                 with open(data_base / "go.json", "w") as f:
                     f.write(to_json(mi_solution))
         except Exception as e:
-            if False:
-                raise e
             logger.error(f"Failed to process {pc_venue_dir}: {e}")
+            if True:
+                raise e
