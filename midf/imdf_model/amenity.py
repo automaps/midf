@@ -18,7 +18,12 @@ class IMDFAmenity(IMDFFeature):
     ]  # TODO: Some amenity have a category that is not in the enum, so we allow a
     # string here, but we should validate it, it is not valid, we should raise an error. # TODO: REMOVE FOR
     #  STRICT
-    accessibility: IMDFAccessibilityCategory = None
+    accessibility: Optional[Union[IMDFAccessibilityCategory, str]] = (
+        None  # TODO: Some amenity have a category that is not in the enum,
+    )
+    # so we allow a
+    # string here, but we should validate it, it is not valid, we should raise an error. # TODO: REMOVE FOR
+    #  STRICT
     name: Optional[Mapping[str, str]] = None
     alt_name: Optional[Mapping[str, str]] = None
     hours: Any = None
