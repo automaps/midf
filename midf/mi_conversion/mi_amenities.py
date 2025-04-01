@@ -5,7 +5,6 @@ from midf.model import MIDFAmenity, MIDFSolution
 __all__ = ["convert_amenities"]
 
 import logging
-from jord.shapely_utilities import clean_shape, dilate
 
 logger = logging.getLogger(__name__)
 

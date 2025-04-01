@@ -2,7 +2,6 @@ import logging
 from typing import Mapping
 
 import shapely
-from jord.shapely_utilities import clean_shape, dilate
 
 from integration_system.model import (
     InvalidPolygonError,
@@ -14,6 +13,7 @@ from integration_system.model import (
     Room,
     Solution,
 )
+from jord.shapely_utilities import clean_shape
 from midf.constants import ANCHOR_NAME
 from midf.mi_utilities import clean_admin_id
 from midf.model import MIDFLevel, MIDFOccupant, MIDFUnit

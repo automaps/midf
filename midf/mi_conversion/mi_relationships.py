@@ -2,8 +2,6 @@ import logging
 import uuid
 from itertools import count
 
-from jord.shapely_utilities import clean_shape, dilate
-
 from integration_system.model import Area, ConnectionType, Connector, Room, Solution
 from midf.enums import IMDFRelationshipCategory
 from midf.imdf_model.opening import IMDFDirection

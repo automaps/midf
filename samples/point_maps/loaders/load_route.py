@@ -6,9 +6,10 @@ from pathlib import Path
 import osmnx
 import pyproj
 import shapely
-from jord.networkx_utilities import add_shapely_node, assertive_add_edge
 from networkx import MultiDiGraph
 from warg import recursive_flatten
+
+from jord.networkx_utilities import add_shapely_node, assertive_add_edge
 
 logger = logging.getLogger(__name__)
 

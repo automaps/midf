@@ -1,9 +1,9 @@
 import logging
 
 import shapely
-from jord.shapely_utilities import clean_shape, dilate
 
 from integration_system.model import DoorType, LocationType
+from jord.shapely_utilities import clean_shape, dilate
 from midf.mi_utilities import clean_admin_id
 from midf.model import MIDFOpening
 

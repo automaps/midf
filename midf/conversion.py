@@ -2,13 +2,13 @@ import logging
 from collections import defaultdict
 
 import shapely
-from jord.shapely_utilities import clean_shape, dilate
 
 from integration_system.model import (
     Building,
     FALLBACK_OSM_GRAPH,
     Solution,
 )
+from jord.shapely_utilities import dilate
 from midf.constants import ANCHOR_NAME, OUTDOOR_BUILDING_NAME
 from midf.mi_conversion import (
     convert_amenities,

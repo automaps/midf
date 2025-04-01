@@ -1,1 +1,1 @@
-export { default } from './avf2imdf'
+export {default} from './avf2imdf'

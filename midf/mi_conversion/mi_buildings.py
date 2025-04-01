@@ -2,9 +2,9 @@ import logging
 from typing import Collection, Mapping
 
 import shapely
-from jord.shapely_utilities import clean_shape, dilate
 
 from integration_system.model import Solution, Venue
+from jord.shapely_utilities import clean_shape, dilate
 from midf.mi_utilities import make_mi_building_admin_id_midf
 from midf.model import MIDFAddress, MIDFBuilding, MIDFFootprint, MIDFSolution
 

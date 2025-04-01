@@ -1,8 +1,6 @@
 import logging
 from typing import Mapping
 
-from jord.shapely_utilities import clean_shape, dilate
-
 from integration_system.model import Solution
 from midf.enums import IMDFOccupantCategory
 

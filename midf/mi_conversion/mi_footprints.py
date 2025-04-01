@@ -3,8 +3,6 @@ __all__ = ["convert_footprints"]
 import logging
 from typing import List, Mapping
 
-from jord.shapely_utilities import clean_shape, dilate
-
 from midf.model import MIDFBuilding, MIDFFootprint, MIDFSolution
 
 logger = logging.getLogger(__name__)

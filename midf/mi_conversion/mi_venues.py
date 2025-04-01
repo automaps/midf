@@ -2,7 +2,6 @@ import logging
 from typing import List, Mapping
 
 import shapely
-from jord.shapely_utilities import clean_shape, dilate, dilate, erode
 
 from integration_system.model import PostalAddress, Solution, VenueType
 from midf.constants import IMDF_VENUE_CATEGORY_TO_MI_VENUE_TYPE

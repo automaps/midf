@@ -4,11 +4,11 @@ from pathlib import Path
 import geopandas
 import shapely
 
-# from jord.qlive_utilities import AutoQliveClient
-from jord.shapely_utilities import clean_shape
-
 from integration_system.mi import synchronize
 from integration_system.model import Solution
+
+# from jord.qlive_utilities import AutoQliveClient
+from jord.shapely_utilities import clean_shape
 
 # file_path = (    Path(__file__).parent / "data" / "auxiliary_data" / "SIT" / "basemap.geojson")
 file_path = Path(__file__).parent / "data" / "VitraCampus" / "basemap.geojson"

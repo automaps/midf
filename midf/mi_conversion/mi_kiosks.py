@@ -1,9 +1,9 @@
 import logging
 
 import shapely
-from jord.shapely_utilities import clean_shape, dilate
 
 from integration_system.model import LocationType, Solution
+from jord.shapely_utilities import clean_shape
 from midf.constants import KIOSK_LOCATION_TYPE_NAME
 from midf.mi_utilities import clean_admin_id
 from midf.model import MIDFKiosk, MIDFLevel

@@ -1,8 +1,7 @@
 import logging
 
-from jord.shapely_utilities import clean_shape, dilate
-
 from integration_system.model import Building, LocationType, Solution
+from jord.shapely_utilities import clean_shape
 from midf.constants import OUTDOOR_BUILDING_NAME
 from midf.mi_utilities import clean_admin_id, make_mi_building_admin_id_midf
 from midf.model import MIDFGeofence, MIDFSolution
