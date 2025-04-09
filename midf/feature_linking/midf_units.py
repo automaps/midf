@@ -20,7 +20,6 @@ def link_units(
 ) -> Dict[str, List[MIDFUnit]]:
     units = defaultdict(list)
     logger.error(f"Linking units {len(imdf_dict[IMDFFeatureType.unit])}")
-    found_anchor_unit_ids = anchors.keys()
 
     anchors_copy = anchors.copy()
 
@@ -36,9 +35,7 @@ def link_units(
                 restriction=unit.restriction,
                 accessibility=unit.accessibility,
                 anchors=(
-                    anchors_copy.pop(unit.id)
-                    if unit.id in found_anchor_unit_ids
-                    else None
+                    anchors_copy.pop(unit.id) if unit.id in anchors_copy else None
                 ),
             )
         )

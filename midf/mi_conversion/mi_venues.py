@@ -3,7 +3,8 @@ from typing import List, Mapping
 
 import shapely
 
-from integration_system.model import PostalAddress, Solution, VenueType
+from integration_system.mi.manager_model.venue import MIVenueType
+from integration_system.model import PostalAddress, Solution
 from midf.constants import IMDF_VENUE_CATEGORY_TO_MI_VENUE_TYPE
 from midf.mi_utilities import clean_admin_id
 from midf.model import MIDFAddress, MIDFSolution, MIDFVenue
@@ -43,7 +44,7 @@ def convert_venues(
                     venue_type=(
                         IMDF_VENUE_CATEGORY_TO_MI_VENUE_TYPE[venue.category]
                         if venue.category in IMDF_VENUE_CATEGORY_TO_MI_VENUE_TYPE
-                        else VenueType.not_specified
+                        else MIVenueType.not_specified
                     ),
                     address=PostalAddress(
                         postal_code=address.postal_code,

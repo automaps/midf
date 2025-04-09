@@ -3,8 +3,8 @@ import math
 import pickle
 from pathlib import Path
 
-from integration_system.mi import SyncLevel, synchronize
-from integration_system.model import MediaType, OccupantCategory, OccupantTemplate
+from integration_system.mi import MIMediaType, SyncLevel, synchronize
+from integration_system.model import OccupantCategory, OccupantTemplate
 from midf.conversion import to_mi_solution
 from midf.linking import link_imdf
 from midf.loading import MANIFEST_KEY, load_imdf
@@ -22,8 +22,10 @@ if __name__ == "__main__":
                 # "national_gallery_1",
                 # "zurich_airport",
                 # "temasek",
-                "suss_wayfinding",
-                "sit_visitor",
+                # "suss_wayfinding",
+                # "sit_visitor",
+                "suss_spatial",
+                # "sit_campus",
             ):
                 continue
 
@@ -75,7 +77,7 @@ if __name__ == "__main__":
                             for ith, image_data in enumerate(occupant_data["images"]):
                                 image_id = occupant_id + str(ith)
                                 media_key = mi_solution.add_media(
-                                    image_id, image_data, MediaType.jpg
+                                    image_id, image_data, MIMediaType.jpg
                                 )
 
                         mi_solution.update_occupant_template(

@@ -4,7 +4,7 @@ import geopandas
 import requests
 
 from integration_system.mi import synchronize
-from integration_system.model import MediaType, Solution
+from integration_system.model import MIMediaType, Solution
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -29,7 +29,7 @@ for ir, r in df.iterrows():
         image_id = r["IMAGES"][0]
         b = requests.get(a.format(image_id)).content
 
-        media_key = solution.add_media(image_id, b, MediaType.jpg)
+        media_key = solution.add_media(image_id, b, MIMediaType.jpg)
 
     solution.add_point_of_interest(
         r["OCCU_ID"],

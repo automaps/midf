@@ -28,8 +28,11 @@ def drop_invalid_features(p: Path) -> Optional[dict[str, Any]]:
     if "geometry" in a:
         for i in a["geometry"].values:
             fail = False
+            gj = None
             try:
-                g = shapely.from_geojson(json.dumps(i))
+                gj = json.dumps(i)
+
+                g = shapely.from_geojson(gj)
 
                 if False:
                     if not g.is_valid:
@@ -38,7 +41,9 @@ def drop_invalid_features(p: Path) -> Optional[dict[str, Any]]:
                 if g.is_empty:
                     fail = True
             except Exception as e:
-                logger.error(f"{e}")
+                logger.error(f"{p}:{e}")
+                if gj:
+                    logger.error(f"{p}:{gj}")
                 fail = True
 
             if fail:
@@ -167,8 +172,10 @@ if __name__ == "__main__":
             if True:
                 if pc_venue.stem not in (
                     # "national_gallery_1",
-                    "suss_wayfinding",
-                    "sit_visitor",
+                    # "suss_wayfinding",
+                    # "sit_visitor",
+                    "suss_spatial",
+                    "sit_campus",
                 ):
                     continue
 

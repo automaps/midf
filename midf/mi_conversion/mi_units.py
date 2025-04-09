@@ -3,13 +3,13 @@ from typing import Mapping
 
 import shapely
 
+from integration_system.mi.manager_model.occupants import MIOccupantType
 from integration_system.model import (
     InvalidPolygonError,
     LocationType,
     Occupant,
     OccupantCategory,
     OccupantTemplate,
-    OccupantType,
     Room,
     Solution,
 )
@@ -149,7 +149,7 @@ def convert_units(
                             if mi_solution.occupant_templates.get(a) is None:
                                 occupant_template_key = mi_solution.add_occupant_template(
                                     name=occupant_name,
-                                    occupant_type=OccupantType.occupant,
+                                    occupant_type=MIOccupantType.occupant,
                                     occupant_category_key=l,
                                     description=f"{occupant.hours} {occupant.phone} {occupant.website}",
                                     # business_hours=occupant.hours, # TODO: CONVERT?

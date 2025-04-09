@@ -150,8 +150,10 @@ if __name__ == "__main__":
             if True:
                 if pc_venue.stem not in (
                     # "national_gallery_1",
-                    "suss_wayfinding",
-                    "sit_visitor",
+                    # "suss_wayfinding",
+                    # "sit_visitor",
+                    "suss_spatial",
+                    "sit_campus",
                 ):
                     continue
 
