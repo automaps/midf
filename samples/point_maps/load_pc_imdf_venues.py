@@ -3,7 +3,8 @@ import math
 import pickle
 from pathlib import Path
 
-from integration_system.mi import MIMediaType, SyncLevel, synchronize
+from integration_system.common_models import MIMediaType
+from integration_system.mi import SyncLevel, synchronize
 from integration_system.model import OccupantCategory, OccupantTemplate
 from midf.conversion import to_mi_solution
 from midf.linking import link_imdf
@@ -24,8 +25,10 @@ if __name__ == "__main__":
                 # "temasek",
                 # "suss_wayfinding",
                 # "sit_visitor",
-                "suss_spatial",
+                # "suss_spatial",
                 # "sit_campus",
+                "btrts",
+                "berlin_brandenburg_airport",
             ):
                 continue
 

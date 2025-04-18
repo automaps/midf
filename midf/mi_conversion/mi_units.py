@@ -3,7 +3,7 @@ from typing import Mapping
 
 import shapely
 
-from integration_system.mi.manager_model.occupants import MIOccupantType
+from integration_system.common_models import MIOccupantType
 from integration_system.model import (
     InvalidPolygonError,
     LocationType,

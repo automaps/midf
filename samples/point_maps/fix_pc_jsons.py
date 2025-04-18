@@ -174,8 +174,10 @@ if __name__ == "__main__":
                     # "national_gallery_1",
                     # "suss_wayfinding",
                     # "sit_visitor",
-                    "suss_spatial",
-                    "sit_campus",
+                    # "suss_spatial",
+                    # "sit_campus",
+                    "btrts",
+                    "berlin_brandenburg_airport",
                 ):
                     continue
 

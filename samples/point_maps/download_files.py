@@ -14,9 +14,9 @@ logging.basicConfig(level=logging.INFO)
 
 map_id_edit_urls = {
     # "AIFA Map": "https://cms.point-maps.com/map/ckusuz2q6005s09jq9a1fbbdq",
-    "SUSS_SPATIAL": "https://cms.point-maps.com/map/cku890j8o007o08lddkrw9135",
+    # "SUSS_SPATIAL": "https://cms.point-maps.com/map/cku890j8o007o08lddkrw9135",
     # "SUSS Wayfinding": "https://cms.point-maps.com/map/clprxosy8000x0bie7hfrao47",
-    "SIT Campus": "https://cms.point-maps.com/map/clvqbidp9005f07l68g0vgk6q",
+    # "SIT Campus": "https://cms.point-maps.com/map/clvqbidp9005f07l68g0vgk6q",
     # "SIT Visitor": "https://cms.point-maps.com/map/clvqg9249004h0ajjhvg4a5j5",
     # "HNL": "https://cms.point-maps.com/map/clr75fdn306sz08jp4awo2qo6",  #
     # "ITO": "https://cms.point-maps.com/map/clsu7i9qd00230al3hv6b1du0",  #
@@ -37,8 +37,8 @@ map_id_edit_urls = {
     # "SJII": "https://cms.point-maps.com/map/clakmo5yc006008lc3fcn633o",  #
     # "Coomalie": "https://cms.point-maps.com/map/cle3xo6xy003108kygmntakyf",  #
     # "Temasek": "https://cms.point-maps.com/map/clnssorc7000608mu40r3gviz",  #
-    # "BTRTS": "https://cms.point-maps.com/map/clzklq2ox01h40akwcbugedsa",  #
-    # "Berlin Brandenburg Airport": "https://cms.point-maps.com/map/cm1z1rucy01hr0amlh7nb5zuu",  #
+    "BTRTS": "https://cms.point-maps.com/map/clzklq2ox01h40akwcbugedsa",  #
+    "Berlin Brandenburg Airport": "https://cms.point-maps.com/map/cm1z1rucy01hr0amlh7nb5zuu",  #
     # "Zurich Airport": "https://cms.point-maps.com/map/cm2xdja47008709mn4ccb0ch1",  #
     # "MP Demo": "https://cms.point-maps.com/map/cm6aimazu009p09la1d6439cp",  #
 }
