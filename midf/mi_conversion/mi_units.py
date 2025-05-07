@@ -10,6 +10,7 @@ from integration_system.model import (
     Occupant,
     OccupantCategory,
     OccupantTemplate,
+    PointOfInterest,
     Room,
     Solution,
 )
@@ -100,8 +101,22 @@ def convert_units(
                         anchor_key = unit_location_key
                     else:  # Location already has an occupant, add anchor as a point of interest for the occupant to
                         # occupy
+
+                        new_anchor_admin_id = clean_admin_id(anchor.id)
+                        mi_solution: Solution
+
+                        while (
+                            mi_solution.points_of_interest.get(
+                                PointOfInterest.compute_key(
+                                    admin_id=new_anchor_admin_id
+                                )
+                            )
+                            is not None
+                        ):
+                            new_anchor_admin_id += "I"
+
                         anchor_key = mi_solution.add_point_of_interest(
-                            admin_id=clean_admin_id(anchor.id),
+                            admin_id=new_anchor_admin_id,
                             name=ANCHOR_NAME,
                             point=anchor.geometry,
                             floor_key=floor_key,
