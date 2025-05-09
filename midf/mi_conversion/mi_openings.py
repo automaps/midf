@@ -2,7 +2,8 @@ import logging
 
 import shapely
 
-from integration_system.model import DoorType, LocationType
+from integration_system.common_models import MIDoorType
+from integration_system.model import LocationType
 from jord.shapely_utilities import clean_shape, dilate
 from midf.mi_utilities import clean_admin_id
 from midf.model import MIDFOpening
@@ -53,7 +54,7 @@ def convert_openings(level, mi_solution, venue_graph_key, floor_key) -> None:
                     floor_index=level.ordinal,
                     graph_key=venue_graph_key,
                     linestring=opening_geom,
-                    door_type=DoorType.door,
+                    door_type=MIDoorType.door,
                 )
 
                 # opening.door

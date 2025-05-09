@@ -2,7 +2,8 @@ import logging
 import uuid
 from itertools import count
 
-from integration_system.model import Area, ConnectionType, Connector, Room, Solution
+from integration_system.common_models import MIConnectionType
+from integration_system.model import Area, Connector, Room, Solution
 from midf.enums import IMDFRelationshipCategory
 from midf.imdf_model.opening import IMDFDirection
 from midf.mi_utilities import clean_admin_id
@@ -22,24 +23,24 @@ def convert_relationships(
             relationship: MIDFRelationship
 
             category_ = relationship.category
-            connection_type = ConnectionType.elevator
+            connection_type = MIConnectionType.elevator
             if category_ == IMDFRelationshipCategory.elevator:
-                connection_type = ConnectionType.elevator
+                connection_type = MIConnectionType.elevator
             elif category_ == IMDFRelationshipCategory.escalator:
-                connection_type = ConnectionType.escalator
+                connection_type = MIConnectionType.escalator
             elif category_ == IMDFRelationshipCategory.stairs:
-                connection_type = ConnectionType.steps
+                connection_type = MIConnectionType.steps
             elif category_ == IMDFRelationshipCategory.ramp:
-                connection_type = ConnectionType.ramp
+                connection_type = MIConnectionType.ramp
             elif category_ == IMDFRelationshipCategory.moving_walkway:
                 continue
-                connection_type = ConnectionType.escalator  # skip?
+                connection_type = MIConnectionType.escalator  # skip?
             elif category_ == IMDFRelationshipCategory.traversal:
                 continue
-                connection_type = ConnectionType.wheel_chair_ramp
+                connection_type = MIConnectionType.wheel_chair_ramp
             elif category_ == IMDFRelationshipCategory.traversal_path:
                 continue
-                connection_type = ConnectionType.wheel_chair_lift
+                connection_type = MIConnectionType.wheel_chair_lift
             else:
                 logger.warning(f"Unknown relationship category {category_}")
 
