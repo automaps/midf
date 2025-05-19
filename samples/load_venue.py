@@ -41,7 +41,7 @@ if __name__ == "__main__":
                         mi_solution, sync_level=SyncLevel.venue, include_occupants=True
                     )
                 else:
-                    from integration_system.json_serde import to_json
+                    from integration_system.tools.serialisation import to_json
 
                     with open(data_base / "go.json", "w") as f:
                         f.write(to_json(mi_solution))

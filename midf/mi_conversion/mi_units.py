@@ -3,7 +3,7 @@ from typing import Mapping
 
 import shapely
 
-from integration_system.common_models import MIOccupantType
+from integration_system.tools.common_models import MIOccupantType
 from integration_system.model import (
     InvalidPolygonError,
     LocationType,
