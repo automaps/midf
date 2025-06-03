@@ -3,7 +3,7 @@ import logging
 import geopandas
 import requests
 
-from integration_system.tools.common_models import MIMediaType
+from integration_system.common_models import MIMediaType
 from integration_system.mi import synchronize
 from integration_system.model import Solution
 

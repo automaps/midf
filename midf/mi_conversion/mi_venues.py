@@ -3,7 +3,7 @@ from typing import List, Mapping
 
 import shapely
 
-from integration_system.tools.common_models import MIVenueType
+from integration_system.common_models import MIVenueType
 from integration_system.model import PostalAddress, Solution
 from midf.constants import IMDF_VENUE_CATEGORY_TO_MI_VENUE_TYPE
 from midf.mi_utilities import clean_admin_id

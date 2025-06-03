@@ -3,7 +3,7 @@ import math
 import pickle
 from pathlib import Path
 
-from integration_system.tools.common_models import MIMediaType
+from integration_system.common_models import MIMediaType
 from integration_system.mi import SyncLevel, synchronize
 from integration_system.model import OccupantCategory, OccupantTemplate
 from midf.conversion import to_mi_solution
