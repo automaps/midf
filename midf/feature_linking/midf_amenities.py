@@ -2,10 +2,9 @@ import logging
 from collections import defaultdict
 from typing import Collection, Dict, Mapping
 
-from warg.data_structures.mappings import to_dict
-
 from midf.enums import IMDFFeatureType
 from midf.imdf_model import IMDFAmenity, IMDFFeature
+from warg.data_structures.mappings import to_dict
 
 __all__ = ["link_amenities"]
 

@@ -3,8 +3,6 @@ import pickle
 from datetime import datetime
 from pathlib import Path
 
-from warg import ensure_existence
-
 from loaders import (
     load_basemap,
     load_building,
@@ -24,6 +22,7 @@ from loaders import (
 )
 from midf.packaging import package_imdf
 from model.enums import PointConsultingFeatureStem
+from warg import ensure_existence
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)

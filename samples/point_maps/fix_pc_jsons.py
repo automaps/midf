@@ -6,9 +6,9 @@ from typing import Any, Optional
 
 import pandas
 import shapely
-from warg import ensure_existence
 
 from model.enums import PointConsultingFeatureStem
+from warg import ensure_existence
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)

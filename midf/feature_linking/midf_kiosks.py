@@ -1,11 +1,10 @@
 from collections import defaultdict
 from typing import Collection, Dict, List, Mapping
 
-from warg.data_structures.mappings import to_dict
-
 from midf.enums import IMDFFeatureType
 from midf.imdf_model import IMDFFeature, IMDFKiosk
 from midf.model import MIDFAnchor, MIDFKiosk
+from warg.data_structures.mappings import to_dict
 
 __all__ = ["link_kiosks"]
 
