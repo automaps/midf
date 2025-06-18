@@ -1,7 +1,7 @@
 import logging
 from typing import Mapping
 
-from integration_system.model import Building, Floor, Solution
+from integration_system.model import Building, Floor, LanguageBundle, Solution
 from jord.shapely_utilities import clean_shape
 from midf.constants import ASSUME_OUTDOOR_IF_MISSING_BUILDING, OUTDOOR_BUILDING_NAME
 from midf.mi_conversion.mi_details import convert_details
@@ -45,8 +45,8 @@ def convert_levels(
                 if found_building is None:
                     outdoor_building_key = mi_solution.add_building(
                         c,
-                        OUTDOOR_BUILDING_NAME,
-                        mi_solution.venues.get(venue_key).polygon,
+                        translations={"en": LanguageBundle(name=OUTDOOR_BUILDING_NAME)},
+                        polygon=mi_solution.venues.get(venue_key).polygon,
                         venue_key=found_venue_key,
                     )
                     found_building = mi_solution.buildings.get(outdoor_building_key)
@@ -80,7 +80,7 @@ def convert_levels(
 
         floor_key = mi_solution.add_floor(
             building_key=found_building.key,
-            name=floor_name,
+            translations={"en": LanguageBundle(name=floor_name)},
             polygon=clean_shape(found_building.polygon),
             floor_index=floor_index,
         )

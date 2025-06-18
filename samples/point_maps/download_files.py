@@ -38,9 +38,9 @@ map_id_edit_urls = {
     # "SJII": "https://cms.point-maps.com/map/clakmo5yc006008lc3fcn633o",  #
     # "Coomalie": "https://cms.point-maps.com/map/cle3xo6xy003108kygmntakyf",  #
     # "Temasek": "https://cms.point-maps.com/map/clnssorc7000608mu40r3gviz",  #
-    "BTRTS": "https://cms.point-maps.com/map/clzklq2ox01h40akwcbugedsa",  #
-    "Berlin Brandenburg Airport": "https://cms.point-maps.com/map/cm1z1rucy01hr0amlh7nb5zuu",  #
-    # "Zurich Airport": "https://cms.point-maps.com/map/cm2xdja47008709mn4ccb0ch1",  #
+    # "BTRTS": "https://cms.point-maps.com/map/clzklq2ox01h40akwcbugedsa",  #
+    # "Berlin Brandenburg Airport": "https://cms.point-maps.com/map/cm1z1rucy01hr0amlh7nb5zuu",  #
+    "Zurich Airport": "https://cms.point-maps.com/map/cm2xdja47008709mn4ccb0ch1",  #
     # "MP Demo": "https://cms.point-maps.com/map/cm6aimazu009p09la1d6439cp",  #
 }
 

@@ -3,7 +3,7 @@ from typing import Collection, Mapping
 
 import shapely
 
-from integration_system.model import Solution, Venue
+from integration_system.model import LanguageBundle, Solution, Venue
 from jord.shapely_utilities import clean_shape, dilate
 from midf.mi_utilities import make_mi_building_admin_id_midf
 from midf.model import MIDFAddress, MIDFBuilding, MIDFFootprint, MIDFSolution
@@ -71,7 +71,7 @@ def convert_buildings(
 
         mi_solution.add_building(
             b,
-            name=building_name,
+            translations={"en": LanguageBundle(name=building_name)},
             polygon=clean_shape(building_footprint),
             venue_key=found_venue_key,
         )

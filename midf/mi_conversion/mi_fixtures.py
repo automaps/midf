@@ -2,7 +2,7 @@ import logging
 
 import shapely
 
-from integration_system.model import LocationType, Solution
+from integration_system.model import LanguageBundle, LocationType, Solution
 from jord.shapely_utilities import clean_shape
 from midf.mi_utilities import clean_admin_id
 from midf.model import MIDFFixture, MIDFLevel
@@ -33,14 +33,15 @@ def convert_fixtures(floor_key: str, level: MIDFLevel, mi_solution: Solution) ->
             location_type_key = LocationType.compute_key(admin_id=fixture.category)
             if mi_solution.location_types.get(location_type_key) is None:
                 location_type_key = mi_solution.add_location_type(
-                    admin_id=fixture.category, name=fixture.category
+                    admin_id=fixture.category,
+                    translations={"en": LanguageBundle(name=fixture.category)},
                 )
 
             if fixture_geom.is_valid and (not fixture_geom.is_empty):
                 if isinstance(fixture_geom, shapely.Polygon):
                     mi_solution.add_area(
                         admin_id=clean_admin_id(fixture.id),
-                        name=fixture_name,
+                        translations={"en": LanguageBundle(name=fixture_name)},
                         polygon=fixture_geom,
                         floor_key=floor_key,
                         location_type_key=location_type_key,
@@ -49,7 +50,7 @@ def convert_fixtures(floor_key: str, level: MIDFLevel, mi_solution: Solution) ->
                     for ith, polygon in enumerate(fixture_geom.geoms):
                         mi_solution.add_area(
                             admin_id=clean_admin_id(f"{fixture.id}_part_{str(ith)}"),
-                            name=fixture_name,
+                            translations={"en": LanguageBundle(name=fixture_name)},
                             polygon=polygon,
                             floor_key=floor_key,
                             location_type_key=location_type_key,

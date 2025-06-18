@@ -6,6 +6,7 @@ import shapely
 from integration_system.model import (
     Building,
     FALLBACK_OSM_GRAPH,
+    LanguageBundle,
     Solution,
 )
 from jord.shapely_utilities import dilate
@@ -54,7 +55,7 @@ def to_mi_solution(
     building_footprint_mapping = defaultdict(list)
 
     anchor_location_type = mi_solution.add_location_type(
-        admin_id=ANCHOR_NAME, name=ANCHOR_NAME
+        admin_id=ANCHOR_NAME, translations={"en": LanguageBundle(name=ANCHOR_NAME)}
     )
 
     occupant_category_mapping = convert_occupant_categories(mi_solution)

@@ -24,13 +24,14 @@ if __name__ == "__main__":
                 # "zurich_airport",
                 # "temasek",
                 # "suss_wayfinding",
-                "suss_spatial"
+                # "suss_spatial"
                 # "sit_visitor",
                 # "suss_spatial",
                 # "sit_campus",
                 # "btrts",
                 # "berlin_brandenburg_airport",
-                # 'kansas_international_airport_-_new'
+                # 'kansas_international_airport_-_new',
+                "zurich_airport"
             ):
                 continue
 

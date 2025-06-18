@@ -4,7 +4,7 @@ from typing import List, Mapping
 import shapely
 
 from integration_system.common_models import MIVenueType
-from integration_system.model import PostalAddress, Solution
+from integration_system.model import LanguageBundle, PostalAddress, Solution
 from midf.constants import IMDF_VENUE_CATEGORY_TO_MI_VENUE_TYPE
 from midf.mi_utilities import clean_admin_id
 from midf.model import MIDFAddress, MIDFSolution, MIDFVenue
@@ -40,7 +40,7 @@ def convert_venues(
 
                 venue_key = mi_solution.add_venue(
                     admin_id=clean_admin_id(venue.id),
-                    name=venue_name,
+                    translations={"en": LanguageBundle(name=venue_name)},
                     venue_type=(
                         IMDF_VENUE_CATEGORY_TO_MI_VENUE_TYPE[venue.category]
                         if venue.category in IMDF_VENUE_CATEGORY_TO_MI_VENUE_TYPE
@@ -62,7 +62,7 @@ def convert_venues(
         logger.error("No venues found in the MIDF solution.")
         venue_key = mi_solution.add_venue(
             admin_id="default-venue",
-            name="Default Venue",
+            translations={"en": LanguageBundle(name="Default Venue")},
             address=PostalAddress(
                 postal_code="",
                 street1="",

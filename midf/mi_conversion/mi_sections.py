@@ -2,7 +2,7 @@ import logging
 
 import shapely
 
-from integration_system.model import LocationType, Solution
+from integration_system.model import LanguageBundle, LocationType, Solution
 from jord.shapely_utilities import clean_shape
 from midf.mi_utilities import clean_admin_id
 from midf.model import MIDFLevel, MIDFSection
@@ -33,13 +33,14 @@ def convert_sections(floor_key: str, level: MIDFLevel, mi_solution: Solution) ->
             location_type_key = LocationType.compute_key(admin_id=section.category)
             if mi_solution.location_types.get(location_type_key) is None:
                 location_type_key = mi_solution.add_location_type(
-                    admin_id=section.category, name=section.category
+                    admin_id=section.category,
+                    translations={"en": LanguageBundle(name=section.category)},
                 )
 
             if isinstance(section_geom, shapely.Polygon):
                 mi_solution.add_area(
                     admin_id=clean_admin_id(section.id),
-                    name=section_name,
+                    translations={"en": LanguageBundle(name=section_name)},
                     polygon=section_geom,
                     floor_key=floor_key,
                     location_type_key=location_type_key,

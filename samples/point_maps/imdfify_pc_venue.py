@@ -153,8 +153,9 @@ if __name__ == "__main__":
                     # "sit_visitor",
                     # "suss_spatial",
                     # "sit_campus",
-                    "btrts",
-                    "berlin_brandenburg_airport",
+                    # "btrts",
+                    # "berlin_brandenburg_airport",
+                    "zurich_airport"
                 ):
                     continue
 
