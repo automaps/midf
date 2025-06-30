@@ -34,9 +34,9 @@ def to_mi_solution(
         solution_name = midf_solution.manifest.generated_by
 
     mi_solution = Solution(
-        external_id=f"{solution_name}{midf_solution.manifest.version}",
-        name=solution_name,
-        customer_id="953f7a89334a4013927857ab",
+        _external_id=f"{solution_name}{midf_solution.manifest.version}",
+        _name=solution_name,
+        _customer_id="953f7a89334a4013927857ab",
         occupants_enabled=True,
     )
 

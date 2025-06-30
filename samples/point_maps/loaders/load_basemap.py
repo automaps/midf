@@ -25,7 +25,7 @@ chen_customer_id = "953f7a89334a4013927857ab"
 
 BASEMAP_ID_PREFIX = "Basemap"
 
-solution = Solution(solution_name, solution_name, customer_id=chen_customer_id)
+solution = Solution(solution_name, solution_name, _customer_id=chen_customer_id)
 
 venue_poly = df.unary_union.convex_hull
 

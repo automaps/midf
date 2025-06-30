@@ -16,7 +16,7 @@ file = "data/zips9/thomas_temasek/occupant.geojson"
 
 df = geopandas.read_file(file, engine="fiona")
 venue_poly = df.unary_union.convex_hull
-solution = Solution(solution_name, solution_name, customer_id=chen_customer_id)
+solution = Solution(solution_name, solution_name, _customer_id=chen_customer_id)
 
 venue_key = solution.add_venue(venue_name, venue_name, venue_poly)
 building_key = solution.add_building(venue_name, venue_name, venue_poly, venue_key)
