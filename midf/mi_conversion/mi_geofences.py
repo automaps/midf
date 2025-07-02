@@ -1,6 +1,6 @@
 import logging
 
-from integration_system.model import Building, LocationType, Solution
+from integration_system.model import Building, LanguageBundle, LocationType, Solution
 from jord.shapely_utilities import clean_shape
 from midf.constants import OUTDOOR_BUILDING_NAME
 from midf.mi_utilities import clean_admin_id, make_mi_building_admin_id_midf
@@ -21,7 +21,8 @@ def convert_geofences(
             ltk = LocationType.compute_key(admin_id=geofence.category)
             if mi_solution.location_types.get(ltk) is None:
                 ltk = mi_solution.add_location_type(
-                    admin_id=geofence.category, name=geofence.category
+                    admin_id=geofence.category,
+                    translations={"en": LanguageBundle(name=geofence.category)},
                 )
 
             if geofence.buildings:
@@ -69,7 +70,7 @@ def convert_geofences(
             gid = geofence.id  # + found_venue_key
             mi_solution.add_area(
                 admin_id=clean_admin_id(gid),
-                name=geofence_name,
+                translations={"en": LanguageBundle(name=geofence_name)},
                 polygon=clean_shape(geofence.geometry),
                 floor_key=floor_key,
                 location_type_key=ltk,

@@ -50,8 +50,8 @@ def convert_buildings(
                 building_footprint |= dilate(building.display_point)
 
         if building_footprint.is_empty:
-            if venue.display_point:
-                building_footprint |= dilate(venue.display_point)
+            if venue.polygon:
+                building_footprint |= dilate(venue.polygon)
 
         if isinstance(building_footprint, shapely.MultiPolygon):
             building_footprint = shapely.convex_hull(building_footprint)

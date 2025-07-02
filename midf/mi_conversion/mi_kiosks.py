@@ -2,7 +2,7 @@ import logging
 
 import shapely
 
-from integration_system.model import LocationType, Solution
+from integration_system.model import LanguageBundle, LocationType, Solution
 from jord.shapely_utilities import clean_shape
 from midf.constants import KIOSK_LOCATION_TYPE_NAME
 from midf.mi_utilities import clean_admin_id
@@ -36,13 +36,14 @@ def convert_kiosks(floor_key: str, level: MIDFLevel, mi_solution: Solution) -> N
             )
             if mi_solution.location_types.get(location_type_key) is None:
                 location_type_key = mi_solution.add_location_type(
-                    admin_id=KIOSK_LOCATION_TYPE_NAME, name=KIOSK_LOCATION_TYPE_NAME
+                    admin_id=KIOSK_LOCATION_TYPE_NAME,
+                    translations={"en": LanguageBundle(name=KIOSK_LOCATION_TYPE_NAME)},
                 )
 
             if isinstance(kiosk_geom, shapely.Polygon):
                 mi_solution.add_area(
                     admin_id=clean_admin_id(kiosk.id),
-                    name=kiosk_name,
+                    translations={"en": LanguageBundle(name=kiosk_name)},
                     polygon=kiosk_geom,
                     floor_key=floor_key,
                     location_type_key=location_type_key,

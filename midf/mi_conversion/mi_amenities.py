@@ -1,4 +1,10 @@
-from integration_system.model import LocationType, PointOfInterest, Room, Solution
+from integration_system.model import (
+    LanguageBundle,
+    LocationType,
+    PointOfInterest,
+    Room,
+    Solution,
+)
 from midf.mi_utilities import clean_admin_id
 from midf.model import MIDFAmenity, MIDFSolution
 
@@ -28,7 +34,8 @@ def convert_amenities(mi_solution: Solution, midf_solution: MIDFSolution) -> Non
             amenity_category_key = LocationType.compute_key(admin_id=amenity.category)
             if mi_solution.location_types.get(amenity_category_key) is None:
                 mi_solution.add_location_type(
-                    admin_id=amenity.category, name=amenity.category
+                    admin_id=amenity.category,
+                    translations={"en": LanguageBundle(name=amenity.category)},
                 )
 
             for unit in amenity.units:
@@ -53,10 +60,14 @@ def convert_amenities(mi_solution: Solution, midf_solution: MIDFSolution) -> Non
 
                 mi_solution.add_point_of_interest(
                     admin_id=admin_id,
-                    name=amenity_name,
+                    translations={
+                        "en": LanguageBundle(
+                            name=amenity_name,
+                            description=f"{amenity.hours} {amenity.phone} {amenity.website} {amenity.accessibility} "
+                            f"{amenity.alt_name} {amenity.correlation_id} {amenity.address}",
+                        )
+                    },
                     point=amenity.geometry,
                     location_type_key=amenity_category_key,
                     floor_key=ref_unit.floor.key,
-                    description=f"{amenity.hours} {amenity.phone} {amenity.website} {amenity.accessibility} "
-                    f"{amenity.alt_name} {amenity.correlation_id} {amenity.address}",
                 )

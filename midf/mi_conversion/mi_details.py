@@ -2,7 +2,7 @@ import logging
 
 import shapely
 
-from integration_system.model import LocationType, Solution
+from integration_system.model import LanguageBundle, LocationType, Solution
 from jord.shapely_utilities import clean_shape, dilate
 from midf.constants import DETAIL_LOCATION_TYPE_NAME
 from midf.mi_utilities import clean_admin_id
@@ -27,13 +27,14 @@ def convert_details(floor_key: str, level: MIDFLevel, mi_solution: Solution) -> 
             )
             if mi_solution.location_types.get(location_type_key) is None:
                 location_type_key = mi_solution.add_location_type(
-                    admin_id=DETAIL_LOCATION_TYPE_NAME, name=DETAIL_LOCATION_TYPE_NAME
+                    admin_id=DETAIL_LOCATION_TYPE_NAME,
+                    translations={"en": LanguageBundle(name=DETAIL_LOCATION_TYPE_NAME)},
                 )
 
             if isinstance(detail_geom, shapely.Polygon):
                 mi_solution.add_area(
                     admin_id=clean_admin_id(detail.id),
-                    name=detail_name,
+                    translations={"en": LanguageBundle(name=detail_name)},
                     polygon=detail_geom,
                     floor_key=floor_key,
                     location_type_key=location_type_key,
