@@ -1,7 +1,7 @@
 PROJECT_NAME = "MapsIndoors Data Format"
 PROJECT_AUTHOR = "Christian Heider Lindbjerg"
 PROJECT_ORGANISATION = "MapsPeople"
-PROJECT_VERSION = "0.0.1"
+PROJECT_VERSION = "0.0.2"
 PROJECT_YEAR = 2024
 
 __doc__ = f"""
