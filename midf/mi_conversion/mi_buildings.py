@@ -1,7 +1,6 @@
 import logging
-from typing import Collection, Mapping
-
 import shapely
+from typing import Collection, Mapping
 
 from integration_system.model import LanguageBundle, Solution, Venue
 from jord.shapely_utilities import clean_shape, dilate

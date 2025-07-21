@@ -1,10 +1,9 @@
+import geopandas
 import json
 import logging
 from pathlib import Path
 from typing import Collection, Mapping
 from zipfile import ZipFile
-
-import geopandas
 
 from midf.enums import IMDFFeatureType
 from midf.imdf_model import IMDFFeature

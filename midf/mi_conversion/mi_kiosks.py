@@ -1,5 +1,4 @@
 import logging
-
 import shapely
 
 from integration_system.model import LanguageBundle, LocationType, Solution

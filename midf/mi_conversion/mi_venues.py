@@ -1,7 +1,6 @@
 import logging
-from typing import List, Mapping
-
 import shapely
+from typing import List, Mapping
 
 from integration_system.common_models import MIVenueType
 from integration_system.model import LanguageBundle, PostalAddress, Solution

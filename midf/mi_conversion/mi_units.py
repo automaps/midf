@@ -1,7 +1,6 @@
 import logging
-from typing import Mapping
-
 import shapely
+from typing import Mapping
 
 from integration_system.common_models import MIOccupantType
 from integration_system.model import (

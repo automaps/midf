@@ -1,7 +1,6 @@
 import logging
-from collections import defaultdict
-
 import shapely
+from collections import defaultdict
 
 from integration_system.model import (
     Building,

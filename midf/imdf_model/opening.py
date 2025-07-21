@@ -1,9 +1,8 @@
 import json
-from typing import Any, Mapping, Optional, Union
-
 import shapely
 from attr import dataclass
 from strenum import StrEnum
+from typing import Any, Mapping, Optional, Union
 
 from .base import IMDFFeature
 from ..enums import (

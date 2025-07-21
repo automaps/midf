@@ -1,8 +1,7 @@
-import logging
-from pathlib import Path
-
 import geopandas
+import logging
 import shapely
+from pathlib import Path
 
 from integration_system.mi import synchronize
 from integration_system.model import Solution

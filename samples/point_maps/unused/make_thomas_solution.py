@@ -1,6 +1,5 @@
-import logging
-
 import geopandas
+import logging
 import requests
 
 from integration_system.common_models import MIMediaType
