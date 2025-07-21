@@ -1,11 +1,16 @@
-from integration_system.model import LocationType, PointOfInterest, Room, Solution
+from integration_system.model import (
+    LanguageBundle,
+    LocationType,
+    PointOfInterest,
+    Room,
+    Solution,
+)
 from midf.mi_utilities import clean_admin_id
 from midf.model import MIDFAmenity, MIDFSolution
 
 __all__ = ["convert_amenities"]
 
 import logging
-from jord.shapely_utilities import clean_shape, dilate
 
 logger = logging.getLogger(__name__)
 
@@ -26,9 +31,12 @@ def convert_amenities(mi_solution: Solution, midf_solution: MIDFSolution) -> Non
             if amenity_name is None or amenity_name == "":
                 amenity_name = amenity.id
 
-            amenity_category_key = LocationType.compute_key(name=amenity.category)
+            amenity_category_key = LocationType.compute_key(admin_id=amenity.category)
             if mi_solution.location_types.get(amenity_category_key) is None:
-                mi_solution.add_location_type(name=amenity.category)
+                mi_solution.add_location_type(
+                    admin_id=amenity.category,
+                    translations={"en": LanguageBundle(name=amenity.category)},
+                )
 
             for unit in amenity.units:
                 ref_unit = mi_solution.rooms.get(
@@ -52,10 +60,14 @@ def convert_amenities(mi_solution: Solution, midf_solution: MIDFSolution) -> Non
 
                 mi_solution.add_point_of_interest(
                     admin_id=admin_id,
-                    name=amenity_name,
+                    translations={
+                        "en": LanguageBundle(
+                            name=amenity_name,
+                            description=f"{amenity.hours} {amenity.phone} {amenity.website} {amenity.accessibility} "
+                            f"{amenity.alt_name} {amenity.correlation_id} {amenity.address}",
+                        )
+                    },
                     point=amenity.geometry,
                     location_type_key=amenity_category_key,
                     floor_key=ref_unit.floor.key,
-                    description=f"{amenity.hours} {amenity.phone} {amenity.website} {amenity.accessibility} "
-                    f"{amenity.alt_name} {amenity.correlation_id} {amenity.address}",
                 )

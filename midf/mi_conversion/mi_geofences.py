@@ -1,25 +1,29 @@
 import logging
 
-from jord.shapely_utilities import clean_shape, dilate
-
-from integration_system.model import Building, LocationType
+from integration_system.model import Building, LanguageBundle, LocationType, Solution
+from jord.shapely_utilities import clean_shape
 from midf.constants import OUTDOOR_BUILDING_NAME
 from midf.mi_utilities import clean_admin_id, make_mi_building_admin_id_midf
-from midf.model import MIDFGeofence
+from midf.model import MIDFGeofence, MIDFSolution
 
 logger = logging.getLogger(__name__)
 
 __all__ = ["convert_geofences"]
 
 
-def convert_geofences(found_venue_key, mi_solution, midf_solution):
+def convert_geofences(
+    found_venue_key: str, mi_solution: Solution, midf_solution: MIDFSolution
+) -> None:
     if midf_solution.geofences:
         for geofence in midf_solution.geofences:
             geofence: MIDFGeofence
 
-            ltk = LocationType.compute_key(name=geofence.category)
+            ltk = LocationType.compute_key(admin_id=geofence.category)
             if mi_solution.location_types.get(ltk) is None:
-                ltk = mi_solution.add_location_type(name=geofence.category)
+                ltk = mi_solution.add_location_type(
+                    admin_id=geofence.category,
+                    translations={"en": LanguageBundle(name=geofence.category)},
+                )
 
             if geofence.buildings:
                 for building in geofence.buildings:
@@ -66,7 +70,7 @@ def convert_geofences(found_venue_key, mi_solution, midf_solution):
             gid = geofence.id  # + found_venue_key
             mi_solution.add_area(
                 admin_id=clean_admin_id(gid),
-                name=geofence_name,
+                translations={"en": LanguageBundle(name=geofence_name)},
                 polygon=clean_shape(geofence.geometry),
                 floor_key=floor_key,
                 location_type_key=ltk,

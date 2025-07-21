@@ -1,15 +1,17 @@
 __all__ = ["convert_footprints"]
 
 import logging
+from typing import List, Mapping
 
-from jord.shapely_utilities import clean_shape, dilate
-
-from midf.model import MIDFBuilding, MIDFFootprint
+from midf.model import MIDFBuilding, MIDFFootprint, MIDFSolution
 
 logger = logging.getLogger(__name__)
 
 
-def convert_footprints(building_footprint_mapping, midf_solution) -> None:
+def convert_footprints(
+    building_footprint_mapping: Mapping[str, List[MIDFFootprint]],
+    midf_solution: MIDFSolution,
+) -> None:
     for footprint in midf_solution.footprints:
         footprint: MIDFFootprint
         for building in footprint.buildings:

@@ -1,7 +1,6 @@
 import json
-from typing import List, Mapping
-
 from pandas import DataFrame
+from typing import List, Mapping
 
 from midf.enums import IMDFFeatureType
 from midf.imdf_model import IMDFOccupant
@@ -31,9 +30,12 @@ def load_imdf_occupants(
                 if name is not None:
                     name = json.loads(name)
 
-            validity = occupant_dict.pop("validity")
-            if validity is not None:
-                validity = Temporality(**json.loads(validity))
+            if "validity" in occupant_dict:
+                validity = occupant_dict.pop("validity")
+                if validity is not None:
+                    validity = Temporality(**json.loads(validity))
+            else:
+                validity = None
 
             occupant = IMDFOccupant(**occupant_dict, name=name, validity=validity)
             out[IMDFFeatureType.occupant].append(occupant)

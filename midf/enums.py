@@ -21,6 +21,7 @@ __all__ = [
     "IMDFLevelCategory",
     "IMDFOccupantCategory",
     "IMDFFeatureType",
+    "IMDFDoorMaterial",
 ]
 
 

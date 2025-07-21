@@ -1,13 +1,12 @@
 import logging
-from typing import Mapping
-
 import shapely
-from jord.shapely_utilities import clean_shape, dilate, dilate, erode
+from typing import List, Mapping
 
-from integration_system.model import PostalAddress, Solution
+from integration_system.common_models import MIVenueType
+from integration_system.model import LanguageBundle, PostalAddress, Solution
 from midf.constants import IMDF_VENUE_CATEGORY_TO_MI_VENUE_TYPE
 from midf.mi_utilities import clean_admin_id
-from midf.model import MIDFSolution, MIDFVenue
+from midf.model import MIDFAddress, MIDFSolution, MIDFVenue
 
 logger = logging.getLogger(__name__)
 
@@ -15,7 +14,9 @@ __all__ = ["convert_venues"]
 
 
 def convert_venues(
-    address_venue_mapping: Mapping, mi_solution: Solution, midf_solution: MIDFSolution
+    address_venue_mapping: Mapping[str, List[MIDFAddress]],
+    mi_solution: Solution,
+    midf_solution: MIDFSolution,
 ) -> (MIDFVenue, str):
     venue_key = None
     venue = None
@@ -38,8 +39,12 @@ def convert_venues(
 
                 venue_key = mi_solution.add_venue(
                     admin_id=clean_admin_id(venue.id),
-                    name=venue_name,
-                    venue_type=IMDF_VENUE_CATEGORY_TO_MI_VENUE_TYPE[venue.category],
+                    translations={"en": LanguageBundle(name=venue_name)},
+                    venue_type=(
+                        IMDF_VENUE_CATEGORY_TO_MI_VENUE_TYPE[venue.category]
+                        if venue.category in IMDF_VENUE_CATEGORY_TO_MI_VENUE_TYPE
+                        else MIVenueType.not_specified
+                    ),
                     address=PostalAddress(
                         postal_code=address.postal_code,
                         street1=address.address,
@@ -47,7 +52,8 @@ def convert_venues(
                         city=address.locality,
                         region=address.province,
                     ),
-                    polygon=dilate(venue.display_point),
+                    polygon=venue.geometry,
+                    # dilate(venue.display_point),
                 )
                 address_venue_mapping[address.id].append(venue_key)
 
@@ -55,7 +61,7 @@ def convert_venues(
         logger.error("No venues found in the MIDF solution.")
         venue_key = mi_solution.add_venue(
             admin_id="default-venue",
-            name="Default Venue",
+            translations={"en": LanguageBundle(name="Default Venue")},
             address=PostalAddress(
                 postal_code="",
                 street1="",

@@ -2,12 +2,13 @@ import logging
 from collections import defaultdict
 from typing import Collection, Dict, Mapping
 
-from warg.data_structures.mappings import to_dict
-
 from midf.enums import IMDFFeatureType
 from midf.imdf_model import IMDFAmenity, IMDFFeature
+from warg.data_structures.mappings import to_dict
 
 __all__ = ["link_amenities"]
+
+from midf.model import MIDFUnit
 
 from midf.model.solution_level.amenity import MIDFAmenity
 
@@ -15,8 +16,15 @@ logger = logging.getLogger(__name__)
 
 
 def link_amenities(
-    imdf_dict: Mapping[IMDFFeatureType, Collection[IMDFFeature]], units
+    imdf_dict: Mapping[IMDFFeatureType, Collection[IMDFFeature]],
+    units: Mapping[str, Collection[MIDFUnit]],
 ) -> Dict[str, MIDFAmenity]:
+    """
+
+    :param imdf_dict:
+    :param units:
+    :return:
+    """
     amenities = defaultdict()
 
     unit_id_mapping = {unit.id: unit for a in units.values() for unit in a}

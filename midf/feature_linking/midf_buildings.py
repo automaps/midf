@@ -13,6 +13,11 @@ logger = logging.getLogger(__name__)
 def link_buildings(
     imdf_dict: Mapping[IMDFFeatureType, Collection[IMDFFeature]],
 ) -> Dict[str, MIDFBuilding]:
+    """
+
+    :param imdf_dict:
+    :return:
+    """
     buildings = {}
 
     logger.error(f"IMDF buildings: {imdf_dict[IMDFFeatureType.building]}")

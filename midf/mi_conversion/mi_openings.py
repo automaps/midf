@@ -1,9 +1,9 @@
 import logging
-
 import shapely
-from jord.shapely_utilities import clean_shape, dilate
 
-from integration_system.model import DoorType, LocationType
+from integration_system.common_models import MIDoorType
+from integration_system.model import LocationType
+from jord.shapely_utilities import clean_shape, dilate
 from midf.mi_utilities import clean_admin_id
 from midf.model import MIDFOpening
 
@@ -31,9 +31,11 @@ def convert_openings(level, mi_solution, venue_graph_key, floor_key) -> None:
 
             if False:
                 opening_geom = dilate(opening_geom)
-                location_type_key = LocationType.compute_key(name=opening.category)
+                location_type_key = LocationType.compute_key(admin_id=opening.category)
                 if mi_solution.location_types.get(location_type_key) is None:
-                    mi_solution.add_location_type(name=opening.category)
+                    location_type_key = mi_solution.add_location_type(
+                        admin_id=opening.category, name=opening.category
+                    )
 
                 if isinstance(opening_geom, shapely.Polygon):
                     mi_solution.add_area(
@@ -51,7 +53,7 @@ def convert_openings(level, mi_solution, venue_graph_key, floor_key) -> None:
                     floor_index=level.ordinal,
                     graph_key=venue_graph_key,
                     linestring=opening_geom,
-                    door_type=DoorType.door,
+                    door_type=MIDoorType.door,
                 )
 
                 # opening.door

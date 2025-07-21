@@ -2,7 +2,16 @@ from typing import Collection, Dict, Mapping
 
 from midf.enums import IMDFFeatureType
 from midf.imdf_model import IMDFFeature, IMDFLevel
-from midf.model import MIDFLevel
+from midf.model import (
+    MIDFBuilding,
+    MIDFDetail,
+    MIDFFixture,
+    MIDFKiosk,
+    MIDFLevel,
+    MIDFOpening,
+    MIDFSection,
+    MIDFUnit,
+)
 
 __all__ = ["link_levels"]
 
@@ -13,20 +22,20 @@ logger = logging.getLogger(__name__)
 
 def link_levels(
     *,
-    buildings,
-    details,
-    fixtures,
-    found_detail_levels,
-    found_fixture_levels,
-    found_kiosk_levels,
-    found_opening_levels,
-    found_section_levels,
-    found_unit_levels,
+    buildings: Mapping[str, MIDFBuilding],
+    found_detail_levels: Collection[str],
+    found_fixture_levels: Collection[str],
+    found_kiosk_levels: Collection[str],
+    found_opening_levels: Collection[str],
+    found_section_levels: Collection[str],
+    found_unit_levels: Collection[str],
     imdf_dict: Mapping[IMDFFeatureType, Collection[IMDFFeature]],
-    kiosks,
-    openings,
-    sections,
-    units,
+    details: Dict[str, MIDFDetail],
+    fixtures: Dict[str, MIDFFixture],
+    kiosks: Dict[str, MIDFKiosk],
+    openings: Dict[str, MIDFOpening],
+    sections: Dict[str, MIDFSection],
+    units: Dict[str, MIDFUnit],
 ) -> Dict[str, MIDFLevel]:
     levels = {}
     logger.error(f"Linking levels from {len(imdf_dict[IMDFFeatureType.level])} levels")
@@ -37,14 +46,18 @@ def link_levels(
     units_copy = units.copy()
     fixtures_copy = fixtures.copy()
     details_copy = details.copy()
+
     for level in imdf_dict[IMDFFeatureType.level]:
         level: IMDFLevel
 
-        building_references = (
-            [buildings[b_id] for b_id in level.building_ids]
-            if level.building_ids
-            else None
-        )
+        building_references = None
+        if level.building_ids:
+            building_references = []
+            for b_id in level.building_ids:
+                if b_id in buildings:
+                    building_references.append(buildings[b_id])
+                else:
+                    logger.error(f"Building {b_id} not found for level {level.id}")
 
         levels[level.id] = MIDFLevel(
             id=level.id,

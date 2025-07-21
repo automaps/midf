@@ -1,11 +1,11 @@
 import logging
-
 import shapely
-from jord.shapely_utilities import clean_shape, dilate
+from typing import Collection, Mapping
 
-from integration_system.model import Venue
+from integration_system.model import LanguageBundle, Solution, Venue
+from jord.shapely_utilities import clean_shape, dilate
 from midf.mi_utilities import make_mi_building_admin_id_midf
-from midf.model import MIDFBuilding
+from midf.model import MIDFAddress, MIDFBuilding, MIDFFootprint, MIDFSolution
 
 logger = logging.getLogger(__name__)
 
@@ -13,13 +13,18 @@ __all__ = ["convert_buildings"]
 
 
 def convert_buildings(
-    address_venue_mapping,
-    building_footprint_mapping,
-    mi_solution,
-    midf_solution,
+    address_venue_mapping: Mapping[str, Collection[MIDFAddress]],
+    building_footprint_mapping: Mapping[str, Collection[MIDFFootprint]],
+    mi_solution: Solution,
+    midf_solution: MIDFSolution,
     venue: Venue,
     venue_key: str,
 ) -> str:
+    if not midf_solution.buildings:
+        return venue_key
+
+    found_venue_key = None
+
     for building in midf_solution.buildings:
         building: MIDFBuilding
 
@@ -44,8 +49,8 @@ def convert_buildings(
                 building_footprint |= dilate(building.display_point)
 
         if building_footprint.is_empty:
-            if venue.display_point:
-                building_footprint |= dilate(venue.display_point)
+            if venue.polygon:
+                building_footprint |= dilate(venue.polygon)
 
         if isinstance(building_footprint, shapely.MultiPolygon):
             building_footprint = shapely.convex_hull(building_footprint)
@@ -65,8 +70,13 @@ def convert_buildings(
 
         mi_solution.add_building(
             b,
-            name=building_name,
+            translations={"en": LanguageBundle(name=building_name)},
             polygon=clean_shape(building_footprint),
             venue_key=found_venue_key,
         )
+
+    if found_venue_key is None:
+        logger.error(f"Could not find venue for building {building.id}")
+        raise ValueError(f"Could not find a venue for buildings")
+
     return found_venue_key

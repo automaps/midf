@@ -1,9 +1,8 @@
 import logging
 from typing import Mapping
 
-from jord.shapely_utilities import clean_shape, dilate
-
-from integration_system.model import Building, Floor, Solution
+from integration_system.model import Building, Floor, LanguageBundle, Solution
+from jord.shapely_utilities import clean_shape
 from midf.constants import ASSUME_OUTDOOR_IF_MISSING_BUILDING, OUTDOOR_BUILDING_NAME
 from midf.mi_conversion.mi_details import convert_details
 from midf.mi_conversion.mi_fixtures import convert_fixtures
@@ -26,7 +25,7 @@ def convert_levels(
     found_venue_key: str,
     mi_solution: Solution,
     midf_solution: MIDFSolution,
-    occupant_category_mapping: Mapping,
+    occupant_category_mapping: Mapping[str, str],
     venue_graph_key: str,
     venue_key: str,
 ) -> None:
@@ -34,7 +33,7 @@ def convert_levels(
         # level.address TODO: UNUSED ATM
         level: MIDFLevel
 
-        if level.buildings is None:
+        if level.buildings is None or len(level.buildings) == 0:
             if level.outdoor or ASSUME_OUTDOOR_IF_MISSING_BUILDING:
                 assert found_venue_key, "Venue key not found"
                 c = make_mi_building_admin_id_midf(
@@ -46,8 +45,8 @@ def convert_levels(
                 if found_building is None:
                     outdoor_building_key = mi_solution.add_building(
                         c,
-                        OUTDOOR_BUILDING_NAME,
-                        mi_solution.venues.get(venue_key).polygon,
+                        translations={"en": LanguageBundle(name=OUTDOOR_BUILDING_NAME)},
+                        polygon=mi_solution.venues.get(venue_key).polygon,
                         venue_key=found_venue_key,
                     )
                     found_building = mi_solution.buildings.get(outdoor_building_key)
@@ -81,7 +80,7 @@ def convert_levels(
 
         floor_key = mi_solution.add_floor(
             building_key=found_building.key,
-            name=floor_name,
+            translations={"en": LanguageBundle(name=floor_name)},
             polygon=clean_shape(found_building.polygon),
             floor_index=floor_index,
         )

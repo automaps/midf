@@ -1,17 +1,20 @@
 import logging
+import shapely
 from typing import Mapping
 
-import shapely
-from jord.shapely_utilities import clean_shape, dilate
-
+from integration_system.common_models import MIOccupantType
 from integration_system.model import (
     InvalidPolygonError,
+    LanguageBundle,
     LocationType,
     Occupant,
+    OccupantCategory,
     OccupantTemplate,
-    OccupantType,
+    PointOfInterest,
+    Room,
     Solution,
 )
+from jord.shapely_utilities import clean_shape
 from midf.constants import ANCHOR_NAME
 from midf.mi_utilities import clean_admin_id
 from midf.model import MIDFLevel, MIDFOccupant, MIDFUnit
@@ -26,7 +29,7 @@ def convert_units(
     floor_key: str,
     level: MIDFLevel,
     mi_solution: Solution,
-    occupant_category_mapping: Mapping,
+    occupant_category_mapping: Mapping[str, str],
 ) -> None:
     if level.units:
         for unit in level.units:
@@ -45,24 +48,38 @@ def convert_units(
 
             unit_geom = clean_shape(unit.geometry)
 
-            location_type_key = LocationType.compute_key(name=unit.category)
+            location_type_key = LocationType.compute_key(admin_id=unit.category)
             if mi_solution.location_types.get(location_type_key) is None:
-                mi_solution.add_location_type(name=unit.category)
+                location_type_key = mi_solution.add_location_type(
+                    admin_id=unit.category,
+                    translations={"en": LanguageBundle(name=unit.category)},
+                )
+
+            unit_location_key = clean_admin_id(unit.id)
 
             if isinstance(unit_geom, shapely.Polygon):
                 if False:
                     unit_location_key = mi_solution.add_area(
-                        admin_id=clean_admin_id(unit.id),
-                        name=unit_name,
+                        admin_id=unit_location_key,
+                        translations={"en": LanguageBundle(name=unit_name)},
                         polygon=unit_geom,
                         floor_key=floor_key,
                         location_type_key=location_type_key,
                     )
                 else:
+                    if (
+                        mi_solution.rooms.get(
+                            Room.compute_key(admin_id=unit_location_key)
+                        )
+                        is not None
+                    ):
+                        logger.error(f"Unit {unit.id} already exists. skipping.")
+                        continue
+
                     try:
                         unit_location_key = mi_solution.add_room(
-                            admin_id=clean_admin_id(unit.id),
-                            name=unit_name,
+                            admin_id=unit_location_key,
+                            translations={"en": LanguageBundle(name=unit_name)},
                             polygon=unit_geom,
                             floor_key=floor_key,
                             location_type_key=location_type_key,
@@ -80,14 +97,28 @@ def convert_units(
                         mi_solution.occupants.get(
                             Occupant.compute_key(location_key=unit_location_key)
                         )
-                        is not None
+                        is None
                     ):
                         anchor_key = unit_location_key
                     else:  # Location already has an occupant, add anchor as a point of interest for the occupant to
                         # occupy
+
+                        new_anchor_admin_id = clean_admin_id(anchor.id)
+                        mi_solution: Solution
+
+                        while (
+                            mi_solution.points_of_interest.get(
+                                PointOfInterest.compute_key(
+                                    admin_id=new_anchor_admin_id
+                                )
+                            )
+                            is not None
+                        ):
+                            new_anchor_admin_id += "I"
+
                         anchor_key = mi_solution.add_point_of_interest(
-                            admin_id=clean_admin_id(anchor.id),
-                            name=ANCHOR_NAME,
+                            admin_id=new_anchor_admin_id,
+                            translations={"en": LanguageBundle(name=ANCHOR_NAME)},
                             point=anchor.geometry,
                             floor_key=floor_key,
                             location_type_key=anchor_location_type,
@@ -109,7 +140,23 @@ def convert_units(
                                 logger.error(
                                     f"Occupant category {occupant.category} not found."
                                 )
-                                continue
+                                if False:  # FAIL HERE! continue to next occupant
+                                    logger.error(
+                                        f"Occupant category {occupant.category} not found."
+                                    )
+                                    continue
+                                else:
+                                    aa = mi_solution.occupant_categories.get(
+                                        OccupantCategory.compute_key(
+                                            name=occupant.category
+                                        )
+                                    )
+                                    if aa is None:
+                                        l = mi_solution.add_occupant_category(
+                                            occupant.category
+                                        )
+                                    else:
+                                        l = aa.key
 
                             a = OccupantTemplate.compute_key(
                                 name=occupant_name,
@@ -118,7 +165,7 @@ def convert_units(
                             if mi_solution.occupant_templates.get(a) is None:
                                 occupant_template_key = mi_solution.add_occupant_template(
                                     name=occupant_name,
-                                    occupant_type=OccupantType.occupant,
+                                    occupant_type=MIOccupantType.occupant,
                                     occupant_category_key=l,
                                     description=f"{occupant.hours} {occupant.phone} {occupant.website}",
                                     # business_hours=occupant.hours, # TODO: CONVERT?
@@ -126,6 +173,17 @@ def convert_units(
                                 )
                             else:
                                 occupant_template_key = a
+
+                            if (
+                                mi_solution.occupants.get(
+                                    Occupant.compute_key(location_key=anchor_key)
+                                )
+                                is not None
+                            ):
+                                logger.error(
+                                    f"Occupant {occupant.id} already exists. skipping."
+                                )
+                                continue
 
                             mi_solution.add_occupant(
                                 location_key=anchor_key,

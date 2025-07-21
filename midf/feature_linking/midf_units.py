@@ -1,11 +1,10 @@
 from collections import defaultdict
-from typing import Collection, Dict, List, Mapping
-
-from warg.data_structures.mappings import to_dict
+from typing import Any, Collection, Dict, List, Mapping
 
 from midf.enums import IMDFFeatureType
 from midf.imdf_model import IMDFFeature, IMDFUnit
 from midf.model import MIDFUnit
+from warg.data_structures.mappings import to_dict
 
 __all__ = ["link_units"]
 
@@ -15,12 +14,11 @@ logger = logging.getLogger(__name__)
 
 
 def link_units(
-    anchors,
+    anchors: Dict[str, Any],
     imdf_dict: Mapping[IMDFFeatureType, Collection[IMDFFeature]],
 ) -> Dict[str, List[MIDFUnit]]:
     units = defaultdict(list)
     logger.error(f"Linking units {len(imdf_dict[IMDFFeatureType.unit])}")
-    found_anchor_unit_ids = anchors.keys()
 
     anchors_copy = anchors.copy()
 
@@ -36,9 +34,7 @@ def link_units(
                 restriction=unit.restriction,
                 accessibility=unit.accessibility,
                 anchors=(
-                    anchors_copy.pop(unit.id)
-                    if unit.id in found_anchor_unit_ids
-                    else None
+                    anchors_copy.pop(unit.id) if unit.id in anchors_copy else None
                 ),
             )
         )

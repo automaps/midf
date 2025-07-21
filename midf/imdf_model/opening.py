@@ -1,8 +1,8 @@
-from typing import Mapping, Optional, Union
-
+import json
 import shapely
 from attr import dataclass
 from strenum import StrEnum
+from typing import Any, Mapping, Optional, Union
 
 from .base import IMDFFeature
 from ..enums import (
@@ -10,6 +10,7 @@ from ..enums import (
     IMDFAccessibilityCategory,
     IMDFDoorCategory,
     IMDFDoorMaterial,
+    IMDFFeatureType,
     IMDFOpeningCategory,
 )
 
@@ -33,7 +34,8 @@ class IMDFOpening(IMDFFeature):
     category: Union[
         IMDFOpeningCategory, str
     ]  # TODO: Some openings have a category that is not in the enum, so we allow a
-    # string here, but we should validate it, it is not valid, we should raise an error.
+    # string here, but we should validate it, it is not valid, we should raise an error. # TODO: REMOVE FOR
+    #  STRICT
     level_id: str
 
     accessibility: Optional[IMDFAccessibilityCategory] = None
@@ -42,3 +44,17 @@ class IMDFOpening(IMDFFeature):
     name: Optional[Mapping[str, str]] = None
     alt_name: Optional[Mapping[str, str]] = None
     display_point: Optional[shapely.Point] = None
+
+    def to_imdf_spec_feature(self) -> dict[str, Any]:
+        out = self.model_dump()
+
+        out["feature_type"] = IMDFFeatureType.opening.value
+        if False:
+            out["geometry"] = json.loads(shapely.to_geojson(out.pop("geometry")))
+        if True:
+            if out["display_point"] is not None:
+                out["display_point"] = json.loads(
+                    shapely.to_geojson(out.pop("display_point"))
+                )
+
+        return out

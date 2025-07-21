@@ -1,14 +1,14 @@
 import logging
-from collections import defaultdict
-
 import shapely
-from jord.shapely_utilities import clean_shape, dilate
+from collections import defaultdict
 
 from integration_system.model import (
     Building,
     FALLBACK_OSM_GRAPH,
+    LanguageBundle,
     Solution,
 )
+from jord.shapely_utilities import dilate
 from midf.constants import ANCHOR_NAME, OUTDOOR_BUILDING_NAME
 from midf.mi_conversion import (
     convert_amenities,
@@ -26,11 +26,16 @@ from midf.model import MIDFSolution
 logger = logging.getLogger(__name__)
 
 
-def to_mi_solution(midf_solution: MIDFSolution) -> Solution:
+def to_mi_solution(
+    midf_solution: MIDFSolution, solution_name: str = "ChenIMDFImport"
+) -> Solution:
+    if midf_solution.manifest.generated_by:
+        solution_name = midf_solution.manifest.generated_by
+
     mi_solution = Solution(
-        external_id=f"{midf_solution.manifest.generated_by}{midf_solution.manifest.version}",
-        name=midf_solution.manifest.generated_by,
-        customer_id="953f7a89334a4013927857ab",
+        _external_id=f"{solution_name}{midf_solution.manifest.version}",
+        _name=solution_name,
+        _customer_id="953f7a89334a4013927857ab",
         occupants_enabled=True,
     )
 
@@ -48,7 +53,9 @@ def to_mi_solution(midf_solution: MIDFSolution) -> Solution:
 
     building_footprint_mapping = defaultdict(list)
 
-    anchor_location_type = mi_solution.add_location_type(name=ANCHOR_NAME)
+    anchor_location_type = mi_solution.add_location_type(
+        admin_id=ANCHOR_NAME, translations={"en": LanguageBundle(name=ANCHOR_NAME)}
+    )
 
     occupant_category_mapping = convert_occupant_categories(mi_solution)
 
@@ -86,6 +93,9 @@ def to_mi_solution(midf_solution: MIDFSolution) -> Solution:
             + [r.point for r in mi_solution.points_of_interest]
         )
     )
+
+    if solution_locations_union.is_empty:
+        raise Exception("No solution was found in the data")
 
     blk = make_mi_building_admin_id_midf(OUTDOOR_BUILDING_NAME, found_venue_key)
     if mi_solution.buildings.get(Building.compute_key(admin_id=blk)) is not None:
