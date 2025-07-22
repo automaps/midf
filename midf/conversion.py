@@ -2,7 +2,7 @@ import logging
 import shapely
 from collections import defaultdict
 
-from integration_system.model import (
+from sync_module.model import (
     Building,
     FALLBACK_OSM_GRAPH,
     LanguageBundle,

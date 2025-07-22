@@ -2,8 +2,8 @@ import logging
 import shapely
 from typing import List, Mapping
 
-from integration_system.common_models import MIVenueType
-from integration_system.model import LanguageBundle, PostalAddress, Solution
+from sync_module.shared.model.common_models import MIVenueType
+from sync_module.model import LanguageBundle, PostalAddress, Solution
 from midf.constants import IMDF_VENUE_CATEGORY_TO_MI_VENUE_TYPE
 from midf.mi_utilities import clean_admin_id
 from midf.model import MIDFAddress, MIDFSolution, MIDFVenue

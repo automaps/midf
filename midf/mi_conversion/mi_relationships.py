@@ -2,8 +2,8 @@ import logging
 import uuid
 from itertools import count
 
-from integration_system.common_models import MIConnectionType
-from integration_system.model import Area, Connector, Room, Solution
+from sync_module.shared.model.common_models import MIConnectionType
+from sync_module.model import Area, Connector, Room, Solution
 from midf.enums import IMDFRelationshipCategory
 from midf.imdf_model.opening import IMDFDirection
 from midf.mi_utilities import clean_admin_id

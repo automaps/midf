@@ -3,9 +3,9 @@ import math
 import pickle
 from pathlib import Path
 
-from integration_system.common_models import MIMediaType
-from integration_system.mi import SyncLevel, synchronize
-from integration_system.model import OccupantCategory, OccupantTemplate
+from sync_module.shared.model.common_models import MIMediaType
+from sync_module.mi import SyncLevel, synchronize
+from sync_module.model import OccupantCategory, OccupantTemplate
 from midf.conversion import to_mi_solution
 from midf.linking import link_imdf
 from midf.loading import MANIFEST_KEY, load_imdf
@@ -110,7 +110,7 @@ if __name__ == "__main__":
                     mi_solution, sync_level=SyncLevel.venue, include_occupants=True
                 )
             else:
-                from integration_system.tools.serialisation import to_json
+                from sync_module.tools.serialisation import to_json
 
                 with open(data_base / "go.json", "w") as f:
                     f.write(to_json(mi_solution))

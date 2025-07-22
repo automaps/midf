@@ -1,4 +1,4 @@
-from integration_system.common_models import MIVenueType
+from sync_module.shared.model.common_models import MIVenueType
 from midf.enums import IMDFVenueCategory
 
 IMDF_VENUE_CATEGORY_TO_MI_VENUE_TYPE = {

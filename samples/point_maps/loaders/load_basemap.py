@@ -3,8 +3,8 @@ import logging
 import shapely
 from pathlib import Path
 
-from integration_system.mi import synchronize
-from integration_system.model import Solution
+from sync_module.mi import synchronize
+from sync_module.model import Solution
 
 # from jord.qlive_utilities import AutoQliveClient
 from jord.shapely_utilities import clean_shape

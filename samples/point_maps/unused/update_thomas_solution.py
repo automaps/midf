@@ -1,7 +1,7 @@
 import geopandas
 import logging
 
-from integration_system.mi import get_remote_solution, synchronize
+from sync_module.mi import get_remote_solution, synchronize
 
 logging.basicConfig(level=logging.DEBUG)
 

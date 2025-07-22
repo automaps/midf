@@ -2,9 +2,9 @@ import geopandas
 import logging
 import requests
 
-from integration_system.common_models import MIMediaType
-from integration_system.mi import synchronize
-from integration_system.model import Solution
+from sync_module.shared.model.common_models import MIMediaType
+from sync_module.mi import synchronize
+from sync_module.model import Solution
 
 logging.basicConfig(level=logging.DEBUG)
 

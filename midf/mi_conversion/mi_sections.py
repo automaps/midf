@@ -1,7 +1,7 @@
 import logging
 import shapely
 
-from integration_system.model import LanguageBundle, LocationType, Solution
+from sync_module.model import LanguageBundle, LocationType, Solution
 from jord.shapely_utilities import clean_shape
 from midf.mi_utilities import clean_admin_id
 from midf.model import MIDFLevel, MIDFSection

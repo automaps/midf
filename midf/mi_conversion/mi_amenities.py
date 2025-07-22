@@ -1,4 +1,4 @@
-from integration_system.model import (
+from sync_module.model import (
     LanguageBundle,
     LocationType,
     PointOfInterest,

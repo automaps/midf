@@ -1,6 +1,6 @@
 from typing import Collection, Mapping, Union
 
-from integration_system.mi import from_manager_api_datetime_format
+from sync_module.mi import from_manager_api_datetime_format
 from midf.enums import IMDFFeatureType
 from midf.feature_linking import (
     link_addresses,

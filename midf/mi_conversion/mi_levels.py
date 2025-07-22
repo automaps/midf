@@ -1,7 +1,7 @@
 import logging
 from typing import Mapping
 
-from integration_system.model import Building, Floor, LanguageBundle, Solution
+from sync_module.model import Building, Floor, LanguageBundle, Solution
 from jord.shapely_utilities import clean_shape
 from midf.constants import ASSUME_OUTDOOR_IF_MISSING_BUILDING, OUTDOOR_BUILDING_NAME
 from midf.mi_conversion.mi_details import convert_details
