@@ -7,7 +7,11 @@ from itertools import count
 from networkx import MultiDiGraph
 from pathlib import Path
 
-from jord.networkx_utilities import add_shapely_node, assertive_add_edge
+from jord.networkx_utilities import assertive_add_edge
+from jord.networkx_utilities.construction import (
+    assertive_add_shapely_node,
+    compute_node_id,
+)
 from warg import recursive_flatten
 
 logger = logging.getLogger(__name__)
@@ -16,8 +20,6 @@ logger = logging.getLogger(__name__)
 def save_graph(new_graph: MultiDiGraph, save_path: Path) -> None:
     new_graph.graph["crs"] = pyproj.CRS.from_user_input("EPSG:4326")
 
-    osmnx.settings.all_oneway = True
-
     edge_tags = set(
         recursive_flatten([edge.keys() for edge in new_graph.edges.values()])
     )
@@ -25,15 +27,12 @@ def save_graph(new_graph: MultiDiGraph, save_path: Path) -> None:
         recursive_flatten([node.keys() for node in new_graph.nodes.values()])
     )
 
+    osmnx.settings.useful_tags_way = edge_tags
+    osmnx.settings.useful_tags_node = node_tags
+
     osmnx.save_graph_xml(
         new_graph,
         filepath=save_path,
-        edge_tags=list(edge_tags),
-        node_tags=list(node_tags),
-        # edge_tag_aggs=[("length", "sum")],
-        oneway=True,
-        merge_edges=False,
-        precision=11,
     )
 
 
@@ -41,6 +40,8 @@ def parse_route(route_file_path: Path, target_file_path: Path) -> MultiDiGraph:
     assert route_file_path.exists()
     assert route_file_path.is_file()
     assert route_file_path.suffix == ".json"
+
+    osmnx.settings.all_oneway = True
 
     with open(route_file_path) as route_file:
         route_dict = json.load(route_file)
@@ -62,7 +63,7 @@ def parse_route(route_file_path: Path, target_file_path: Path) -> MultiDiGraph:
         node_id_offset = 1
 
         for i, coords in enumerate(coordinates):
-            add_shapely_node(
+            assertive_add_shapely_node(
                 graph=graph,
                 u=i + node_id_offset,
                 point=shapely.Point(coords),
@@ -85,7 +86,7 @@ def parse_route(route_file_path: Path, target_file_path: Path) -> MultiDiGraph:
                         graph=graph,
                         u=int(i + node_id_offset),
                         v=int(to_link + node_id_offset),
-                        uniqueid=next(edge_id_counter),
+                        key=next(edge_id_counter),
                         attributes=dict(
                             # distance=to_distance,
                             level=coordinate_levels[i]
