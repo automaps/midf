@@ -1,10 +1,11 @@
 import json
 import logging
-import pandas
-import shapely
 import shutil
 from pathlib import Path
 from typing import Any, Optional
+
+import pandas
+import shapely
 
 from model.enums import PointConsultingFeatureStem
 from warg import ensure_existence

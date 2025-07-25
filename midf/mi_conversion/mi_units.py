@@ -1,8 +1,12 @@
 import logging
-import shapely
 from typing import Mapping
 
-from sync_module.shared.model.common_models import MIOccupantType
+import shapely
+
+from jord.shapely_utilities import clean_shape
+from midf.constants import ANCHOR_NAME
+from midf.mi_utilities import clean_admin_id
+from midf.model import MIDFLevel, MIDFOccupant, MIDFUnit
 from sync_module.model import (
     InvalidPolygonError,
     LanguageBundle,
@@ -14,10 +18,7 @@ from sync_module.model import (
     Room,
     Solution,
 )
-from jord.shapely_utilities import clean_shape
-from midf.constants import ANCHOR_NAME
-from midf.mi_utilities import clean_admin_id
-from midf.model import MIDFLevel, MIDFOccupant, MIDFUnit
+from sync_module.shared.model.common_models import MIOccupantType
 
 logger = logging.getLogger(__name__)
 

@@ -2,12 +2,12 @@ import logging
 import uuid
 from itertools import count
 
-from sync_module.shared.model.common_models import MIConnectionType
-from sync_module.model import Area, Connector, Room, Solution
 from midf.enums import IMDFRelationshipCategory
 from midf.imdf_model.opening import IMDFDirection
 from midf.mi_utilities import clean_admin_id
 from midf.model import MIDFRelationship, MIDFSolution, MIDFUnit
+from sync_module.model import Area, Connector, Room, Solution
+from sync_module.shared.model.common_models import MIConnectionType
 
 logger = logging.getLogger(__name__)
 

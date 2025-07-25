@@ -1,7 +1,6 @@
 import logging
 from typing import Mapping
 
-from sync_module.model import Building, Floor, LanguageBundle, Solution
 from jord.shapely_utilities import clean_shape
 from midf.constants import ASSUME_OUTDOOR_IF_MISSING_BUILDING, OUTDOOR_BUILDING_NAME
 from midf.mi_conversion.mi_details import convert_details
@@ -14,6 +13,7 @@ from midf.mi_conversion.mi_sections import (
 from midf.mi_conversion.mi_units import convert_units
 from midf.mi_utilities import clean_admin_id, make_mi_building_admin_id_midf
 from midf.model import MIDFLevel, MIDFSolution
+from sync_module.model import Building, Floor, LanguageBundle, Solution
 
 logger = logging.getLogger(__name__)
 

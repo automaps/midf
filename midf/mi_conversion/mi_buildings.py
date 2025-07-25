@@ -1,11 +1,12 @@
 import logging
-import shapely
 from typing import Collection, Mapping
 
-from sync_module.model import LanguageBundle, Solution, Venue
+import shapely
+
 from jord.shapely_utilities import clean_shape, dilate
 from midf.mi_utilities import make_mi_building_admin_id_midf
 from midf.model import MIDFAddress, MIDFBuilding, MIDFFootprint, MIDFSolution
+from sync_module.model import LanguageBundle, Solution, Venue
 
 logger = logging.getLogger(__name__)
 

@@ -1,13 +1,8 @@
 import logging
-import shapely
 from collections import defaultdict
 
-from sync_module.model import (
-    Building,
-    FALLBACK_OSM_GRAPH,
-    LanguageBundle,
-    Solution,
-)
+import shapely
+
 from jord.shapely_utilities import dilate
 from midf.constants import ANCHOR_NAME, OUTDOOR_BUILDING_NAME
 from midf.mi_conversion import (
@@ -22,6 +17,12 @@ from midf.mi_conversion import (
 )
 from midf.mi_utilities import make_mi_building_admin_id_midf
 from midf.model import MIDFSolution
+from sync_module.model import (
+    Building,
+    FALLBACK_OSM_GRAPH,
+    LanguageBundle,
+    Solution,
+)
 
 logger = logging.getLogger(__name__)
 

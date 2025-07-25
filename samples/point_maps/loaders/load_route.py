@@ -1,16 +1,16 @@
 import json
 import logging
+from itertools import count
+from pathlib import Path
+
 import osmnx
 import pyproj
 import shapely
-from itertools import count
 from networkx import MultiDiGraph
-from pathlib import Path
 
 from jord.networkx_utilities import assertive_add_edge
 from jord.networkx_utilities.construction import (
     assertive_add_shapely_node,
-    compute_node_id,
 )
 from warg import recursive_flatten
 

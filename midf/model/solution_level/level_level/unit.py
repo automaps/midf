@@ -1,5 +1,6 @@
-from attr import dataclass
 from typing import Collection, List, Optional
+
+from attr import dataclass
 
 from midf.enums import IMDFUnitCategory
 from midf.midf_typing import Labels, MIDFFeature, Polygonal

@@ -1,8 +1,8 @@
 import logging
 from typing import Mapping
 
-from sync_module.model import Solution
 from midf.enums import IMDFOccupantCategory
+from sync_module.model import Solution
 
 logger = logging.getLogger(__name__)
 

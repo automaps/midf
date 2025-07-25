@@ -1,8 +1,9 @@
-import geopandas
 import logging
-import shapely
 import uuid
 from pathlib import Path
+
+import geopandas
+import shapely
 
 from midf.constants import PATCH_DATA
 from midf.enums import IMDFFeatureType, IMDFVenueCategory

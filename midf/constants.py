@@ -1,5 +1,5 @@
-from sync_module.shared.model.common_models import MIVenueType
 from midf.enums import IMDFVenueCategory
+from sync_module.shared.model.common_models import MIVenueType
 
 IMDF_VENUE_CATEGORY_TO_MI_VENUE_TYPE = {
     IMDFVenueCategory.airport: MIVenueType.airport,

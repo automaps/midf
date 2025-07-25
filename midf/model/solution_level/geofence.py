@@ -1,6 +1,7 @@
+from typing import List, Optional
+
 import shapely
 from attr import dataclass
-from typing import List, Optional
 
 from midf.midf_typing import Labels, MIDFFeature, Polygonal
 from .building import MIDFBuilding

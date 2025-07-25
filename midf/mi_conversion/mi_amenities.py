@@ -1,3 +1,5 @@
+from midf.mi_utilities import clean_admin_id
+from midf.model import MIDFAmenity, MIDFSolution
 from sync_module.model import (
     LanguageBundle,
     LocationType,
@@ -5,8 +7,6 @@ from sync_module.model import (
     Room,
     Solution,
 )
-from midf.mi_utilities import clean_admin_id
-from midf.model import MIDFAmenity, MIDFSolution
 
 __all__ = ["convert_amenities"]
 

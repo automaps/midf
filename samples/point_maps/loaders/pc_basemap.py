@@ -1,7 +1,8 @@
-import geopandas
 import logging
-import shapely
 from pathlib import Path
+
+import geopandas
+import shapely
 
 from midf.enums import IMDFFeatureType, IMDFLevelCategory
 from midf.imdf_model import IMDFFixture, IMDFLevel

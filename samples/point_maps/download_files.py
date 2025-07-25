@@ -1,11 +1,12 @@
 import base64
 import json
 import logging
-import requests
-import tqdm
 import zlib
 from json import JSONDecodeError
 from pathlib import Path
+
+import requests
+import tqdm
 
 from warg import clean_string, ensure_existence
 

@@ -1,6 +1,5 @@
 from typing import Collection, Mapping, Union
 
-from sync_module.mi import from_manager_api_datetime_format
 from midf.enums import IMDFFeatureType
 from midf.feature_linking import (
     link_addresses,
@@ -29,6 +28,7 @@ from midf.model import (
     MIDFManifest,
     MIDFSolution,
 )
+from sync_module.mi import from_manager_api_datetime_format
 
 
 def parse_datetime(created):

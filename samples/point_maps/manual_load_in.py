@@ -1,9 +1,9 @@
 from pathlib import Path
 
-from sync_module.mi import synchronize
 from midf.conversion import to_mi_solution
 from midf.linking import link_imdf
 from midf.loading import MANIFEST_KEY, load_imdf
+from sync_module.mi import synchronize
 
 a = Path(r"C:\Users\chen\Downloads\Finavia_IMDF_all_floors_20250320.zip")
 imdf_dict = load_imdf(a)

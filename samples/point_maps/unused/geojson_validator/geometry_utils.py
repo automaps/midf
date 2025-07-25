@@ -1,11 +1,12 @@
 import json
 import logging
 import pathlib
-import requests
-import shapely.geometry
 from pathlib import Path
 from typing import Any, Union
 from urllib.parse import urlparse
+
+import requests
+import shapely.geometry
 
 logger = logging.getLogger(__name__)
 

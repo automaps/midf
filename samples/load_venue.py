@@ -1,10 +1,10 @@
 import logging
 from pathlib import Path
 
-from sync_module.mi import SyncLevel, synchronize
 from midf.conversion import to_mi_solution
 from midf.linking import link_imdf
 from midf.loading import MANIFEST_KEY, load_imdf
+from sync_module.mi import SyncLevel, synchronize
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
