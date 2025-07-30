@@ -8,7 +8,7 @@ from midf.linking import link_imdf
 from midf.loading import MANIFEST_KEY, load_imdf
 from sync_module.mi import SyncLevel, synchronize
 from sync_module.model import OccupantCategory, OccupantTemplate
-from sync_module.shared.model.common_models import MIMediaType
+from sync_module.shared import MIMediaType
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)

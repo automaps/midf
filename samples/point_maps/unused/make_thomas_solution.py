@@ -5,7 +5,7 @@ import requests
 
 from sync_module.mi import synchronize
 from sync_module.model import Solution
-from sync_module.shared.model.common_models import MIMediaType
+from sync_module.shared import MIMediaType
 
 logging.basicConfig(level=logging.DEBUG)
 
