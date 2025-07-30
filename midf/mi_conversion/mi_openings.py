@@ -6,7 +6,7 @@ from jord.shapely_utilities import clean_shape, dilate
 from midf.mi_utilities import clean_admin_id
 from midf.model import MIDFOpening
 from sync_module.model import LocationType
-from sync_module.shared.model.common_models import MIDoorType
+from sync_module.shared import MIDoorType
 
 logger = logging.getLogger(__name__)
 

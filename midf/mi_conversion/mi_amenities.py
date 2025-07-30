@@ -1,16 +1,18 @@
 from midf.mi_utilities import clean_admin_id
 from midf.model import MIDFAmenity, MIDFSolution
 from sync_module.model import (
-    LanguageBundle,
     LocationType,
     PointOfInterest,
     Room,
     Solution,
 )
 
+import logging
+
+from sync_module.shared import LanguageBundle
+
 __all__ = ["convert_amenities"]
 
-import logging
 
 logger = logging.getLogger(__name__)
 

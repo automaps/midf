@@ -6,7 +6,8 @@ from jord.shapely_utilities import clean_shape
 from midf.constants import KIOSK_LOCATION_TYPE_NAME
 from midf.mi_utilities import clean_admin_id
 from midf.model import MIDFKiosk, MIDFLevel
-from sync_module.model import LanguageBundle, LocationType, Solution
+from sync_module.model import LocationType, Solution
+from sync_module.shared import LanguageBundle
 
 logger = logging.getLogger(__name__)
 

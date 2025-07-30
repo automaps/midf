@@ -4,7 +4,8 @@ from jord.shapely_utilities import clean_shape
 from midf.constants import OUTDOOR_BUILDING_NAME
 from midf.mi_utilities import clean_admin_id, make_mi_building_admin_id_midf
 from midf.model import MIDFGeofence, MIDFSolution
-from sync_module.model import Building, LanguageBundle, LocationType, Solution
+from sync_module.model import Building, LocationType, Solution
+from sync_module.shared import LanguageBundle
 
 logger = logging.getLogger(__name__)
 

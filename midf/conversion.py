@@ -20,9 +20,9 @@ from midf.model import MIDFSolution
 from sync_module.model import (
     Building,
     FALLBACK_OSM_GRAPH,
-    LanguageBundle,
     Solution,
 )
+from sync_module.shared import LanguageBundle
 
 logger = logging.getLogger(__name__)
 

@@ -6,7 +6,8 @@ from jord.shapely_utilities import clean_shape, dilate
 from midf.constants import DETAIL_LOCATION_TYPE_NAME
 from midf.mi_utilities import clean_admin_id
 from midf.model import MIDFDetail, MIDFLevel
-from sync_module.model import LanguageBundle, LocationType, Solution
+from sync_module.model import LocationType, Solution
+from sync_module.shared import LanguageBundle
 
 logger = logging.getLogger(__name__)
 

@@ -8,8 +8,6 @@ from midf.constants import ANCHOR_NAME
 from midf.mi_utilities import clean_admin_id
 from midf.model import MIDFLevel, MIDFOccupant, MIDFUnit
 from sync_module.model import (
-    InvalidPolygonError,
-    LanguageBundle,
     LocationType,
     Occupant,
     OccupantCategory,
@@ -18,7 +16,7 @@ from sync_module.model import (
     Room,
     Solution,
 )
-from sync_module.shared.model.common_models import MIOccupantType
+from sync_module.shared import MIOccupantType, InvalidPolygonError, LanguageBundle
 
 logger = logging.getLogger(__name__)
 

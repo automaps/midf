@@ -6,8 +6,8 @@ import shapely
 from midf.constants import IMDF_VENUE_CATEGORY_TO_MI_VENUE_TYPE
 from midf.mi_utilities import clean_admin_id
 from midf.model import MIDFAddress, MIDFSolution, MIDFVenue
-from sync_module.model import LanguageBundle, PostalAddress, Solution
-from sync_module.shared.model.common_models import MIVenueType
+from sync_module.model import PostalAddress, Solution
+from sync_module.shared import MIVenueType, LanguageBundle
 
 logger = logging.getLogger(__name__)
 

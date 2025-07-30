@@ -6,7 +6,8 @@ import shapely
 from jord.shapely_utilities import clean_shape, dilate
 from midf.mi_utilities import make_mi_building_admin_id_midf
 from midf.model import MIDFAddress, MIDFBuilding, MIDFFootprint, MIDFSolution
-from sync_module.model import LanguageBundle, Solution, Venue
+from sync_module.model import Solution, Venue
+from sync_module.shared import LanguageBundle
 
 logger = logging.getLogger(__name__)
 

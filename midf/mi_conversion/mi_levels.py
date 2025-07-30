@@ -13,7 +13,8 @@ from midf.mi_conversion.mi_sections import (
 from midf.mi_conversion.mi_units import convert_units
 from midf.mi_utilities import clean_admin_id, make_mi_building_admin_id_midf
 from midf.model import MIDFLevel, MIDFSolution
-from sync_module.model import Building, Floor, LanguageBundle, Solution
+from sync_module.model import Building, Floor, Solution
+from sync_module.shared import LanguageBundle
 
 logger = logging.getLogger(__name__)
 
