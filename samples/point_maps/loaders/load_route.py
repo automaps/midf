@@ -8,10 +8,8 @@ import pyproj
 import shapely
 from networkx import MultiDiGraph
 
-from jord.networkx_utilities import assertive_add_edge
-from jord.networkx_utilities.construction import (
-    assertive_add_shapely_node,
-)
+
+from jord.networkx_utilities import assertive_add_shapely_node, assertive_add_edge
 from warg import recursive_flatten
 
 logger = logging.getLogger(__name__)
