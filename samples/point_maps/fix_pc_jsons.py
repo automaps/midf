@@ -169,7 +169,7 @@ if __name__ == "__main__":
             if pc_venue.is_file():
                 continue
 
-            if True:
+            if False:
                 if pc_venue.stem not in (
                     # "national_gallery_1",
                     # "suss_wayfinding",

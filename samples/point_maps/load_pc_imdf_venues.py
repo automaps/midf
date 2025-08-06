@@ -18,7 +18,7 @@ if __name__ == "__main__":
     data_base = Path(__file__).parent / "imdfication2"
 
     for pc_venue_dir in data_base.iterdir():
-        if True:
+        if False:
             if pc_venue_dir.stem not in (
                 # "national_gallery_1",
                 # "zurich_airport",
