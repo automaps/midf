@@ -125,7 +125,7 @@ def imdifify_venue(pc_venue, z):
     manifest = {
         "version": "0.0.1",
         "created": str(datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ")),
-        "generated_by": "Point-Maps By Chen",
+        "generated_by": "Point-Maps By Chen - Reloaded",
         "language": "en-US",
     }
     package_imdf(
@@ -146,7 +146,7 @@ if __name__ == "__main__":
         for pc_venue in a.iterdir():
             if pc_venue.is_file():
                 continue
-            if True:
+            if False:
                 if pc_venue.stem not in (
                     # "national_gallery_1",
                     # "suss_wayfinding",
