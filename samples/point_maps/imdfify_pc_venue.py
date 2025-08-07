@@ -135,37 +135,38 @@ def imdifify_venue(pc_venue, z):
     )
 
 
+def to_imdf_venue():
+    a = Path(__file__).parent / "fixed_json2"
+    z = ensure_existence(a.parent / "imdfication2")
+
+    assert a.exists(), f"{a} does not exist"
+
+    for pc_venue in a.iterdir():
+        if pc_venue.is_file():
+            continue
+        if False:
+            if pc_venue.stem not in (
+                # "national_gallery_1",
+                # "suss_wayfinding",
+                # "sit_visitor",
+                # "suss_spatial",
+                # "sit_campus",
+                # "btrts",
+                # "berlin_brandenburg_airport",
+                "zurich_airport"
+            ):
+                continue
+
+        logger.info(f"Processing {pc_venue}")
+
+        try:
+            imdifify_venue(pc_venue, z)
+        except Exception as e:
+            logger.error(f"{pc_venue}: {e}")
+            if True:
+                raise e
+
+
 if __name__ == "__main__":
 
-    def main():
-        a = Path(__file__).parent / "fixed_json2"
-        z = ensure_existence(a.parent / "imdfication2")
-
-        assert a.exists(), f"{a} does not exist"
-
-        for pc_venue in a.iterdir():
-            if pc_venue.is_file():
-                continue
-            if False:
-                if pc_venue.stem not in (
-                    # "national_gallery_1",
-                    # "suss_wayfinding",
-                    # "sit_visitor",
-                    # "suss_spatial",
-                    # "sit_campus",
-                    # "btrts",
-                    # "berlin_brandenburg_airport",
-                    "zurich_airport"
-                ):
-                    continue
-
-            logger.info(f"Processing {pc_venue}")
-
-            try:
-                imdifify_venue(pc_venue, z)
-            except Exception as e:
-                logger.error(f"{pc_venue}: {e}")
-                if True:
-                    raise e
-
-    main()
+    to_imdf_venue()
