@@ -19,20 +19,17 @@ def upload_to_mi():
     data_base = Path(__file__).parent / "imdfication2"
 
     for pc_venue_dir in data_base.iterdir():
-        if False:
+        if True:
             if pc_venue_dir.stem not in (
                 # "national_gallery_1",
-                # "zurich_airport",
-                # "temasek",
-                # "suss_wayfinding",
-                # "suss_spatial"
-                # "sit_visitor",
-                # "suss_spatial",
-                # "sit_campus",
-                # "btrts",
-                # "berlin_brandenburg_airport",
-                # 'kansas_international_airport_-_new',
-                "zurich_airport"
+                # "ogg",
+                "sit_campus",
+                "sit_visitor",
+                "sjii",
+                "suss_wayfinding",
+                "suss_spatial" "temasek",
+                "vitra_campus",
+                "zurich_airport",
             ):
                 continue
 

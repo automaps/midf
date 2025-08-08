@@ -5,7 +5,7 @@ import shapely
 from jord.shapely_utilities import clean_shape, dilate
 from midf.mi_utilities import clean_admin_id
 from midf.model import MIDFOpening
-from sync_module.model import LocationType
+from sync_module.model import Door, LocationType
 from sync_module.shared import MIDoorType
 
 logger = logging.getLogger(__name__)
@@ -49,8 +49,15 @@ def convert_openings(level, mi_solution, venue_graph_key, floor_key) -> None:
                 else:
                     logger.error(f"Ignoring {opening}")
             else:
+                a = clean_admin_id(opening.id)
+
+                if mi_solution.doors.get(
+                    Door.compute_key(admin_id=a, graph_key=venue_graph_key)
+                ):
+                    continue
+
                 mi_solution.add_door(
-                    admin_id=clean_admin_id(opening.id),
+                    admin_id=a,
                     floor_index=level.ordinal,
                     graph_key=venue_graph_key,
                     linestring=opening_geom,
