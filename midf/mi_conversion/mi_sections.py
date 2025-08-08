@@ -32,7 +32,6 @@ def convert_sections(floor_key: str, level: MIDFLevel, mi_solution: Solution) ->
 
             section_geom = clean_shape(section.geometry)
 
-
             a = clean_admin_id_regex(section.category)
             location_type_key = LocationType.compute_key(admin_id=a)
             if mi_solution.location_types.get(location_type_key) is None:

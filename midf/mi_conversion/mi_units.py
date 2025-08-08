@@ -52,7 +52,6 @@ def convert_units(
 
             location_type_key = LocationType.compute_key(admin_id=a)
 
-            
             if mi_solution.location_types.get(location_type_key) is None:
                 location_type_key = mi_solution.add_location_type(
                     admin_id=a,

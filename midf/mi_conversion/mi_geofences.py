@@ -20,7 +20,7 @@ def convert_geofences(
         for geofence in midf_solution.geofences:
             geofence: MIDFGeofence
 
-            a= clean_admin_id_regex(geofence.category)
+            a = clean_admin_id_regex(geofence.category)
 
             ltk = LocationType.compute_key(admin_id=a)
             if mi_solution.location_types.get(ltk) is None:
