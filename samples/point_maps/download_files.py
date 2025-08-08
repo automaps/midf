@@ -62,7 +62,6 @@ exclude_path = ensure_existence(download_destination)
 
 def download_files():
 
-
     for map_name, map_id in tqdm.tqdm(map_ids.items()):
         logger.info(f"Downloading {map_name}")
         h = a.format(map_id)
@@ -81,14 +80,14 @@ def download_files():
                     out[k] = json.dumps(v)
 
             for f_name, f_content in out.items():
-             try:
-                with open(
-                    (folder / clean_string(f_name)).with_suffix(".json"),
-                    "w",
-                    encoding="utf-8",
-                ) as f:
-                    f.write(f_content)
-             except Exception as e:
+                try:
+                    with open(
+                        (folder / clean_string(f_name)).with_suffix(".json"),
+                        "w",
+                        encoding="utf-8",
+                    ) as f:
+                        f.write(f_content)
+                except Exception as e:
                     logger.error(f"Error writing {f_name} in {map_name}: {e}")
 
         except JSONDecodeError as e:
