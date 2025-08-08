@@ -3,6 +3,7 @@ from typing import List, Mapping
 
 import shapely
 
+from jord.shapely_utilities import is_multi
 from midf.constants import IMDF_VENUE_CATEGORY_TO_MI_VENUE_TYPE
 from midf.mi_utilities import clean_admin_id
 from midf.model import MIDFAddress, MIDFSolution, MIDFVenue
@@ -38,6 +39,10 @@ def convert_venues(
                 if venue_name is None or venue_name == "":
                     venue_name = venue.id
 
+                geometry = venue.geometry
+                if is_multi(geometry):
+                    geometry = shapely.concave_hull(geometry)
+
                 venue_key = mi_solution.add_venue(
                     admin_id=clean_admin_id(venue.id),
                     translations={"en": LanguageBundle(name=venue_name)},
@@ -53,8 +58,7 @@ def convert_venues(
                         city=address.locality,
                         region=address.province,
                     ),
-                    polygon=venue.geometry,
-                    # dilate(venue.display_point),
+                    polygon=geometry,
                 )
                 address_venue_mapping[address.id].append(venue_key)
 

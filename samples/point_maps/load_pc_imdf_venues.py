@@ -23,11 +23,11 @@ def upload_to_mi():
             if pc_venue_dir.stem not in (
                 # "national_gallery_1",
                 # "ogg",
-                "sit_campus",
-                "sit_visitor",
-                "sjii",
-                "suss_wayfinding",
-                "suss_spatial" "temasek",
+                # "sit_campus",
+                # "sit_visitor",
+                # "sjii",
+                # "suss_wayfinding",
+                # "suss_spatial" "temasek",
                 "vitra_campus",
                 "zurich_airport",
             ):
