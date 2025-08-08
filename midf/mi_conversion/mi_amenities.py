@@ -34,10 +34,12 @@ def convert_amenities(mi_solution: Solution, midf_solution: MIDFSolution) -> Non
             if amenity_name is None or amenity_name == "":
                 amenity_name = amenity.id
 
-            amenity_category_key = LocationType.compute_key(admin_id=amenity.category)
+            a = clean_admin_id_regex(amenity.category)
+
+            amenity_category_key = LocationType.compute_key(admin_id=a)
             if mi_solution.location_types.get(amenity_category_key) is None:
                 mi_solution.add_location_type(
-                    admin_id=clean_admin_id_regex(amenity.category),
+                    admin_id=a,
                     translations={"en": LanguageBundle(name=amenity.category)},
                 )
 

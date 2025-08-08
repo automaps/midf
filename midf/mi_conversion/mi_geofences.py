@@ -20,10 +20,12 @@ def convert_geofences(
         for geofence in midf_solution.geofences:
             geofence: MIDFGeofence
 
-            ltk = LocationType.compute_key(admin_id=geofence.category)
+            a= clean_admin_id_regex(geofence.category)
+
+            ltk = LocationType.compute_key(admin_id=a)
             if mi_solution.location_types.get(ltk) is None:
                 ltk = mi_solution.add_location_type(
-                    admin_id=clean_admin_id_regex(geofence.category),
+                    admin_id=a,
                     translations={"en": LanguageBundle(name=geofence.category)},
                 )
 

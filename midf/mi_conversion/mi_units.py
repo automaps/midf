@@ -48,10 +48,14 @@ def convert_units(
 
             unit_geom = clean_shape(unit.geometry)
 
-            location_type_key = LocationType.compute_key(admin_id=unit.category)
+            a = clean_admin_id_regex(unit.category)
+
+            location_type_key = LocationType.compute_key(admin_id=a)
+
+            
             if mi_solution.location_types.get(location_type_key) is None:
                 location_type_key = mi_solution.add_location_type(
-                    admin_id=clean_admin_id_regex(unit.category),
+                    admin_id=a,
                     translations={"en": LanguageBundle(name=unit.category)},
                 )
 
