@@ -157,37 +157,38 @@ def fix_venue_jsons(pc_venue, target_path):
             logger.info(f"{a} was skipped")
 
 
-if __name__ == "__main__":
+def fix_pc_venue_jsons():
+    source_path = Path(__file__).parent / "exclude2"
+    target_path = Path(__file__).parent / "fixed_json2"
 
-    def main():
-        source_path = Path(__file__).parent / "exclude2"
-        target_path = Path(__file__).parent / "fixed_json2"
+    assert source_path.exists(), f"{source_path} does not exist"
 
-        assert source_path.exists(), f"{source_path} does not exist"
+    for pc_venue in source_path.iterdir():
+        if pc_venue.is_file():
+            continue
 
-        for pc_venue in source_path.iterdir():
-            if pc_venue.is_file():
+        if False:
+            if pc_venue.stem not in (
+                # "national_gallery_1",
+                # "suss_wayfinding",
+                # "sit_visitor",
+                # "suss_spatial",
+                # "sit_campus",
+                # "btrts",
+                # "berlin_brandenburg_airport",
+                "zurich_airport"
+            ):
+                logger.error(f"skipped {pc_venue.stem}")
                 continue
 
-            if False:
-                if pc_venue.stem not in (
-                    # "national_gallery_1",
-                    # "suss_wayfinding",
-                    # "sit_visitor",
-                    # "suss_spatial",
-                    # "sit_campus",
-                    # "btrts",
-                    # "berlin_brandenburg_airport",
-                    "zurich_airport"
-                ):
-                    logger.error(f"skipped {pc_venue.stem}")
-                    continue
+        logger.info(f"Processing {pc_venue}")
 
-            logger.info(f"Processing {pc_venue}")
+        try:
+            fix_venue_jsons(pc_venue, target_path)
+        except Exception as e:
+            logger.error(f"{pc_venue}: {e}")
 
-            try:
-                fix_venue_jsons(pc_venue, target_path)
-            except Exception as e:
-                logger.error(f"{pc_venue}: {e}")
 
-    main()
+if __name__ == "__main__":
+
+    fix_pc_venue_jsons()

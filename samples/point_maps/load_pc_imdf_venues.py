@@ -14,7 +14,8 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
-if __name__ == "__main__":
+
+def upload_to_mi():
     data_base = Path(__file__).parent / "imdfication2"
 
     for pc_venue_dir in data_base.iterdir():
@@ -118,3 +119,7 @@ if __name__ == "__main__":
             logger.error(f"Failed to process {pc_venue_dir}: {e}")
             if True:
                 raise e
+
+
+if __name__ == "__main__":
+    upload_to_mi()

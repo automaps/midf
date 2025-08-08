@@ -59,34 +59,42 @@ download_destination = Path(__file__).parent / "exclude2"
 
 exclude_path = ensure_existence(download_destination)
 
-for map_name, map_id in tqdm.tqdm(map_ids.items()):
-    logger.info(f"Downloading {map_name}")
-    h = a.format(map_id)
-    req = requests.get(h)
-    folder = ensure_existence(exclude_path / map_name.lower().replace(" ", "_"))
 
-    try:
-        json_rep = req.json()
-        out = {}
-        for k, v in tqdm.tqdm(json_rep.items()):
-            if "compressed" in v:
-                dec = base64.b64decode(v["compressed"])
-                dec = zlib.decompress(dec).decode()
-                out[k] = dec
-            else:
-                out[k] = json.dumps(v)
+def download_files():
 
-        for f_name, f_content in out.items():
-            try:
+
+    for map_name, map_id in tqdm.tqdm(map_ids.items()):
+        logger.info(f"Downloading {map_name}")
+        h = a.format(map_id)
+        req = requests.get(h)
+        folder = ensure_existence(exclude_path / map_name.lower().replace(" ", "_"))
+
+        try:
+            json_rep = req.json()
+            out = {}
+            for k, v in tqdm.tqdm(json_rep.items()):
+                if "compressed" in v:
+                    dec = base64.b64decode(v["compressed"])
+                    dec = zlib.decompress(dec).decode()
+                    out[k] = dec
+                else:
+                    out[k] = json.dumps(v)
+
+            for f_name, f_content in out.items():
+             try:
                 with open(
                     (folder / clean_string(f_name)).with_suffix(".json"),
                     "w",
                     encoding="utf-8",
                 ) as f:
                     f.write(f_content)
-            except Exception as e:
-                logger.error(f"Error writing {f_name} in {map_name}: {e}")
+             except Exception as e:
+                    logger.error(f"Error writing {f_name} in {map_name}: {e}")
 
-    except JSONDecodeError as e:
-        logger.error(e)
-        logging.error(f"Error downloading {map_name} : {map_id}")
+        except JSONDecodeError as e:
+            logger.error(e)
+            logging.error(f"Error downloading {map_name} : {map_id}")
+
+
+if __name__ == "__main__":
+    download_files()
