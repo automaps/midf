@@ -28,7 +28,9 @@ def link_fixtures(
                 name=fixture.name,
                 alt_name=fixture.alt_name,
                 anchor=(
-                    anchor_id_mapping[fixture.anchor_id] if fixture.anchor_id else None
+                    anchor_id_mapping[fixture.anchor_id]
+                    if fixture.anchor_id and fixture.anchor_id in anchor_id_mapping
+                    else None
                 ),
             )
         )

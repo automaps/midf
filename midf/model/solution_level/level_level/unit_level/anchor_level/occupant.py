@@ -1,6 +1,6 @@
 from typing import Optional
 
-from attr import dataclass
+from dataclasses import dataclass
 
 from midf.enums import IMDFOccupantCategory
 from midf.midf_typing import Labels, MIDFFeature, Temporality

@@ -4,7 +4,7 @@ from typing import List, Optional
 
 __all__ = ["MIDFManifest"]
 
-from attr import dataclass
+from dataclasses import dataclass
 
 
 @dataclass

@@ -3,6 +3,7 @@ import logging
 from jord.shapely_utilities import clean_shape
 from midf.constants import OUTDOOR_BUILDING_NAME
 from midf.mi_utilities import clean_admin_id, make_mi_building_admin_id_midf
+from sync_module.python_utilities import clean_admin_id_regex
 from midf.model import MIDFGeofence, MIDFSolution
 from sync_module.model import Building, LocationType, Solution
 from sync_module.shared import LanguageBundle
@@ -22,7 +23,7 @@ def convert_geofences(
             ltk = LocationType.compute_key(admin_id=geofence.category)
             if mi_solution.location_types.get(ltk) is None:
                 ltk = mi_solution.add_location_type(
-                    admin_id=geofence.category,
+                    admin_id=clean_admin_id_regex(geofence.category),
                     translations={"en": LanguageBundle(name=geofence.category)},
                 )
 

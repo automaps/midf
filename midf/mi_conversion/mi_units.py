@@ -6,6 +6,7 @@ import shapely
 from jord.shapely_utilities import clean_shape
 from midf.constants import ANCHOR_NAME
 from midf.mi_utilities import clean_admin_id
+from sync_module.python_utilities import clean_admin_id_regex
 from midf.model import MIDFLevel, MIDFOccupant, MIDFUnit
 from sync_module.model import (
     LocationType,
@@ -50,7 +51,7 @@ def convert_units(
             location_type_key = LocationType.compute_key(admin_id=unit.category)
             if mi_solution.location_types.get(location_type_key) is None:
                 location_type_key = mi_solution.add_location_type(
-                    admin_id=unit.category,
+                    admin_id=clean_admin_id_regex(unit.category),
                     translations={"en": LanguageBundle(name=unit.category)},
                 )
 

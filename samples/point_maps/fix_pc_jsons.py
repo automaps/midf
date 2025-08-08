@@ -81,55 +81,55 @@ def fix_venue_jsons(pc_venue, target_path):
             if g == PointConsultingFeatureStem.venue and True:
                 l = drop_invalid_features(a)
                 if l:
-                    with open(target_file, "w") as f:
+                    with open(target_file, "w", encoding="utf-8") as f:
                         f.write(json.dumps(l))
 
             elif g == PointConsultingFeatureStem.fixture and True:
                 l = drop_invalid_features(a)
                 if l:
-                    with open(target_file, "w") as f:
+                    with open(target_file, "w", encoding="utf-8") as f:
                         f.write(json.dumps(l))
 
             elif g == PointConsultingFeatureStem.unit and True:
                 l = drop_invalid_features(a)
                 if l:
-                    with open(target_file, "w") as f:
+                    with open(target_file, "w", encoding="utf-8") as f:
                         f.write(json.dumps(l))
 
             elif g == PointConsultingFeatureStem.building and True:
                 l = drop_invalid_features(a)
                 if l:
-                    with open(target_file, "w") as f:
+                    with open(target_file, "w", encoding="utf-8") as f:
                         f.write(json.dumps(l))
 
             elif g == PointConsultingFeatureStem.level and True:
                 l = drop_invalid_features(a)
                 if l:
-                    with open(target_file, "w") as f:
+                    with open(target_file, "w", encoding="utf-8") as f:
                         f.write(json.dumps(l))
 
             elif g == PointConsultingFeatureStem.occupant and True:
                 l = drop_invalid_features(a)
                 if l:
-                    with open(target_file, "w") as f:
+                    with open(target_file, "w", encoding="utf-8") as f:
                         f.write(json.dumps(l))
 
             elif g == PointConsultingFeatureStem.opening and True:
                 l = drop_invalid_features(a)
                 if l:
-                    with open(target_file, "w") as f:
+                    with open(target_file, "w", encoding="utf-8") as f:
                         f.write(json.dumps(l))
 
             elif g == PointConsultingFeatureStem.section and True:
                 l = drop_invalid_features(a)
                 if l:
-                    with open(target_file, "w") as f:
+                    with open(target_file, "w", encoding="utf-8") as f:
                         f.write(json.dumps(l))
 
             elif g == PointConsultingFeatureStem.basemap and True:
                 l = drop_invalid_features(a)
                 if l:
-                    with open(target_file, "w") as f:
+                    with open(target_file, "w", encoding="utf-8") as f:
                         f.write(json.dumps(l))
 
             elif g == PointConsultingFeatureStem.route and True:

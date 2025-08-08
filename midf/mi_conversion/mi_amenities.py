@@ -1,4 +1,5 @@
 from midf.mi_utilities import clean_admin_id
+from sync_module.python_utilities import clean_admin_id_regex
 from midf.model import MIDFAmenity, MIDFSolution
 from sync_module.model import (
     LocationType,
@@ -36,7 +37,7 @@ def convert_amenities(mi_solution: Solution, midf_solution: MIDFSolution) -> Non
             amenity_category_key = LocationType.compute_key(admin_id=amenity.category)
             if mi_solution.location_types.get(amenity_category_key) is None:
                 mi_solution.add_location_type(
-                    admin_id=amenity.category,
+                    admin_id=clean_admin_id_regex(amenity.category),
                     translations={"en": LanguageBundle(name=amenity.category)},
                 )
 

@@ -1,7 +1,7 @@
 from typing import Optional
 
 import shapely
-from attr import dataclass
+from dataclasses import dataclass
 
 from midf.enums import IMDFFixtureCategory
 from midf.midf_typing import Labels, MIDFFeature, Polygonal

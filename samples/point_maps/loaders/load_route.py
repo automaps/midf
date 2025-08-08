@@ -80,14 +80,16 @@ def parse_route(route_file_path: Path, target_file_path: Path) -> MultiDiGraph:
                 assert isinstance(to_link, int), f"{to_link} was not an int"
 
                 if i != to_link:
+                    edge_id = next(edge_id_counter)
                     assertive_add_edge(
                         graph=graph,
                         u=int(i + node_id_offset),
                         v=int(to_link + node_id_offset),
-                        key=next(edge_id_counter),
+                        key=edge_id,
                         attributes=dict(
                             # distance=to_distance,
-                            level=coordinate_levels[i]
+                            level=coordinate_levels[i],
+                            id=edge_id,
                         ),
                         allow_loops=False,
                         allow_duplicates=False,

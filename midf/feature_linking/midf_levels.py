@@ -88,9 +88,15 @@ def link_levels(
                 if level.id in found_opening_levels
                 else None
             ),
-            units=units_copy.pop(level.id) if level.id in found_unit_levels else None,
+            units=(
+                units_copy.pop(level.id)
+                if level.id in found_unit_levels and level.id in units_copy
+                else None
+            ),
             details=(
-                details_copy.pop(level.id) if level.id in found_detail_levels else None
+                details_copy.pop(level.id)
+                if level.id in found_detail_levels and level.id in details_copy
+                else None
             ),
         )
     return levels

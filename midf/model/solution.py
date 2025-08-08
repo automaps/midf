@@ -1,6 +1,6 @@
 from typing import Collection, Optional
 
-from attr import dataclass
+from dataclasses import dataclass
 
 from .solution_level import (
     MIDFAddress,

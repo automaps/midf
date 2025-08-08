@@ -1,11 +1,11 @@
 import logging
-from typing import Collection, Mapping
+from typing import Collection, Mapping, Optional
 
 import shapely
 
 from jord.shapely_utilities import clean_shape, dilate
 from midf.mi_utilities import make_mi_building_admin_id_midf
-from midf.model import MIDFAddress, MIDFBuilding, MIDFFootprint, MIDFSolution
+from midf.model import MIDFAddress, MIDFBuilding, MIDFFootprint, MIDFSolution, MIDFVenue
 from sync_module.model import Solution, Venue
 from sync_module.shared import LanguageBundle
 
@@ -19,7 +19,7 @@ def convert_buildings(
     building_footprint_mapping: Mapping[str, Collection[MIDFFootprint]],
     mi_solution: Solution,
     midf_solution: MIDFSolution,
-    venue: Venue,
+    venue: Optional[MIDFVenue],
     venue_key: str,
 ) -> str:
     if not midf_solution.buildings:
@@ -51,8 +51,12 @@ def convert_buildings(
                 building_footprint |= dilate(building.display_point)
 
         if building_footprint.is_empty:
-            if venue.polygon:
-                building_footprint |= dilate(venue.polygon)
+            if venue:
+                if venue.geometry:
+                    building_footprint |= dilate(venue.geometry)
+
+        if building_footprint.is_empty:
+            building_footprint |= dilate(shapely.Point(0, 0))
 
         if isinstance(building_footprint, shapely.MultiPolygon):
             building_footprint = shapely.convex_hull(building_footprint)

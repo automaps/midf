@@ -4,6 +4,7 @@ import shapely
 
 from jord.shapely_utilities import clean_shape
 from midf.mi_utilities import clean_admin_id
+from sync_module.python_utilities import clean_admin_id_regex
 from midf.model import MIDFFixture, MIDFLevel
 from sync_module.model import LocationType, Solution
 from sync_module.shared import LanguageBundle
@@ -34,7 +35,7 @@ def convert_fixtures(floor_key: str, level: MIDFLevel, mi_solution: Solution) ->
             location_type_key = LocationType.compute_key(admin_id=fixture.category)
             if mi_solution.location_types.get(location_type_key) is None:
                 location_type_key = mi_solution.add_location_type(
-                    admin_id=fixture.category,
+                    admin_id=clean_admin_id_regex(fixture.category),
                     translations={"en": LanguageBundle(name=fixture.category)},
                 )
 
